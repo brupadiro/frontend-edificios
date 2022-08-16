@@ -1,7 +1,7 @@
 <template>
   <generalCardComponent fillHeight elevation="6">
     <GeneralCardTitleComponent class="primary white--text">
-      Alquileres y expensas
+      Expensas
     </GeneralCardTitleComponent>
     <v-card-text>
       <v-row>
@@ -17,15 +17,15 @@
             <v-card-text>
               <v-row>
                 <v-col class="col-12">
-                  <h4 class="font-weight-light white--text">Inquilinos con deudas pendientes</h4>
+                  <h4 class="font-weight-light white--text">Habitantes con deudas pendientes</h4>
                 </v-col>
                 <v-col class="col-12 col-md-6">
                   <v-row no-gutters>
-                    <v-avatar size="60" tile class="rounded-lg">
-                      <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
+                    <v-avatar size="60" tile color="yellow" class="rounded-lg">
+                      <img src="/icons/person.png">
                     </v-avatar>
-                    <v-avatar size="60" tile class="rounded-lg ml-n3">
-                      <img src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
+                    <v-avatar size="60" tile color="yellow" class="rounded-lg ml-n3">
+                      <img src="/icons/person.png">
                     </v-avatar>
                     <v-avatar size="60" tile class="rounded-lg ml-n3">
                       <v-img width="60" height="60" contain src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
@@ -38,7 +38,7 @@
                   </v-row>
                 </v-col>
                 <v-col class="col-12 col-md-6">
-                  <v-btn height="60" large block class="font-weight-black red--text">VER INQUILINOS</v-btn>
+                  <v-btn height="60" color="yellow lighten-1" large block class="font-weight-regular rounded-lg">VER HABITANTES</v-btn>
                 </v-col>
               </v-row>
             </v-card-text>

@@ -46,11 +46,11 @@
     <template>
       <v-dialog v-model="modalStaff" width="700">
         <GeneralCardComponent>
-          <GeneralCardTitleComponent>
+          <GeneralCardTitleComponent class="primary white--text">
             Agregar staff
             <v-spacer></v-spacer>
             <v-btn icon @click="modalStaff = false">
-              <v-icon>mdi-close</v-icon>
+              <v-icon color="white">mdi-close</v-icon>
             </v-btn>
           </GeneralCardTitleComponent>
           <v-divider></v-divider>
@@ -65,7 +65,7 @@
                     v-model="staff.doc_type"></FormsFieldsSelectComponent>
                 </v-col>
                 <v-col class="col-8">
-                  <FormsFieldsTextComponent label="Documento" type="number" v-model="staff.doc">
+                  <FormsFieldsTextComponent label="_" type="number" v-model="staff.doc">
                   </FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-12 col-sm-6">
@@ -96,7 +96,10 @@
                       @click:minute="$refs.exitmenu.save(staff.exit_hour)"></v-time-picker>
                   </v-menu>
                 </v-col>
-                <v-col class="col-12">
+                <v-col class="col-6">
+                  <FormsFieldsTextComponent label="Telefono" type="number" v-model="staff.area"></FormsFieldsTextComponent>
+                </v-col>
+                <v-col class="col-6">
                   <FormsFieldsSelectComponent label="Area" :items="['Mantenimiento','Limpieza','Administracion']"
                     v-model="staff.area"></FormsFieldsSelectComponent>
                 </v-col>

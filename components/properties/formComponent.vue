@@ -81,8 +81,8 @@
         </v-col>
         <v-col class="col-12">
           <v-card outlined class="rounded-lg">
-            <v-card-title class="text-subtitle-2 font-weight-regular">
-              PROPIEDAD EN ALQUILER
+            <v-card-title class="text-subtitle-2 font-weight-regular"  v-show="in_rent">
+              PROPIEDAD ALQUILADA
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>

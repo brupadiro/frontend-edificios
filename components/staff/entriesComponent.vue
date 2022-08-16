@@ -65,8 +65,17 @@
                     </formsFieldsTextComponent>
                   </v-col>
                   <v-col class="col-12">
-                    <formsFieldsTextComponent v-model="entries.phone" type="time" prepend-inner-icon="mdi-clock" label="HORA">
-                    </formsFieldsTextComponent>
+                  <v-menu ref="entryMenu" v-model="hourMenu" :close-on-content-click="false" :nudge-right="40"
+                    :return-value.sync="entries.hour" transition="scale-transition" offset-y max-width="290px"
+                    min-width="290px">
+                    <template v-slot:activator =  "{on}">
+                      <v-btn block class="black--text rounded-lg" color="white"  v-on="on" x-large @click="hourExitMenu = !hourExitMenu">
+                        {{ entries.hour }}&nbsp;&nbsp;<v-icon>mdi-clock-outline</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-time-picker v-if="hourExitMenu" v-model="entries.hour" full-width
+                      @click:minute="$refs.entryMenu.save(entries.hour)"></v-time-picker>
+                  </v-menu>
                   </v-col>
 
                 </v-row>
@@ -162,6 +171,7 @@
     },
     data() {
       return {
+        hourMenu: false,
         page: 1,
         entries: {
           doc_type: 'CI',

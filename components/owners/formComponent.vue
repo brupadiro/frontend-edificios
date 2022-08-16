@@ -17,13 +17,13 @@
           </formsFieldsTextComponent>
         </v-col>
         <v-col class="col-12">
-          <v-card outlined class="rounded-lg">
+          <v-card outlined class="rounded-lg" v-show="!in_rent">
             <v-card-title class="text-subtitle-2 font-weight-regular">
               RESIDE EN LA PROPIEDAD
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
-              <v-radio-group hide-details :disabled="in_rent" v-model="in_property">
+              <v-radio-group hide-details  v-model="in_property">
                 <v-row>
                   <v-col class="col-md-6">
                     <formsFieldsRadioComponent :value="true" label="SI">
