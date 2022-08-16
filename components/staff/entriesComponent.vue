@@ -65,6 +65,7 @@
                     </formsFieldsTextComponent>
                   </v-col>
                   <v-col class="col-12">
+                  <label class="font-weight-regular mb-2 grey--text text--darken-4 text-uppercase text-subtitle-2">Hora</label>
                   <v-menu ref="entryMenu" v-model="hourMenu" :close-on-content-click="false" :nudge-right="40"
                     :return-value.sync="entries.hour" transition="scale-transition" offset-y max-width="290px"
                     min-width="290px">
