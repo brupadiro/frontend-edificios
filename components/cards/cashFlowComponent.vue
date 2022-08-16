@@ -1,0 +1,95 @@
+<template>
+  <generalCardComponent elevation="6">
+    <GeneralCardTitleComponent class="primary white--text">
+      CashFlow
+    </GeneralCardTitleComponent>
+    <v-card-text class="my-3">
+      <v-row>
+        <v-col class="col-md-6 col-12">
+          <GeneralCardMiniComponent>
+            <template v-slot:title>
+              $ {{inPayments}}
+            </template>
+            <template v-slot:subtitle>
+              Ingresos
+            </template>
+          </GeneralCardMiniComponent>
+        </v-col>
+        <v-col class="col-md-6 col-12">
+          <GeneralCardMiniComponent color="red">
+            <template v-slot:title>
+              $ {{outPayments}}
+            </template>
+            <template v-slot:subtitle>
+              Gastos
+            </template>
+
+          </GeneralCardMiniComponent>
+        </v-col>
+      </v-row>
+    </v-card-text>
+    <v-card-text>
+      <generalGraphComponent type="axis-mixed" :labels="labels" :data="[
+        {values: [0, 0, 0, 0, 0, outPayments],chartType: 'bar', name:'Gastos' },
+        { values: [0, 0, 0, 0, 0, inPayments],chartType: 'bar', name:'Ingresos' }
+    ]" :colors="['#ff6240','#4cc275']"></generalGraphComponent>
+
+    </v-card-text>
+  </generalCardComponent>
+</template>
+
+<script>
+    import _ from 'lodash';
+    import moment from 'moment'
+  export default {
+    data() {
+      return {
+        labels: []
+
+      }
+    },
+    created() {
+      this.$store.dispatch('accounting/findAll')
+        this.setMonths()
+    },
+    methods: {
+      setMonths() {
+        for (let i = 0; i < 6; i++) {
+          this.labels.push(moment().locale('es').subtract(6 - i, 'months').format('MMMM'));
+        }
+      }
+
+    },
+    computed:{
+      payments() {
+        return this.$store.getters['accounting/getList'] || {}
+      },
+      inPayments() {
+        if(!this.payments.data) return
+        let inPayments =this.payments.data.filter((p)=>{
+          return p.attributes.type == 'expenses'
+        }).reduce((acc, curr)=>{
+          return acc + curr.attributes.amount
+        },0)
+        console.log(inPayments)
+        return inPayments
+      },
+      outPayments() {
+        if(!this.payments.data) return
+        let inPayments =this.payments.data.filter((p)=>{
+          return p.attributes.type == 'suppliers'
+        }).reduce((acc, curr)=>{
+          return acc + curr.attributes.amount
+        },0)
+        console.log(inPayments)
+        return inPayments
+      },
+
+    }
+  }
+
+</script>
+
+<style>
+
+</style>
