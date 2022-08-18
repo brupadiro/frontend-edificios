@@ -32,7 +32,7 @@
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions style="height:55" v-show="file.attributes.url">
-              <v-btn block depressed :href="`https://api.zoodevelopment.net`+file.url" target="_blank"
+              <v-btn block depressed :href="`https://king-prawn-app-o25h2.ondigitalocean.app`+file.url" target="_blank"
                 class="rounded-lg" color="success darken-1">
                 VER ARCHIVO&nbsp;
                 <v-icon>mdi-magnify</v-icon>
@@ -65,7 +65,7 @@
     methods: {
       getUrl(file) {
         if (file.attributes.url) {
-          return `https://api.zoodevelopment.net${file.attributes.url}`
+          return `https://king-prawn-app-o25h2.ondigitalocean.app${file.attributes.url}`
         } else {
           return URL.createObjectURL(file.attributes);
         }
