@@ -21,6 +21,17 @@
         <v-col class="col-12" v-if="apartment.in_rent">
           <rentalsFormComponent></rentalsFormComponent>
         </v-col>
+        <v-col class="col-12">
+          <GeneralCardComponent>
+            <v-card-title class="text-subtitle-1 font-weight-regular">
+              ARCHIVOS ADJUNTOS
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+              <generalUploadFilesComponent v-model="files"></generalUploadFilesComponent>
+            </v-card-text>
+          </GeneralCardComponent>
+        </v-col>
       </v-row>
     </v-form>
     <v-row>
@@ -28,7 +39,8 @@
       </v-col>
     </v-row>
     <generalBottomBarComponent>
-      <v-btn  text-color="white" class="yellow lighten-1 black--text rounded-lg font-weight-regular" @click="updateApartment()">
+      <v-btn text-color="white" class="yellow lighten-1 black--text rounded-lg font-weight-regular"
+        @click="updateApartment()">
         Guardar apartamento&nbsp;<v-icon>mdi-home</v-icon>
       </v-btn>
     </generalBottomBarComponent>
@@ -37,7 +49,9 @@
 
 <script>
   var qs = require('qs');
-
+  import {
+    mapFields
+  } from 'vuex-map-fields';
   export default {
     data() {
       return {
@@ -46,7 +60,7 @@
         },
         rental: {
           habitant: {}
-        }
+        },
       }
     },
     mounted() {
@@ -54,7 +68,7 @@
     },
     methods: {
       async getApartment() {
-      await this.$store.dispatch('apartments/find', {
+        await this.$store.dispatch('apartments/find', {
           id: this.$route.params.id
         })
         await this.$store.dispatch('habitants/find', {
@@ -74,16 +88,35 @@
       },
       async updateApartment() {
         if (!this.$refs.form.validate()) return
-        await this.$store.dispatch('apartments/update')
+        await this.$store.dispatch('apartments/update', this.files)
         //create owner
         await this.$store.dispatch('owners/update')
-        if (this.apartment.in_rent) {
-          await this.$store.dispatch('rentals/update')
-        }
+        this.upload()
         this.$router.go(-1)
-      }
+      },
+      async upload() {
+        if (this.files.length == 0) return
+        var form = new FormData()
+        form.append('ref', 'api::apartament.apartament')
+        form.append('refId', this.apartment.id)
+        form.append('field', 'files')
+        this.files.data.forEach((file) => {
+          if (file.attributes instanceof File) {
+            form.append(`files`, file.attributes, file.attributes.name);
+          }
+        });
+        await this.$axios.post('/upload', form, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+      },
+
     },
     computed: {
+      ...mapFields('apartments', [
+        'files',
+      ]),
       apartment() {
         return this.$store.getters['apartments/get']
       }

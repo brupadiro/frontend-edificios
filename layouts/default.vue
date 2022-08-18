@@ -1,6 +1,7 @@
 <template>
   <v-app dark>
     <v-navigation-drawer :value="!mobileMenu" color="primary" app class="navigation-drawer">
+      <v-img src="/logo.png" width="100%" height="130" contain position="center center"></v-img>
       <v-list>
         <template v-for="(item, i) in items">
           <v-list-group v-if="item.subItems" :key="i" append-icon="" no-action>
@@ -60,15 +61,15 @@
             </v-btn>
           </template>
           <v-list color="primary">
-              <v-list-item  v-for="(subItem,i) in item.subItems" :key="i">
-                <v-list-item-content>
-                  <v-btn  color="yellow" outlined block height="50" class="btn-navigation"
-                    active-class="btn-navigation-active primary white--text" :to="subItem.to" exact>
-                    <v-icon>{{ subItem.icon }}</v-icon>
-                    <span>{{subItem.title}}</span>
-                  </v-btn>
-                </v-list-item-content>
-              </v-list-item>
+            <v-list-item v-for="(subItem,i) in item.subItems" :key="i">
+              <v-list-item-content>
+                <v-btn color="yellow" outlined block height="50" class="btn-navigation"
+                  active-class="btn-navigation-active primary white--text" :to="subItem.to" exact>
+                  <v-icon>{{ subItem.icon }}</v-icon>
+                  <span>{{subItem.title}}</span>
+                </v-btn>
+              </v-list-item-content>
+            </v-list-item>
           </v-list>
         </v-bottom-sheet>
         <template v-else>
@@ -100,7 +101,7 @@
     name: 'DefaultLayout',
     data() {
       return {
-        mobileMenu:this.$vuetify.breakpoint.name == 'xs',
+        mobileMenu: this.$vuetify.breakpoint.name == 'xs',
         clipped: false,
         drawer: false,
         fixed: false,
@@ -137,6 +138,11 @@
             icon: 'mdi-account-multiple',
             title: 'Staff',
             to: '/staff'
+          },
+          {
+            icon: 'mdi-file',
+            title: 'Biblioteca',
+            to: '/files'
           },
 
           {
@@ -191,7 +197,13 @@
                 icon: 'mdi-cog',
                 title: 'Configuracion',
                 to: '/settings'
-              }
+              },
+              {
+                icon: 'mdi-file',
+                title: 'Biblioteca',
+                to: '/files'
+              },
+
             ]
           },
         ],

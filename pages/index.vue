@@ -18,7 +18,7 @@
         <cardsHabitantesComponent></cardsHabitantesComponent>
       </v-col>
       <v-col class="col-md-7 col-12">
-        <cardsPropertiesComponent title @changePage="search.pagination.page = $event" :data="data">
+        <cardsPropertiesComponent elevation="6" title @changePage="search.pagination.page = $event" :data="data">
         </cardsPropertiesComponent>
       </v-col>
       <v-col class="col-md-5">
@@ -36,7 +36,7 @@
     },
     methods: {
       getProperties() {
-        this.$store.dispatch('apartments/findAll', this.search)
+        this.$store.dispatch('apartments/findAll', {populate:'*'})
       },
     },
     computed: {

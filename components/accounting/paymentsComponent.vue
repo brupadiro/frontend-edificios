@@ -1,99 +1,144 @@
 <template>
-  <v-dialog persistent :value="value" width="700">
-    <GeneralCardComponent width="100%">
-      <GeneralCardTitleComponent class="primary white--text">
-        Nueva factura
-        <v-spacer></v-spacer>
-        <generalCloseButtonComponent @input="$emit('input',$event)"></generalCloseButtonComponent>
-      </GeneralCardTitleComponent>
-      <v-divider></v-divider>
-      <v-card-text>
-        <v-form ref="form">
-          <FormsFieldsSelectComponent v-model="type" label="Tipo" :items="[
-                        {text:'Cobro de expensas',value:'expenses',},
-                        {text:'Cobro de renta',value:'rental'},
-                        {text:'Pago a proveedores',value:'suppliers'}
-                        ]">
-          </FormsFieldsSelectComponent>
-          <FormsFieldsSelectComponent v-model="status" label="Estado" :items="[
-                {text:'Pagado',value:'payed',},
-                {text:'Pendiente',value:'pending'}
-            ]">
-          </FormsFieldsSelectComponent>
-          <v-row>
-            <v-col class="col-md-3">
-              <formsFieldsSelectComponent :items="['USD','UYU']" value="USD" v-model="currency" label="Moneda">
-              </formsFieldsSelectComponent>
-            </v-col>
-            <v-col class="col-md-9">
-              <formsFieldsTextComponent prepend-inner-icon="mdi-currency-usd" type="number" v-model="amount"
-                label="Costo">
-              </formsFieldsTextComponent>
-            </v-col>
-            <v-col class="col-md-6">
-              <formsFieldsTextComponent prepend-inner-icon="mdi-account" type="text" v-model="name"
-                label="Nombre/Razon social">
-              </formsFieldsTextComponent>
-            </v-col>
-            <v-col class="col-md-6">
-              <formsFieldsTextComponent prepend-inner-icon="mdi-number" type="number" v-model="doc"
-                label="CI/RUT">
-              </formsFieldsTextComponent>
-            </v-col>
-            <v-col class="col-md-12">
-              <formsFieldsTextComponent prepend-inner-icon="mdi-map"  v-model="address"
-                label="Direccion">
-              </formsFieldsTextComponent>
-            </v-col>
-            <v-col class="col-md-12">
-              <formsFieldsTextComponent v-model="comments"
-                label="Comentarios">
-              </formsFieldsTextComponent>
-            </v-col>
-          </v-row>
-        </v-form>
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="yellow lighten-1 black--text rounded-lg font-weight-regular" class="rounded-lg" @click="addPayment()">
-        Agregar factura&nbsp;&nbsp;<v-icon>mdi-content-save</v-icon>
-        </v-btn>
-      </v-card-actions>
-    </GeneralCardComponent>
-  </v-dialog>
+  <GeneralCardComponent v-bind="$attrs">
+    <generalCardTitleComponent v-if="title" class="primary white--text">
+      Facturas
+    </generalCardTitleComponent>
+    <v-card-text>
+      <v-data-table hide-default-footer :items="data.data" :headers="headers">
+        <template v-slot:item.attributes.createdAt="{ item }">
+          {{ item.createdAt | formatDate }}
+        </template>
+        <template v-slot:item.attributes.type="{ item }">
+          {{ item.attributes.type | formatType }}
+        </template>
+        <template v-slot:item.change_status="{ item }">
+          <v-btn color="info" v-show="item.attributes.status == 'pending'" @click="changeStatus(item.id)">
+            VALIDAR PAGO
+          </v-btn>
+          <v-chip color="success darken-1 font-weight-regular" label block v-show="item.attributes.status == 'payed'">
+            PAGA
+          </v-chip>
+        </template>
+        <template v-slot:item.invoice="{ item }">
+          <v-btn color="yellow" @click="generateInvoice(item)">
+            GENERAR FACTURA
+          </v-btn>
+        </template>
+
+      </v-data-table>
+    </v-card-text>
+  </GeneralCardComponent>
 
 </template>
 
 <script>
-  import {
-    mapFields
-  } from 'vuex-map-fields';
-
+  import dateFunctions from '~/plugins/mixins/dateFunctions.js'
+  import moment from 'moment'
   export default {
+    mixins: [dateFunctions],
     props: {
-      value: {
-        type: Boolean,
-        default: false
-      }
+        title: {
+          type: Boolean,
+          default: false
+        },
+        data: {
+          type: Object,
+          default: () => {
+            return {
+              data: [],
+              meta: {
+                current_page: 1,
+                from: 1,
+                last_page: 1,
+                path: '',
+                per_page: 10,
+                to: 1,
+                total: 0
+              }
+            }
+          }
+      },
     },
-    methods:{
-      addPayment() {
-        this.$store.dispatch('accounting/add')
-        this.$store.dispatch('accounting/findAll')
-        this.$emit('input', false)
+      data() {
+        return {
+          paymentsModal: false,
+          headers: [{
+            text: 'Fecha',
+            value: 'createdAt'
+          }, {
+            text: 'Tipo',
+            value: 'attributes.type'
+          }, {
+            text: 'Nombre / Razon social',
+            value: 'attributes.name'
+          }, {
+            text: 'Moneda',
+            value: 'attributes.currency'
+          }, {
+            text: 'Monto',
+            value: 'attributes.amount'
+          }, {
+            text: 'Cambiar estado',
+            value: 'change_status'
+          }, {
+            text: 'Generar factura',
+            value: 'invoice'
+          }]
+        }
+      },
+      methods: {
+        changeStatus(id) {
+          this.$store.dispatch('accounting/changeStatus', id)
+          this.$store.dispatch('accounting/findAll')
+        },
+        generateInvoice(item) {
+
+          let data = {
+            sender: {
+              "company": "Forest Tower",
+              "address": "23X8+6MJ, Av Chiverta, 20100 Punta del Este",
+              "zip": "20100",
+              "city": "Punta del este",
+              "country": "Uruguay"
+            },
+            client: {
+              "company": item.attributes.name,
+              "address": item.attributes.address,
+              "zip": "20100",
+              "city": "Punta del Este",
+              "country": "Uruguay"
+            },
+            information: {
+              number: item.id,
+              "date": moment(item.attributes.createdAt).format('DD/MM/YYYY'),
+            },
+            "settings": {
+              "currency": item.attributes
+                .currency // See documentation 'Locales and Currency' for more info. Leave empty for no currency.
+            },
+            products: [{
+              quantity: "1",
+              description: item.attributes.type,
+              "tax-rate": 22,
+              price: item.attributes.amount,
+            }, ],
+            translate: {
+              "invoice": "FACTURA", // Default to 'INVOICE'
+              "number": "NUMERO", // Defaults to 'Number'
+              "date": "FECHA", // Default to 'Date'
+              // "due-date": "Verloopdatum", // Defaults to 'Due Date'
+              // "subtotal": "Subtotaal", // Defaults to 'Subtotal'
+              "products": "ITEMS", // Defaults to 'Products'
+              "quantity": "CANTIDAD", // Default to 'Quantity'
+              "price": "PRECIO", // Defaults to 'Price'
+              "product-total": "Total", // Defaults to 'Total'
+              "total": "Total" // Defaults to 'Total'
+            },
+          }
+          this.$store.dispatch('accounting/generateInvoice', data)
+        }
       }
-    },
-    computed: {
-      ...mapFields('accounting', [
-        'payment.name',
-        'payment.type',
-        'payment.amount',
-        'payment.status',
-        'payment.doc',
-        'payment.currency',
-      ]),
-    }
+
   }
 
 </script>

@@ -26,13 +26,26 @@
 
           </GeneralCardMiniComponent>
         </v-col>
+        <v-col class="col-md-12 col-12">
+          <GeneralCardMiniComponent color="orange">
+            <template v-slot:title>
+              $ {{pendingPayments}}
+            </template>
+            <template v-slot:subtitle>
+              Pendientes de cobro
+            </template>
+
+          </GeneralCardMiniComponent>
+        </v-col>
+
       </v-row>
     </v-card-text>
     <v-card-text>
       <generalGraphComponent type="axis-mixed" :labels="labels" :data="[
         {values: [0, 0, 0, 0, 0, outPayments],chartType: 'bar', name:'Gastos' },
-        { values: [0, 0, 0, 0, 0, inPayments],chartType: 'bar', name:'Ingresos' }
-    ]" :colors="['#ff6240','#4cc275']"></generalGraphComponent>
+        { values: [0, 0, 0, 0, 0, inPayments],chartType: 'bar', name:'Ingresos' },
+        { values: [0, 0, 0, 0, 0, pendingPayments],chartType: 'bar', name:'Pendientes' }
+    ]" :colors="['#333350','#ff6240','#ffc446']"></generalGraphComponent>
 
     </v-card-text>
   </generalCardComponent>
@@ -67,7 +80,7 @@
       inPayments() {
         if(!this.payments.data) return
         let inPayments =this.payments.data.filter((p)=>{
-          return p.attributes.type == 'expenses'
+          return p.attributes.type == 'expenses'  && p.attributes.status == 'payed'
         }).reduce((acc, curr)=>{
           return acc + curr.attributes.amount
         },0)
@@ -78,6 +91,16 @@
         if(!this.payments.data) return
         let inPayments =this.payments.data.filter((p)=>{
           return p.attributes.type == 'suppliers'
+        }).reduce((acc, curr)=>{
+          return acc + curr.attributes.amount
+        },0)
+        console.log(inPayments)
+        return inPayments
+      },
+      pendingPayments() {
+        if(!this.payments.data) return
+        let inPayments =this.payments.data.filter((p)=>{
+          return p.attributes.type != 'suppliers' && p.attributes.status == 'pending'
         }).reduce((acc, curr)=>{
           return acc + curr.attributes.amount
         },0)

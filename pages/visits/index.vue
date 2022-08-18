@@ -7,7 +7,7 @@
         </HeadersGeneralComponent>
         <v-row>
             <v-col class="col-12">
-                <PropertiesVisitsComponent :items="items" @update="getVisits()"></PropertiesVisitsComponent>
+                <PropertiesVisitsComponent elevation="6" :items="items" @update="getVisits()"></PropertiesVisitsComponent>
             </v-col>
         </v-row>
     </v-container>

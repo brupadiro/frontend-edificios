@@ -1,11 +1,14 @@
-import { getField, updateField } from 'vuex-map-fields';
+import {
+  getField,
+  updateField
+} from 'vuex-map-fields';
 var qs = require('qs');
 
 export const state = () => ({
   apartments: {
     data: [],
-    meta:{
-      pagination:{}
+    meta: {
+      pagination: {}
     }
   },
   apartment: {
@@ -18,7 +21,11 @@ export const state = () => ({
     expenses_payment_method: 'Card',
     expenses_cost: 0,
     in_rent: false,
+    files: {}
   },
+  files:{
+    data:[]
+  }
 })
 
 export const getters = {
@@ -42,7 +49,9 @@ export const actions = {
     } = await this.$axios.get('/apartaments', {
       params: params,
       paramsSerializer: params => {
-        return qs.stringify(params,{arrayFormat: 'brackets'})
+        return qs.stringify(params, {
+          arrayFormat: 'brackets'
+        })
       }
     })
     commit('setList', data)
@@ -52,15 +61,22 @@ export const actions = {
   }, query) {
     const {
       data: data
-    } = await this.$axios.get(`/apartaments/`,{
-      params:{
-        filters:query
+    } = await this.$axios.get(`/apartaments/`, {
+      params: {
+        filters: query,
+        populate: '*'
       },
       paramsSerializer: params => {
-        return qs.stringify(params,{arrayFormat: 'brackets'})
+        return qs.stringify(params, {
+          arrayFormat: 'brackets'
+        })
       }
     })
-    commit('set',  {...data.data[0].attributes, id: data.data[0].id})
+    commit('set', {
+      ...data.data[0].attributes,
+      id: data.data[0].id
+    })
+    commit('setFiles',data.data[0].attributes.files)
   },
   async create({
     state,
@@ -68,17 +84,47 @@ export const actions = {
   }) {
     const {
       data: data
-    } = await this.$axios.post('/apartaments', {data:state.apartment})
-    commit('set', {...data.data.attributes, id: data.data.id})
+    } = await this.$axios.post('/apartaments', {
+      data: state.apartment
+    })
+    commit('set', {
+      ...data.data.attributes,
+      id: data.data.id
+    })
   },
   async update({
     commit,
-    state
-  }) {
+    state,
+    dispatch
+  }, files = []) {
+
+
+    var formatedData = function(apartment) {
+      var data = JSON.parse(JSON.stringify(apartment))
+      if (data.amenities.data != null) {
+        data.amenities = data.amenities.data.map(amenity => amenity.id)
+      } else {
+        data.amenities = []
+      }
+      if (data.files.data) {
+        data.files = data.files.data.map(file => file.id)
+      } else {
+        data.files = []
+      }
+      if (data.invoices.data) {
+        data.invoices = data.invoices.data.map(invoice => invoice.id)
+      } else {
+        data.invoices = []
+      }
+      return data
+    }
     const {
       data: data
-    } = await this.$axios.put(`/apartaments/${state.apartment.id}`,  {data:state.apartment})
-    commit('set',  {...data.data.attributes, id: data.data.id})
+    } = await this.$axios.put(`/apartaments/${state.apartment.id}/?populate=*`,{data:formatedData(state.apartment)})
+    commit('set', {
+      ...data.data.attributes,
+      id: data.data.id
+    })
   },
   async delete({
     dispatch,
@@ -87,8 +133,10 @@ export const actions = {
     await this.$axios.delete(`/apartaments/${id}`)
     dispatch('findAll')
   },
-  clear({commit}){
-    commit('set',{
+  clear({
+    commit
+  }) {
+    commit('set', {
       number: 0,
       rooms: 0,
       bathrooms: 0,
@@ -99,8 +147,23 @@ export const actions = {
       expenses_cost: 0,
       in_rent: false,
     })
-  }
-
+  },
+  async addInvoices({
+    commit
+  }, params) {
+    const {
+      data: data
+    } = await this.$axios.get(`/apartaments/${params.id}/?populate=*`)
+    console.log()
+    this.$axios.put('/apartaments/' + params.id, {
+      data: {
+        invoices: [
+          ...data.data.attributes.invoices.data,
+          params.invoice
+        ]
+      }
+    })
+  },
 
 }
 export const mutations = {
@@ -108,10 +171,12 @@ export const mutations = {
   set(state, apartment) {
     state.apartment = apartment
   },
-  set(state,data) {
-    state.apartment = data
-  },
   setList(state, data) {
     state.apartments = data
+  },
+  setFiles(state, data) {
+    console.log(data)
+    state.files = data
   }
+
 }

@@ -1,13 +1,14 @@
 <template>
   <div>
-    <generalCardComponent class="elevation-6">
+    <generalCardComponent v-bind="$attrs">
       <generalCardTitleComponent class="primary white--text" v-if="title">
         Visitas
         <v-spacer>
         </v-spacer>
       </generalCardTitleComponent>
       <v-card-subtitle class="primary">
-        <v-btn color="yellow lighten-1 black--text rounded-lg font-weight-regular" :disabled="modalVisits" @click="modalVisits = true">
+        <v-btn color="yellow lighten-1 black--text rounded-lg font-weight-regular" large :disabled="modalVisits"
+          @click="modalVisits = true">
           <v-icon>mdi-plus</v-icon>&nbsp;AGREGAR VISITA
         </v-btn>
       </v-card-subtitle>
@@ -18,16 +19,6 @@
               REGISTRO DE VISITANTES
             </generalCardTitleComponent>
             <v-divider></v-divider>
-            <v-card-title style="background:#333350" class="fill-width">
-              <v-tabs v-model="visit.status" hide-slider slider-color="primary" active-class="active-tab" grow>
-                <v-tab ripple value="IN">
-                  <span class="font-weight-black white--text">ENTRADA</span>
-                </v-tab>
-                <v-tab ripple value="OUT">
-                  <span class="font-weight-black white--text">SALIDA</span>
-                </v-tab>
-              </v-tabs>
-            </v-card-title>
             <v-card-text class="py-6">
               <v-form ref="form">
                 <v-row>
@@ -42,8 +33,8 @@
                   <v-col class="col-12 col-sm-6">
                     <v-row>
                       <v-col class="col-4">
-                        <FormsFieldsSelectComponent :items="['CI', 'PASAPORTE']"
-                          v-model="visit.doc_type" item-text="name" item-value="id" label=".">
+                        <FormsFieldsSelectComponent :items="['CI', 'PASAPORTE']" v-model="visit.doc_type"
+                          item-text="name" item-value="id" label=".">
                         </FormsFieldsSelectComponent>
                       </v-col>
                       <v-col class="col-8">
@@ -51,9 +42,6 @@
                           prepend-inner-icon="mdi-file-document" label="DOCUMENTO"></formsFieldsTextComponent>
                       </v-col>
                     </v-row>
-                    <v-input>
-
-                    </v-input>
                   </v-col>
                   <v-col class="col-12 col-sm-6">
                     <formsFieldsTextComponent v-model="visit.phone" type="number" prepend-inner-icon="mdi-phone"
@@ -71,8 +59,8 @@
                   </v-btn>
                 </v-col>
                 <v-col class="col-12 col-sm-6">
-                  <v-btn color="success darken-1" x-large block @click="addVisit()">
-                    {{ visit.status == 0 ? 'CHECK IN' : 'CHECK OUT' }}
+                  <v-btn color="yellow" class="white--text font-weight-regular" x-large block @click="addVisit()">
+                    CHECK IN
                   </v-btn>
                 </v-col>
               </v-row>
@@ -95,23 +83,25 @@
                 <v-icon>mdi-note-text</v-icon>&nbsp;
                 <b class="black--text">{{item.attributes.doc_type}}: {{item.attributes.doc | capitalize}}</b>
                 <template v-if="item.attributes.phone">
-                &nbsp;-&nbsp;
-                <v-icon>mdi-phone</v-icon>&nbsp;
-                <b class="black--text">CI: {{item.attributes.phone | capitalize}}</b>
-                
+                  &nbsp;-&nbsp;
+                  <v-icon>mdi-phone</v-icon>&nbsp;
+                  <b class="black--text">CI: {{item.attributes.phone | capitalize}}</b>
                 </template>
-            </v-list-item-subtitle>
-
+              </v-list-item-subtitle>
               <v-list-item-subtitle>
-                <v-icon>mdi-clock</v-icon>&nbsp;
+                <v-icon>mdi-calendar</v-icon>&nbsp;
                 {{ item.attributes.createdAt | formatDate }}
               </v-list-item-subtitle>
+              <v-list-item-subtitle>
+                <v-icon>mdi-clock</v-icon>&nbsp;
+                Hora de salida: {{ item.attributes.out_hour | formatHour }}
+              </v-list-item-subtitle>
             </v-list-item-content>
-            <v-list-item-avatar size="80" color="green">
-              <span class="white--text text-h6 font-weight-bold">
-                {{ item.attributes.type | capitalize }}
-              </span>
-            </v-list-item-avatar>
+            <v-list-item-actions>
+              <v-btn v-show="!item.attributes.out_hour" color="yellow font-weight-regular rounded-lg" @click="setCheckout(item.id)">
+                CHECK OUT
+              </v-btn>
+            </v-list-item-actions>
           </v-list-item>
         </v-list>
       </v-card-text>
@@ -125,6 +115,7 @@
 <script>
   import dateFunctions from '~/plugins/mixins/dateFunctions.js';
   import textFunctions from '~/plugins/mixins/dateFunctions.js';
+  import moment from 'moment'
   var qs = require('qs');
   export default {
 
@@ -146,6 +137,7 @@
           doc_type: 'CI',
         },
         modalVisits: false,
+        hourMenu: false,
         headers: [{
           text: 'Fecha',
           value: 'attributes.createdAt'
@@ -172,21 +164,34 @@
     },
     methods: {
       getVisits() {
-        this.$axios.get('/visits',{
-          params: {
-            pagination:{
-              page:this.page
+        this.$axios.get('/visits', {
+            params: {
+              pagination: {
+                page: this.page
+              },
+              filters: {
+                apartment: this.apartment.id,
+              }
             },
-            filters:{
-              apartment: this.apartment.id,
+            paramsSerializer: params => {
+              return qs.stringify(params, {
+                arrayFormat: 'brackets'
+              })
             }
-          },
-          paramsSerializer: params => {
-            return qs.stringify(params,{arrayFormat: 'brackets'})
-          }
-        })
+          })
           .then((data) => {
             this.items = data.data
+          })
+      },
+      setCheckout(id) {
+        let currentHour = moment().format('HH:mm:00.000')
+        this.$axios.put(`/visits/${id}`, {
+            data: {
+              out_hour: currentHour
+            }
+          })
+          .then((data) => {
+            this.getVisits()
           })
       },
       addVisit() {

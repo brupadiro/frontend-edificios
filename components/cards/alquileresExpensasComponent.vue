@@ -1,59 +1,131 @@
 <template>
-  <generalCardComponent fillHeight elevation="6">
-    <GeneralCardTitleComponent class="primary white--text">
-      Expensas
-    </GeneralCardTitleComponent>
-    <v-card-text>
-      <v-row>
-        <v-col class="col-12">
-          <h3 class="black--text font-weight-regular">Monto total</h3>
-          <h3 class="black--text font-weight-black">$ 5500</h3>
-        </v-col>
-        <v-col class="col-12">
-          <v-progress-linear color="deep-purple accent-4" value="50" rounded height="12"></v-progress-linear>
-        </v-col>
-        <v-col class="col-12">
-          <v-card outlined class="rounded-xl" color="black">
-            <v-card-text>
-              <v-row>
-                <v-col class="col-12">
-                  <h4 class="font-weight-light white--text">Habitantes con deudas pendientes</h4>
-                </v-col>
-                <v-col class="col-12 col-md-6">
-                  <v-row no-gutters>
-                    <v-avatar size="60" tile color="yellow" class="rounded-lg">
-                      <img src="/icons/person.png">
-                    </v-avatar>
-                    <v-avatar size="60" tile color="yellow" class="rounded-lg ml-n3">
-                      <img src="/icons/person.png">
-                    </v-avatar>
-                    <v-avatar size="60" tile class="rounded-lg ml-n3">
-                      <v-img width="60" height="60" contain src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
-                        <div class="d-flex fill-width fill-height justify-center align-center"
-                          style="background:#f44336b0">
-                          <h2 class="white--text">+12</h2>
-                        </div>
-                      </v-img>
-                    </v-avatar>
-                  </v-row>
-                </v-col>
-                <v-col class="col-12 col-md-6">
-                  <v-btn height="60" color="yellow lighten-1" large block class="font-weight-regular rounded-lg">VER HABITANTES</v-btn>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-        </v-col> 
-      </v-row>
+  <div>
 
-    </v-card-text>
-  </generalCardComponent>
+    <generalCardComponent fillHeight elevation="6">
+      <GeneralCardTitleComponent class="primary white--text">
+        Expensas
+      </GeneralCardTitleComponent>
+      <v-card-text>
+        <v-row>
+          <v-col class="col-12">
+            <h3 class="black--text font-weight-regular">Monto total</h3>
+            <h3 class="black--text font-weight-black">$ {{totalAmount}}</h3>
+          </v-col>
+          <v-col class="col-12">
+            <v-progress-linear  color="yellow" :value="Math.ceil((totalAmount-pendingAmount)*100/totalAmount)" rounded
+              class="rounded-xl elevation-2" height="30">
+              <template v-slot:default="{ value }">
+                <strong>{{ Math.ceil(value) }}%</strong>
+              </template>
+            </v-progress-linear>
+          </v-col>
+          <v-col class="col-12">
+            <v-card class="rounded-xl" color="primary">
+              <v-card-text>
+                <v-row>
+                  <v-col class="col-12">
+                    <h4 class="font-weight-light white--text">Apartamentos con deudas pendientes</h4>
+                  </v-col>
+                  <v-col class="col-12 col-md-6">
+                    <v-row no-gutters>
+                      <v-avatar size="60" tile color="yellow" class="rounded-lg">
+                        <img src="/icons/person.png">
+                      </v-avatar>
+                      <v-avatar size="60" tile color="yellow" class="rounded-lg ml-n3">
+                        <img src="/icons/person.png">
+                      </v-avatar>
+                      <v-avatar size="60" tile class="rounded-lg ml-n3">
+                        <v-img width="60" height="60" contain src="https://cdn.vuetifyjs.com/images/lists/1.jpg">
+                          <div class="d-flex fill-width fill-height justify-center align-center"
+                            style="background:#f44336b0">
+                            <h2 class="white--text">+12</h2>
+                          </div>
+                        </v-img>
+                      </v-avatar>
+                    </v-row>
+                  </v-col>
+                  <v-col class="col-12 col-md-6">
+                    <v-btn height="60" color="yellow lighten-1" large block class="font-weight-regular rounded-lg"
+                      @click="modalPendingPayments = !modalPendingPayments">VER</v-btn>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </generalCardComponent>
+    <v-dialog v-model="modalPendingPayments" persistent>
+      <cardsPropertiesComponent title @changePage="search.pagination.page = $event" hiddenheader
+        :data="apartmentsWithPendingPayments">
+        <template v-slot:actions>
+          <v-btn icon color="white" @click="modalPendingPayments = !modalPendingPayments">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </template>
+      </cardsPropertiesComponent>
+    </v-dialog>
+
+  </div>
 
 </template>
 
 <script>
+  var qs = require('qs');
   export default {
+    data() {
+      return {
+        modalPendingPayments: false,
+        apartmentsWithPendingPayments: {
+          data: [],
+          meta: {}
+        },
+        search: {
+          pagination: {
+            page: 1,
+          }
+        }
+      }
+    },
+    created() {
+      this.getPendingPayments()
+    },
+    methods: {
+      getPendingPayments() {
+        this.$axios.get('apartaments/', {
+          params: {
+            populate: '*',
+          },
+          paramsSerializer: params => {
+            return qs.stringify(params, {
+              arrayFormat: 'brackets'
+            })
+          }
+        }).then((data) => {
+          this.apartmentsWithPendingPayments = data.data
+        })
+      }
+    },
+    computed: {
+      pendingAmount() {
+        return this.apartmentsWithPendingPayments.data.reduce((total, apartment) => {
+          return total + apartment.attributes.invoices.data.filter((invoice) => invoice.attributes.status ==
+            'pending').reduce((total, invoice) => {
+            return total + invoice.attributes.amount
+          }, 0)
+        }, 0)
 
+      },
+      totalAmount() {
+        return this.apartmentsWithPendingPayments.data.reduce((total, apartment) => {
+          return total + apartment.attributes.invoices.data.reduce((total, invoice) => {
+            return total + invoice.attributes.amount
+          }, 0)
+        }, 0)
+
+      }
+
+    }
   }
 
 </script>

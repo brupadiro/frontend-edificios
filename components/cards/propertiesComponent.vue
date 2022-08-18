@@ -1,13 +1,15 @@
 <template>
-  <generalCardComponent fillHeight class="d-flex justify-space-between flex-column" elevation="6">
-    <v-card-title class="font-weight-bold" v-show="title">
+  <generalCardComponent fillHeight class="d-flex justify-space-between flex-column" v-bind="$attrs">
+    <generalCardTitleComponent class="white--text primary" v-show="title">
       Propiedades
-    </v-card-title>
+      <v-spacer></v-spacer>
+      <slot name="actions"></slot>
+    </generalCardTitleComponent>
     <v-card-text class="py-6">
-      <v-row no-gutters class="justify-left align-center">
+      <v-row no-gutters class="justify-left align-center" v-show="!hiddenheader">
         <v-col class="col-xl-3 col-lg-4 col-md-5 mb-3 mb-sm-0 d-flex justify-center d-sm-inline">
-          <v-progress-circular size="200" width="17" color="#f34863" value="50" rotate="270">
-            <v-progress-circular size="160" width="17" color="#ffa927" value="50" rotate="270"
+          <v-progress-circular size="200" width="17" color="#f34863" :value="50" rotate="270">
+            <v-progress-circular size="160" width="17" color="#ffa927" :value="50" rotate="270"
               class="progress-circular text-h5 font-weight-black">
               <span class="black--text">74</span>
             </v-progress-circular>
@@ -18,10 +20,10 @@
             <v-col class="col-md-6">
               <generalCardMiniComponent>
                 <template v-slot:title>
-                  49
+                  {{data.meta.pagination.total}}
                 </template>
                 <template v-slot:subtitle>
-                  Propietarios
+                  Total
                 </template>
 
               </generalCardMiniComponent>
@@ -68,7 +70,6 @@
     <v-card-actions class="d-flex justify-center" v-if="data.meta.pagination.pageCount>1">
       <v-pagination circle @input="$emit('changePage',$event)" v-model="page" :length="data.meta.pagination.pageCount"></v-pagination>
     </v-card-actions>
-
   </generalCardComponent>
 
 </template>
@@ -79,6 +80,10 @@
   {
     props: {
       expanded: {
+        type: Boolean,
+        default: false
+      },
+      hiddenheader:{
         type: Boolean,
         default: false
       },

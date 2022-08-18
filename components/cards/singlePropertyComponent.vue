@@ -18,6 +18,9 @@
             <v-tab ripple :value="2">
               <span class="font-weight-black white--text">VISITAS</span>
             </v-tab>
+            <v-tab ripple :value="3" v-show="data.attributes.invoices.data.length>0">
+              <span class="font-weight-black white--text">FACTURAS PENDIENTES</span>
+            </v-tab>
           </v-tabs>
         </v-card-title>
         <v-card-text>
@@ -83,7 +86,7 @@
                           <v-row no-gutters>
                             <v-chip class="margin-right-5"
                               color="grey lighten-1 black--text mr-2 mb-2 font-weight-regular" label dark
-                              v-for="amenity in data.attributes.amenities" :key="amenity.id">
+                              v-for="amenity in data.attributes.amenities.data" :key="amenity.id">
                               {{amenity.attributes.name}}
                             </v-chip>
                           </v-row>
@@ -113,7 +116,7 @@
                           </v-avatar>
                           &nbsp;
                           <div class="pt-4">
-                            <h6 class="white--text font-weight-regular">Nombre Apellido</h6>
+                            <h6 class="white--text font-weight-regular">{{owner.name}}</h6>
                             <p class="text-subtitle-2 white--text">Tenants</p>
                           </div>
                         </v-card-title>
@@ -133,10 +136,10 @@
                               <p class="white--text">091 234 567</p>
                             </v-col>
                             <v-col class="col-12 col-sm-6">
-                              <p class="white--text">Precio mensual</p>
+                              <p class="white--text">Expensas</p>
                             </v-col>
                             <v-col class="col-12 col-sm-6 text-right">
-                              <p class="white--text text-h6 font-weight-black">$ 500</p>
+                              <p class="white--text text-h6 font-weight-black">{{data.attributes.expenses_currency}} {{data.attributes.expenses_cost}}</p>
                             </v-col>
                             <v-col class="col-12">
                               <v-btn color="yellow lighten-1 black--text rounded-lg font-weight-regular" block
@@ -153,8 +156,12 @@
               </v-card>
             </v-tab-item>
             <v-tab-item>
-              <propertiesVisitsComponent :apartment="data"></propertiesVisitsComponent>
+              <propertiesVisitsComponent :apartment="data" outlined class="mt-3"></propertiesVisitsComponent>
             </v-tab-item>
+            <v-tab-item>
+              <AccountingPaymentsComponent outlined class="mt-3" :data="data.attributes.invoices"></AccountingPaymentsComponent>
+            </v-tab-item>
+
           </v-tabs-items>
         </v-card-text>
         <v-divider></v-divider>
@@ -175,7 +182,11 @@
         type: Object,
         required: true,
         default: {
-          attributes: {}
+          attributes: {
+            amenities:{
+              data:[]
+            }
+          }
         }
       }
     },
@@ -183,6 +194,19 @@
       return {
         tab: 0,
         singlePropertyModal: false
+      }
+    },
+    created() {
+      this.getOwner()
+    },
+    methods: {
+      getOwner() {
+        this.$store.dispatch('owners/find',{apartment:this.data.id})
+      }
+    },
+    computed:{
+      owner(){
+        return this.$store.getters['owners/get']
       }
     }
   }

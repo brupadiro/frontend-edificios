@@ -30,6 +30,7 @@
       }
     },
     updated() {
+      console.log(this.$refs.input.validate())
       this.isValid = this.$refs.input.validate()
     },
     methods: {

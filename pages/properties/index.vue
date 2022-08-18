@@ -17,7 +17,7 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <cardsPropertiesComponent title @changePage="search.pagination.page = $event" :data="data" expanded></cardsPropertiesComponent>
+            <cardsPropertiesComponent outlined @changePage="search.pagination.page = $event" :data="data" expanded></cardsPropertiesComponent>
           </v-card-text>
           <v-divider></v-divider>
         </generalCardComponent>
@@ -56,6 +56,7 @@
           align: 'center'
         }],
         search: {
+          populate:'*',
           pagination: {
             page: 1
           },

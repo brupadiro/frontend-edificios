@@ -21,14 +21,20 @@
         <v-col class="col-12" v-if="apartment.in_rent">
           <rentalsFormComponent v-model="rental"></rentalsFormComponent>
         </v-col>
+        <v-col class="col-12">
+          <GeneralCardComponent>
+            <v-card-title class="text-subtitle-1 font-weight-regular">
+              ARCHIVOS ADJUNTOS
+            </v-card-title>
+            <v-divider></v-divider>
+              <generalUploadFilesComponent v-model="files"></generalUploadFilesComponent>
+          </GeneralCardComponent>
+        </v-col>
       </v-row>
     </v-form>
-    <v-row>
-      <v-col class="col-12 d-flex">
-      </v-col>
-    </v-row>
     <generalBottomBarComponent app>
-      <v-btn text-color="white" class="yellow lighten-1 black--text rounded-lg font-weight-regular" @click="createApartment()">
+      <v-btn text-color="white" class="yellow lighten-1 black--text rounded-lg font-weight-regular"
+        @click="createApartment()">
         Guardar apartamento&nbsp;<v-icon>mdi-home</v-icon>
       </v-btn>
     </generalBottomBarComponent>
@@ -36,6 +42,10 @@
 </template>
 
 <script>
+  import {
+    mapFields
+  } from 'vuex-map-fields';
+
   export default {
     data() {
       return {
@@ -45,27 +55,50 @@
         rental: {
           habitant: {}
         }
-      }
+      };
     },
     methods: {
       async createApartment() {
-        if (!this.$refs.form.validate()) return
-        await this.$store.dispatch('apartments/create')
+        if (!this.$refs.form.validate())
+          return;
+        await this.$store.dispatch("apartments/create");
         //create owner
-        await this.$store.dispatch('owners/create')
+        await this.$store.dispatch("owners/create");
         if (this.apartment.in_rent) {
-          await this.$store.dispatch('rentals/create')
-          this.$store.dispatch('rentals/clear')
+          await this.$store.dispatch("rentals/create");
+          this.$store.dispatch("rentals/clear");
         }
-        this.$store.dispatch('apartments/clear')
-        this.$store.dispatch('habitants/clear')
-        this.$store.dispatch('owner/clear')
-        this.$router.go(-1)
-      }
+        this.upload()
+        this.$store.dispatch("apartments/clear");
+        this.$store.dispatch("habitants/clear");
+        this.$store.dispatch("owner/clear");
+        this.$router.go(-1);
+      },
+      async upload() {
+        if (this.files.length == 0) return
+        var form = new FormData()
+        form.append('ref', 'api::apartament.apartament')
+        form.append('refId', this.apartment.id)
+        form.append('field', 'files')
+        this.files.data.forEach((file) => {
+          if (file.attributes instanceof File) {
+            form.append(`files`, file.attributes, file.attributes.name);
+          }
+        });
+        await this.$axios.post('/upload', form, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+      },
+
     },
     computed: {
+      ...mapFields('apartments', [
+        'files',
+      ]),
       apartment() {
-        return this.$store.getters['apartments/get']
+        return this.$store.getters["apartments/get"];
       }
     },
   }
