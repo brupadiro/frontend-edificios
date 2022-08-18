@@ -76,7 +76,7 @@
     data() {
       return {
         modalPendingPayments: false,
-        apartments: {
+        apartmentsWithPendingPayments: {
           data: [],
           meta: {}
         },
@@ -102,13 +102,13 @@
             })
           }
         }).then((data) => {
-          this.apartments = data.data
+          this.apartmentsWithPendingPayments = data.data
         })
       }
     },
     computed: {
       pendingAmount() {
-        return this.apartments.data.reduce((total, apartment) => {
+        return this.apartmentsWithPendingPayments.data.reduce((total, apartment) => {
           return total + apartment.attributes.invoices.data.filter((invoice) => invoice.attributes.status ==
             'pending').reduce((total, invoice) => {
             return total + invoice.attributes.amount
@@ -117,18 +117,12 @@
 
       },
       totalAmount() {
-        return this.apartments.data.reduce((total, apartment) => {
+        return this.apartmentsWithPendingPayments.data.reduce((total, apartment) => {
           return total + apartment.attributes.invoices.data.reduce((total, invoice) => {
             return total + invoice.attributes.amount
           }, 0)
         }, 0)
 
-      },
-      apartmentsWithPendingPayments() {
-        return {
-          data:this.apartments.data.filter((p)=>p.attributes.invoices.data.length>0),
-          meta:this.apartments.meta
-        }
       }
 
     }
