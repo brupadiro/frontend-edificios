@@ -83,7 +83,7 @@
                           <h5>Amenities</h5>
                         </v-col>
                         <v-col class="col-12">
-                          <v-row no-gutters>
+                          <v-row no-gutters v-if="data.attributes.amenities">
                             <v-chip class="margin-right-5"
                               color="grey lighten-1 black--text mr-2 mb-2 font-weight-regular" label dark
                               v-for="amenity in data.attributes.amenities.data" :key="amenity.id">

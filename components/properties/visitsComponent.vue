@@ -77,15 +77,15 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>
-                <h3>{{item.attributes.name | capitalize}}</h3>
+                <h3>{{item.attributes.name}}</h3>
               </v-list-item-title>
               <v-list-item-subtitle>
                 <v-icon>mdi-note-text</v-icon>&nbsp;
-                <b class="black--text">{{item.attributes.doc_type}}: {{item.attributes.doc | capitalize}}</b>
+                <b class="black--text">{{item.attributes.doc_type}}: {{item.attributes.doc}}</b>
                 <template v-if="item.attributes.phone">
                   &nbsp;-&nbsp;
                   <v-icon>mdi-phone</v-icon>&nbsp;
-                  <b class="black--text">CI: {{item.attributes.phone | capitalize}}</b>
+                  <b class="black--text">CI: {{item.attributes.phone}}</b>
                 </template>
               </v-list-item-subtitle>
               <v-list-item-subtitle>
@@ -202,7 +202,7 @@
         this.$axios.post('/visits', {
           data: data
         }).then(response => {
-          this.$store.dispatch('apartments/findAll')
+          this.getVisits()
           this.$emit('update')
           this.modalVisits = false
         })
