@@ -5,7 +5,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: 'Forest Tower - Administracion',
-    title: 'frontend',
+    title: 'Forest Tower - Administracion',
     meta: [{
         charset: 'utf-8'
       },

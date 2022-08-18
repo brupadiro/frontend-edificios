@@ -50,8 +50,7 @@
         class="font-weight-bold text-h5">
         <template v-slot:item.image="{ item }">
           <div class="d-flex justify-center pa-2">
-            <v-img src="https://cdn.vuetifyjs.com/images/lists/1.jpg" height="80" max-width="80" width="80" cover
-              class="rounded-lg"></v-img>
+            <v-icon size="80">mdi-home</v-icon>
           </div>
         </template>
         <template v-slot:item.attributes.number="{ item }">
@@ -63,6 +62,7 @@
           <v-icon size="24" class="mb-1" :color="setColorStatus(item.attributes.in_rent)">mdi-circle</v-icon>
         </template>
         <template v-slot:item.id="{item}">
+        {{item.id}}
           <cardsSinglePropertyComponent :data="item"></cardsSinglePropertyComponent>
         </template>
       </v-data-table>
