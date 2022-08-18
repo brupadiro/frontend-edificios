@@ -62,7 +62,6 @@
           <v-icon size="24" class="mb-1" :color="setColorStatus(item.attributes.in_rent)">mdi-circle</v-icon>
         </template>
         <template v-slot:item.id="{item}">
-        {{item.id}}
           <cardsSinglePropertyComponent :data="item"></cardsSinglePropertyComponent>
         </template>
       </v-data-table>

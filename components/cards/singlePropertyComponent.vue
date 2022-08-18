@@ -18,7 +18,7 @@
             <v-tab ripple :value="2">
               <span class="font-weight-black white--text">VISITAS</span>
             </v-tab>
-            <v-tab ripple :value="3" v-show="data.attributes.invoices.data.length>0">
+            <v-tab ripple :value="3" v-if="data.attributes.invoices && data.attributes.invoices.data.length>0">
               <span class="font-weight-black white--text">FACTURAS PENDIENTES</span>
             </v-tab>
           </v-tabs>
