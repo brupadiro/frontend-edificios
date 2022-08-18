@@ -4,7 +4,7 @@ export default {
   mode: 'spa',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - frontend',
+    titleTemplate: 'Forest Tower - Administracion',
     title: 'frontend',
     meta: [{
         charset: 'utf-8'
@@ -26,8 +26,8 @@ export default {
     link: [{
       rel: 'icon',
       type: 'image/x-icon',
-      href: '/favicon.ico'
-    }]
+      href: '/logo.pnh'
+    }],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
