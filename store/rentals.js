@@ -10,11 +10,20 @@ export const state = () => ({
     start_date: '',
     end_date: '',
   },
-  tenants: []
+  tenants: {
+    data:[],
+    meta:{}
+  }
 })
 
 
 export const getters = {
+  getAll(
+    state
+) {
+    return state.tenants
+
+  },  
   getField
 }
 
@@ -89,7 +98,6 @@ export const mutations = {
     state.rental = data
   },
   setList(state, data) {
-    console.log(data)
     state.tenants = data
   }
 }

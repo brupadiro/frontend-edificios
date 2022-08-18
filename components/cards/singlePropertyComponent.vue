@@ -91,6 +91,7 @@
                             </v-chip>
                           </v-row>
                         </v-col>
+                        <!--
                         <v-col class="col-12">
                           <h5>Imagenes de la propiedad</h5>
                         </v-col>
@@ -106,6 +107,8 @@
                               max-height="70" max-width="80" alt=""></v-img>
                           </v-row>
                         </v-col>
+
+                        -->
                       </v-row>
                     </v-col>
                     <v-col class="col-12 col-md-4 col-xl-4">
@@ -117,29 +120,24 @@
                           &nbsp;
                           <div class="pt-4">
                             <h6 class="white--text font-weight-regular">{{owner.name}}</h6>
-                            <p class="text-subtitle-2 white--text">Tenants</p>
+                            <p class="text-subtitle-2 white--text">Propietario</p>
                           </div>
                         </v-card-title>
                         <v-divider color="white"></v-divider>
                         <v-card-text>
                           <v-row no-gutters>
                             <v-col class="col-12 col-sm-6">
-                              <p class="white--text">Fecha de entrada</p>
+                              <p class="white--text">Documento</p>
                             </v-col>
                             <v-col class="col-12 col-sm-6 text-right">
-                              <p class="white--text">20/08/2021</p>
-                            </v-col>
-                            <v-col class="col-12 col-sm-6">
-                              <p class="white--text">Contacto</p>
-                            </v-col>
-                            <v-col class="col-12 col-sm-6 text-right">
-                              <p class="white--text">091 234 567</p>
+                              <p class="white--text">{{owner.doc}}</p>
                             </v-col>
                             <v-col class="col-12 col-sm-6">
                               <p class="white--text">Expensas</p>
                             </v-col>
                             <v-col class="col-12 col-sm-6 text-right">
-                              <p class="white--text text-h6 font-weight-black">{{data.attributes.expenses_currency}} {{data.attributes.expenses_cost}}</p>
+                              <p class="white--text text-h6 font-weight-black">{{data.attributes.expenses_currency}}
+                                {{data.attributes.expenses_cost}}</p>
                             </v-col>
                             <v-col class="col-12">
                               <v-btn color="yellow lighten-1 black--text rounded-lg font-weight-regular" block
@@ -159,7 +157,8 @@
               <propertiesVisitsComponent :apartment="data" outlined class="mt-3"></propertiesVisitsComponent>
             </v-tab-item>
             <v-tab-item>
-              <AccountingPaymentsComponent outlined class="mt-3" :data="data.attributes.invoices"></AccountingPaymentsComponent>
+              <AccountingPaymentsComponent v-if="data.attributes.invoices" outlined class="mt-3" :data="data.attributes.invoices">
+              </AccountingPaymentsComponent>
             </v-tab-item>
 
           </v-tabs-items>
@@ -183,8 +182,8 @@
         required: true,
         default: {
           attributes: {
-            amenities:{
-              data:[]
+            amenities: {
+              data: []
             }
           }
         }
@@ -201,11 +200,13 @@
     },
     methods: {
       getOwner() {
-        this.$store.dispatch('owners/find',{apartment:this.data.id})
+        this.$store.dispatch('owners/find', {
+          apartment: this.data.id
+        })
       }
     },
-    computed:{
-      owner(){
+    computed: {
+      owner() {
         return this.$store.getters['owners/get']
       }
     }

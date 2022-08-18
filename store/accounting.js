@@ -77,8 +77,8 @@ export const actions = {
       ...data.data.attributes,
       id: data.data.id
     })
-    return data.data.id
     dispatch('clear')
+    return data.data.id
   },
   async changeStatus({
     commit,

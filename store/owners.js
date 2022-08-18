@@ -15,7 +15,10 @@ export const state = () => ({
 
 
 export const getters = {
-  getField
+  getField,
+  get(state) {
+    return state.owner
+  }
 }
 
 export const actions = {

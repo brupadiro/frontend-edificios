@@ -21,6 +21,9 @@
               <v-tab ripple :value="2">
                 <span class="font-weight-black white--text">ENTRADAS</span>
               </v-tab>
+              <v-tab ripple :value="3">
+                <span class="font-weight-black white--text">TAREAS</span>
+              </v-tab>
             </v-tabs>
           </v-card-title>
           <v-card-text class="my-3">
@@ -36,6 +39,58 @@
               </v-tab-item>
               <v-tab-item>
                 <staffEntriesComponent :staffItems="staffList.data"></staffEntriesComponent>
+              </v-tab-item>
+              <v-tab-item>
+                <GeneralCardComponent outlined>
+                  <GeneralCardTitleComponent>
+                    Lista de tareas
+                    <v-spacer></v-spacer>
+                    <v-btn color="yellow lighten-1 black--text rounded-lg font-weight-regular"
+                      @click="modalTask = true">
+                      <v-icon>mdi-plus</v-icon>&nbsp;nueva tarea
+                    </v-btn>
+                  </GeneralCardTitleComponent>
+                  <v-card-text>
+                    <v-expand-transition>
+                      <GeneralCardComponent v-show="modalTask" outlined>
+                        <GeneralCardTitleComponent>Nueva tarea</GeneralCardTitleComponent>
+                        <v-card-text>
+                          <v-form ref="form">
+                            <v-row>
+                              <v-col class="col-12">
+                                <FormsFieldsSelectComponent v-model="task.staff" :items="staffList.data" item-value="id"
+                                  item-text="attributes.name" return-object prepend-inner-icon="mdi-account"
+                                  label="ASIGNADA A">
+                                </FormsFieldsSelectComponent>
+                              </v-col>
+                              <v-col class="col-12">
+                                <v-textarea outlined class="elevation-3 rounded-lg" label="Descripcion de la tarea"
+                                  v-model="task.description"></v-textarea>
+                              </v-col>
+                              <v-col class="col-12">
+                                <FormsFieldsTextComponent type="date" label="Fecha" v-model="task.date">
+                                </FormsFieldsTextComponent>
+                              </v-col>
+                            </v-row>
+                          </v-form>
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-btn color="primary" class="font-weight-regular rounded-lg" @click="modalTask = false">
+                            CERRAR
+                          </v-btn>
+                          <v-spacer></v-spacer>
+                          <v-btn color="yellow" class="font-weight-regular rounded-lg" @click="addTask()">Agregar tarea
+                          </v-btn>
+                        </v-card-actions>
+                      </GeneralCardComponent>
+                    </v-expand-transition>
+                  </v-card-text>
+                  <v-card-title>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-calendar :events="taskList" :type="type"></v-calendar>
+                  </v-card-text>
+                </GeneralCardComponent>
               </v-tab-item>
 
             </v-tabs-items>
@@ -69,11 +124,12 @@
                   </FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-12 col-sm-6">
-                  <label class="font-weight-regular mb-2 grey--text text--darken-4 text-uppercase text-subtitle-2">Hora de entrada</label>
+                  <label class="font-weight-regular mb-2 grey--text text--darken-4 text-uppercase text-subtitle-2">Hora
+                    de entrada</label>
                   <v-menu ref="entrymenu" v-model="hourEntryMenu" :close-on-content-click="false" :nudge-right="40"
                     :return-value.sync="staff.entry_hour" transition="scale-transition" offset-y max-width="290px"
                     min-width="290px">
-                    <template v-slot:activator = "{on}">
+                    <template v-slot:activator="{on}">
                       <v-btn block class="black--text rounded-lg" color="white" x-large v-on="on">
                         {{ staff.entry_hour }}&nbsp;&nbsp;<v-icon>mdi-clock-outline</v-icon>
                       </v-btn>
@@ -83,12 +139,14 @@
                   </v-menu>
                 </v-col>
                 <v-col class="col-12 col-sm-6">
-                  <label class="font-weight-regular mb-2 grey--text text--darken-4 text-uppercase text-subtitle-2">Hora de salida</label>
+                  <label class="font-weight-regular mb-2 grey--text text--darken-4 text-uppercase text-subtitle-2">Hora
+                    de salida</label>
                   <v-menu ref="exitmenu" v-model="hourExitMenu" :close-on-content-click="false" :nudge-right="40"
                     :return-value.sync="staff.exit_hour" transition="scale-transition" offset-y max-width="290px"
                     min-width="290px">
-                    <template v-slot:activator =  "{on}">
-                      <v-btn block class="black--text rounded-lg" color="white"  v-on="on" x-large @click="hourExitMenu = !hourExitMenu">
+                    <template v-slot:activator="{on}">
+                      <v-btn block class="black--text rounded-lg" color="white" v-on="on" x-large
+                        @click="hourExitMenu = !hourExitMenu">
                         {{ staff.exit_hour }}&nbsp;&nbsp;<v-icon>mdi-clock-outline</v-icon>
                       </v-btn>
                     </template>
@@ -97,7 +155,8 @@
                   </v-menu>
                 </v-col>
                 <v-col class="col-6">
-                  <FormsFieldsTextComponent label="Telefono" type="number" v-model="staff.area"></FormsFieldsTextComponent>
+                  <FormsFieldsTextComponent label="Telefono" type="number" v-model="staff.area">
+                  </FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-6">
                   <FormsFieldsSelectComponent label="Area" :items="['Mantenimiento','Limpieza','Administracion']"
@@ -121,13 +180,17 @@
 
 
 <script>
+  import moment from 'moment'
   export default {
     data() {
       return {
         hourEntryMenu: false,
         hourExitMenu: false,
         modalStaff: false,
+        modalTask: false,
         tab: 0,
+        task: {},
+        taskList: {},
         staffList: {},
         staff: {},
         headers: [{
@@ -145,13 +208,30 @@
           align: 'left',
           sortable: false,
           value: 'attributes.area'
-        }]
+        }],
+        focus: null,
+        now: null,
+      type: "month",
       }
     },
     created() {
+            this.now = moment().format("YYYY-MM-DD");
+
       this.getStaff()
+      this.getTasks()
     },
     methods: {
+
+      viewDay({
+        date
+      }) {
+        this.focus = date;
+        this.now = date
+        console.log(date)
+        this.type = "day";
+      },
+
+
       addStaff() {
         this.$axios.post('/staffs', {
             data: this.staff
@@ -160,6 +240,32 @@
             this.staff = {}
             this.getStaff()
             this.modalStaff = false
+          })
+      },
+      getTasks() {
+        this.$axios.get('/tasks/?populate=*')
+          .then(response => {
+            this.taskList = response.data.data.map(task => {
+              return {
+                name:`${task.attributes.staff.data.attributes.name} - ${task.attributes.description.substr(0,10)}` ,
+                zone: `${task.attributes.description}`,
+                staff: `${task.attributes.staff.data.attributes.name}`,
+                start: `${task.attributes.date} 00:00:00`,
+                end: `${task.attributes.date} 23:59:00`,
+                allDay: true,
+              }
+            });
+          })
+      },
+      addTask() {
+        this.task.staff = this.task.staff.id
+        this.$axios.post('/tasks', {
+            data: this.task
+          })
+          .then(() => {
+            this.task = {}
+            this.getTasks()
+            this.modalTask = false
           })
       },
       getStaff() {

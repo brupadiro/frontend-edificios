@@ -8,10 +8,10 @@
     <v-card-text class="py-6">
       <v-row no-gutters class="justify-left align-center" v-show="!hiddenheader">
         <v-col class="col-xl-3 col-lg-4 col-md-5 mb-3 mb-sm-0 d-flex justify-center d-sm-inline">
-          <v-progress-circular size="200" width="17" color="#f34863" :value="50" rotate="270">
-            <v-progress-circular size="160" width="17" color="#ffa927" :value="50" rotate="270"
+          <v-progress-circular size="200" width="17" color="primary" :value="60" rotate="270">
+            <v-progress-circular size="160" width="17" color="red" :value="40" rotate="270"
               class="progress-circular text-h5 font-weight-black">
-              <span class="black--text">74</span>
+              <span class="black--text" v-if="data.meta.pagination && rentals.meta.pagination">{{data.meta.pagination.total + rentals.meta.pagination.total}}</span>
             </v-progress-circular>
           </v-progress-circular>
         </v-col>
@@ -19,7 +19,7 @@
           <v-row>
             <v-col class="col-md-6">
               <generalCardMiniComponent>
-                <template v-slot:title>
+                <template v-slot:title v-if="data.meta.pagination">
                   {{data.meta.pagination.total}}
                 </template>
                 <template v-slot:subtitle>
@@ -30,8 +30,8 @@
             </v-col>
             <v-col class="col-md-6">
               <generalCardMiniComponent color="red">
-                <template v-slot:title>
-                  25
+                <template v-slot:title  v-if="rentals.meta.pagination">
+                  {{rentals.meta.pagination.total}}
                 </template>
                 <template v-slot:subtitle>
                   Inquilinos
@@ -126,13 +126,23 @@
         }]
       }
     },
+    created() {
+        this.getRentals()
+
+    },
     methods: {
       setColorStatus(status) {
         if (status == true) return 'green'
         return 'red'
+      },
+      getRentals() {
+        this.$store.dispatch('rentals/findAll')
       }
     },
     computed: {
+      rentals() {
+        return this.$store.getters['rentals/getAll']
+      },  
       finalHeaders() {
         var headers = this.headers
         if (this.expanded) {

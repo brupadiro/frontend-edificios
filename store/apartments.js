@@ -82,10 +82,19 @@ export const actions = {
     state,
     commit
   }) {
+
+
+    var formatedData = function(apartment) {
+      var data = JSON.parse(JSON.stringify(apartment))
+      delete data.files
+      return data
+    }
+
+
     const {
       data: data
     } = await this.$axios.post('/apartaments', {
-      data: state.apartment
+      data: formatedData(state.apartment)
     })
     commit('set', {
       ...data.data.attributes,
@@ -106,16 +115,12 @@ export const actions = {
       } else {
         data.amenities = []
       }
-      if (data.files.data) {
-        data.files = data.files.data.map(file => file.id)
-      } else {
-        data.files = []
-      }
       if (data.invoices.data) {
         data.invoices = data.invoices.data.map(invoice => invoice.id)
       } else {
         data.invoices = []
       }
+      delete data.files
       return data
     }
     const {
