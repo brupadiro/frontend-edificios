@@ -8,7 +8,7 @@
       </generalCardTitleComponent>
       <v-divider></v-divider>
       <v-card-subtitle>
-        <v-btn color="yellow lighten-1" large :disabled="modalEntries"
+        <v-btn color="secondary" large :disabled="modalEntries"
           class="font-weight-regular rounded-lg black--text" @click="modalEntries = true">
           <v-icon>mdi-plus</v-icon>&nbsp;AGREGAR ENTRADA
         </v-btn>
@@ -92,7 +92,7 @@
                   </v-btn>
                 </v-col>
                 <v-col class="col-12 col-sm-6">
-                  <v-btn color="yellow" class="rounded-lg font-weight-regular white--text" x-large block
+                  <v-btn color="secondary" class="rounded-lg font-weight-regular white--text" x-large block
                     @click="addEntry()">
                     {{entries.type == 0 ? 'CHECK IN': 'CHECK OUT'}}
                   </v-btn>

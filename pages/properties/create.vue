@@ -33,7 +33,7 @@
       </v-row>
     </v-form>
     <generalBottomBarComponent app>
-      <v-btn text-color="white" class="yellow lighten-1 black--text rounded-lg font-weight-regular"
+      <v-btn text-color="white" class="secondary black--text rounded-lg font-weight-regular"
         @click="createApartment()">
         Guardar apartamento&nbsp;<v-icon>mdi-home</v-icon>
       </v-btn>

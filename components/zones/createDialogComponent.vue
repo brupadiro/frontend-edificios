@@ -18,14 +18,33 @@
             <v-col class="col-12">
               <FormsFieldsTextComponent label="Aforo" v-model="capacity"></FormsFieldsTextComponent>
             </v-col>
+            <v-col class="col-12">
+              <v-card outlined class="rounded-lg">
+                <v-card-title>Reglas de reserva</v-card-title>
+                <v-divider></v-divider>
+                <v-card-text class="pb-0">
+                  <zonesReservationRulesFieldComponent @input="addRule($event)">
+                  </zonesReservationRulesFieldComponent>
+                </v-card-text>
+                <v-card-text class="pb-0">
+                  <v-row>
+                    <v-col class="col-12" v-for="(rule,index) in rules" :key="'r'+index">
+                      <zonesReservationRulesFieldComponent update :value="rule" @input="rules[index]=$event">
+                      </zonesReservationRulesFieldComponent>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+
+            </v-col>
           </v-row>
         </v-form>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="yellow lighten-1 black--text rounded-lg font-weight-regular" class="rounded-lg"
-          @click="addZone()">AGREGAR ZONA&nbsp;&nbsp;<v-icon>mdi-content-save</v-icon>
+        <v-btn color="secondary black--text rounded-lg font-weight-regular" class="rounded-lg" @click="addZone()">
+          AGREGAR ZONA&nbsp;&nbsp;<v-icon>mdi-content-save</v-icon>
         </v-btn>
       </v-card-actions>
     </GeneralCardComponent>
@@ -34,7 +53,8 @@
 
 <script>
   import {
-    mapFields
+    mapFields,
+    mapMultiRowFields
   } from 'vuex-map-fields';
   export default {
     props: {
@@ -49,12 +69,18 @@
         await this.$store.dispatch('zones/findAll')
         this.$store.dispatch('zones/clear')
         this.$emit('input', false)
-      }
+      },
+      addRule(rule) {
+        this.$store.dispatch('zones/setRule',rule)
+      },
     },
     computed: {
       ...mapFields('zones', [
         'zone.name',
         'zone.capacity',
+      ]),
+      ...mapMultiRowFields('zones', [
+        'zone.rules'
       ]),
     }
   }

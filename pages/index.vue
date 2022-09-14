@@ -5,7 +5,7 @@
         Inicio
       </template>
       <template v-slot:subtitle>
-        <v-btn large color="yellow lighten-1 black--text rounded-lg font-weight-regular" to="/properties/create">
+        <v-btn large color="secondary black--text rounded-lg font-weight-regular" to="/properties/create">
           <v-icon>mdi-plus</v-icon>&nbsp;AGREGAR APARTAMENTO
         </v-btn>
       </template>

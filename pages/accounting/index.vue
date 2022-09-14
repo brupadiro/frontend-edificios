@@ -5,7 +5,7 @@
         Contabilidad
       </template>
       <template v-slot:subtitle>
-        <v-btn large color="yellow lighten-1 black--text rounded-lg font-weight-regular" @click="paymentsModal = true">
+        <v-btn large color="secondary black--text rounded-lg font-weight-regular" @click="paymentsModal = true">
           NUEVA FACTURA&nbsp;&nbsp;<v-icon>mdi-calendar</v-icon>
         </v-btn>
       </template>

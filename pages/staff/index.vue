@@ -5,7 +5,7 @@
         Staff
       </template>
       <template v-slot:subtitle>
-        <v-btn large color="yellow lighten-1 black--text rounded-lg font-weight-regular" @click="modalStaff = true">
+        <v-btn large color="secondary black--text rounded-lg font-weight-regular" @click="modalStaff = true">
           <v-icon>mdi-plus</v-icon>&nbsp;AGREGAR STAFF
         </v-btn>
       </template>
@@ -45,7 +45,7 @@
                   <GeneralCardTitleComponent>
                     Lista de tareas
                     <v-spacer></v-spacer>
-                    <v-btn color="yellow lighten-1 black--text rounded-lg font-weight-regular"
+                    <v-btn color="secondary black--text rounded-lg font-weight-regular"
                       @click="modalTask = true">
                       <v-icon>mdi-plus</v-icon>&nbsp;nueva tarea
                     </v-btn>
@@ -79,7 +79,7 @@
                             CERRAR
                           </v-btn>
                           <v-spacer></v-spacer>
-                          <v-btn color="yellow" class="font-weight-regular rounded-lg" @click="addTask()">Agregar tarea
+                          <v-btn color="secondary" class="font-weight-regular rounded-lg" @click="addTask()">Agregar tarea
                           </v-btn>
                         </v-card-actions>
                       </GeneralCardComponent>
@@ -167,7 +167,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="yellow lighten-1 black--text rounded-lg font-weight-regular" class="rounded-lg"
+            <v-btn color="secondary black--text rounded-lg font-weight-regular" class="rounded-lg"
               @click="addStaff()">AGREGAR STAFF&nbsp;&nbsp;
               <v-icon>mdi-content-save</v-icon>
             </v-btn>

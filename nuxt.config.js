@@ -60,8 +60,8 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    //baseURL: 'http://localhost:1337/api',
-    baseURL: 'https://king-prawn-app-o25h2.ondigitalocean.app/api',
+    baseURL: 'https://forestapi.webcreativos.com.uy/api',
+    //baseURL: 'https://king-prawn-app-o25h2.ondigitalocean.app/api',
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -74,17 +74,17 @@ export default {
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
-    treeShake: true,
     options: {
       customProperties: true,
     },
     theme: {
+      treeShake: true,
       dark: false,
       themes: {
         light: {
           primary: "#333350",
           accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
+          secondary: "#03a9f4",
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,

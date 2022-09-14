@@ -8,10 +8,22 @@
         <v-icon color="white" class="icon-shadow">mdi-pencil</v-icon>
       </v-btn>
     </v-btn-toggle>
-    <v-dialog v-model="singlePropertyModal" width="1000" persistent>
+    <v-dialog v-model="singlePropertyModal" width="1000" persistent :fullscreen="toggleFullScreen">
       <GeneralCardComponent>
-        <v-card-title style="background:#333350" class="fill-width">
-          <v-tabs v-model="tab" hide-slider slider-color="primary" active-class="active-tab" grow>
+        <v-toolbar elevation="0" color="primary" dense>
+          <v-spacer></v-spacer>
+          <v-btn icon color="primary rounded-lg" @click="toggleFullScreen = !toggleFullScreen">
+            <v-icon v-if="toggleFullScreen" color="white">mdi-window-minimize</v-icon>
+            <v-icon v-else color="white">mdi-window-maximize</v-icon>
+          </v-btn>
+          <v-btn icon color="primary rounded-lg" @click="singlePropertyModal = false">
+            <v-icon color="white">mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-divider></v-divider>
+        <v-card-title class="primary">
+          <v-tabs :vertical="$vuetify.breakpoint.smAndDown" v-model="tab" hide-slider slider-color="primary"
+            background-color="primary" active-class="active-tab" grow>
             <v-tab ripple :value="1">
               <span class="font-weight-black white--text">FICHA</span>
             </v-tab>
@@ -19,7 +31,10 @@
               <span class="font-weight-black white--text">VISITAS</span>
             </v-tab>
             <v-tab ripple :value="3" v-if="data.attributes.invoices && data.attributes.invoices.data.length>0">
-              <span class="font-weight-black white--text">FACTURAS PENDIENTES</span>
+              <span class="font-weight-black white--text">FACTURAS</span>
+            </v-tab>
+            <v-tab ripple :value="4">
+              <span class="font-weight-black white--text">CUENTA CORRIENTE</span>
             </v-tab>
           </v-tabs>
         </v-card-title>
@@ -140,7 +155,7 @@
                                 {{data.attributes.expenses_cost}}</p>
                             </v-col>
                             <v-col class="col-12">
-                              <v-btn color="yellow lighten-1 black--text rounded-lg font-weight-regular" block
+                              <v-btn color="secondary black--text rounded-lg font-weight-regular" block
                                 class="text-capitalize">
                                 <v-icon color="white">mdi-send</v-icon>&nbsp; Contactar
                               </v-btn>
@@ -151,30 +166,58 @@
                     </v-col>
                   </v-row>
                 </v-card-text>
+                <v-card-text>
+                  <v-card outlined class="rounded-lg">
+                    <v-card-title>
+                      Alquileres
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                      <v-data-table hide-default-footer disable-sort calculate-widths :headers="headersRentals"
+                    :items="rentals.data" class="font-weight-bold text-h5">
+
+                    <template v-slot:item.name="{ item }">
+                      {{item.attributes.habitants |formatHabitants('name')}}
+                    </template>
+                    <template v-slot:item.doc="{ item }">
+                      {{item.attributes.habitants |formatHabitants('doc')}}
+                    </template>
+                    <template v-slot:item.attributes.start_date="{ item }">
+                      {{item.attributes.start_date | formatDate}}
+                    </template>
+                    <template v-slot:item.attributes.end_date="{ item }">
+                      {{item.attributes.end_date | formatDate}}
+                    </template>
+                  </v-data-table>
+
+                    </v-card-text>
+                  </v-card>
+                </v-card-text>
               </v-card>
             </v-tab-item>
             <v-tab-item>
               <propertiesVisitsComponent :apartment="data" outlined class="mt-3"></propertiesVisitsComponent>
             </v-tab-item>
             <v-tab-item>
-              <AccountingPaymentsComponent v-if="data.attributes.invoices" outlined class="mt-3" :data="data.attributes.invoices">
+              <AccountingPaymentsComponent v-if="data.attributes.invoices" outlined class="mt-3"
+                :data="data.attributes.invoices">
               </AccountingPaymentsComponent>
+            </v-tab-item>
+            <v-tab-item class="py-4">
+              <propertiesCheckingAccountsComponent></propertiesCheckingAccountsComponent>
             </v-tab-item>
 
           </v-tabs-items>
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions>
-          <v-btn color="primary rounded-lg" @click="singlePropertyModal = false">
-            CERRAR
-          </v-btn>
-        </v-card-actions>
       </GeneralCardComponent>
     </v-dialog>
   </div>
 </template>
 
 <script>
+  import _ from 'lodash'
+  import moment from 'moment'
   export default {
     props: {
       data: {
@@ -189,25 +232,73 @@
         }
       }
     },
+    filters: {
+      formatDate(date) {
+        return moment(date).format('DD/MM/YYYY')
+      },
+      formatHabitants(value, key) {
+        if(!value) return "-"
+        if (value.data.length != 0) {
+          return value.data[0].attributes[key]
+        }
+      },
+    },
     data() {
       return {
+        headersRentals: [{
+            text: 'Inquilino',
+            value: 'name',
+          },
+          {
+            text: 'Documento',
+            value: 'doc',
+          },
+          {
+            text: 'Desde',
+            value: 'attributes.start_date',
+          },
+          {
+            text: 'Hasta',
+            value: 'attributes.end_date',
+          },
+        ],
+        toggleFullScreen: false,
         tab: 0,
         singlePropertyModal: false
       }
     },
-    created() {
-      this.getOwner()
-    },
+    mounted() {},
     methods: {
       getOwner() {
         this.$store.dispatch('owners/find', {
           apartment: this.data.id
+        })
+      },
+      getRentals() {
+        this.$store.dispatch('rentals/findAll', {
+          filters: {
+            apartment: this.data.id,
+          },
+          populate: '*'
         })
       }
     },
     computed: {
       owner() {
         return this.$store.getters['owners/get']
+      },
+      rentals() {
+        return this.$store.getters['rentals/getAll']
+      }
+
+    },
+    watch: {
+      singlePropertyModal(val) {
+        console.log(val)
+        if (val) {
+          this.getOwner()
+          this.getRentals()
+        }
       }
     }
   }

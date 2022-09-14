@@ -5,7 +5,7 @@
         Biblioteca de documentos
       </template>
       <template v-slot:subtitle>
-        <v-btn large color="yellow lighten-1 black--text rounded-lg font-weight-regular" :disabled="showFormFiles"
+        <v-btn large color="secondary black--text rounded-lg font-weight-regular" :disabled="showFormFiles"
           @click="showFormFiles = true">
           <v-icon>mdi-plus</v-icon>&nbsp;SUBIR ARCHIVOS
         </v-btn>
@@ -32,7 +32,7 @@
                   </v-btn>
                   <v-spacer></v-spacer>
                   <v-btn @click="upload()" :disabled="newFilesUpload.data.length == 0"
-                    color="yellow rounded-lg font-weight-regular">Subir archivos&nbsp;&nbsp;<v-icon>mdi-upload
+                    color="secondary rounded-lg font-weight-regular">Subir archivos&nbsp;&nbsp;<v-icon>mdi-upload
                     </v-icon>
                   </v-btn>
                 </v-card-actions>

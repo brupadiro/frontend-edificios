@@ -12,7 +12,7 @@
             <h3 class="black--text font-weight-black">$ {{totalAmount}}</h3>
           </v-col>
           <v-col class="col-12">
-            <v-progress-linear  color="yellow" :value="Math.ceil((totalAmount-pendingAmount)*100/totalAmount)" rounded
+            <v-progress-linear  color="secondary" :value="Math.ceil((totalAmount-pendingAmount)*100/totalAmount)" rounded
               class="rounded-xl elevation-2" height="30">
               <template v-slot:default="{ value }">
                 <strong>{{ Math.ceil(value) }}%</strong>
@@ -28,10 +28,10 @@
                   </v-col>
                   <v-col class="col-12 col-md-6">
                     <v-row no-gutters>
-                      <v-avatar size="60" tile color="yellow" class="rounded-lg">
+                      <v-avatar size="60" tile color="secondary" class="rounded-lg">
                         <img src="/icons/person.png">
                       </v-avatar>
-                      <v-avatar size="60" tile color="yellow" class="rounded-lg ml-n3">
+                      <v-avatar size="60" tile color="secondary" class="rounded-lg ml-n3">
                         <img src="/icons/person.png">
                       </v-avatar>
                       <v-avatar size="60" tile class="rounded-lg ml-n3">
@@ -45,7 +45,7 @@
                     </v-row>
                   </v-col>
                   <v-col class="col-12 col-md-6">
-                    <v-btn height="60" color="yellow lighten-1" large block class="font-weight-regular rounded-lg"
+                    <v-btn height="60" color="secondary" large block class="font-weight-regular rounded-lg"
                       @click="modalPendingPayments = !modalPendingPayments">VER</v-btn>
                   </v-col>
                 </v-row>

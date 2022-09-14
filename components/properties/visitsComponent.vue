@@ -7,7 +7,7 @@
         </v-spacer>
       </generalCardTitleComponent>
       <v-card-subtitle class="primary">
-        <v-btn color="yellow lighten-1 black--text rounded-lg font-weight-regular" large :disabled="modalVisits"
+        <v-btn color="secondary black--text rounded-lg font-weight-regular" large :disabled="modalVisits"
           @click="modalVisits = true">
           <v-icon>mdi-plus</v-icon>&nbsp;AGREGAR VISITA
         </v-btn>
@@ -59,7 +59,7 @@
                   </v-btn>
                 </v-col>
                 <v-col class="col-12 col-sm-6">
-                  <v-btn color="yellow" class="white--text font-weight-regular" x-large block @click="addVisit()">
+                  <v-btn color="secondary" class="white--text font-weight-regular" x-large block @click="addVisit()">
                     CHECK IN
                   </v-btn>
                 </v-col>
@@ -98,7 +98,7 @@
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-actions>
-              <v-btn v-show="!item.attributes.out_hour" color="yellow font-weight-regular rounded-lg" @click="setCheckout(item.id)">
+              <v-btn v-show="!item.attributes.out_hour" color="secondary font-weight-regular rounded-lg" @click="setCheckout(item.id)">
                 CHECK OUT
               </v-btn>
             </v-list-item-actions>

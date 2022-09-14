@@ -21,7 +21,7 @@
               <v-col class="col-12">
                 <v-card outlined>
                 <v-sheet max-height="400">
-                  <v-date-picker v-model="reservation.date" no-title scrollable locale="es" full-width
+                  <v-date-picker v-model="reservation.date"  no-title scrollable locale="es" full-width
                     :allowed-dates="allowedDates" class="elevation-0"></v-date-picker>
                 </v-sheet>
                 </v-card>
@@ -49,7 +49,7 @@
             </v-card-text>
             <v-card-text>
               <v-row>
-                <v-col class="col-12 yellow lighten-1">
+                <v-col class="col-12 secondary">
                   <v-row>
                     <v-col class="col-5">
                       HORA
@@ -62,7 +62,45 @@
                   </v-row>
 
                 </v-col>
-                <v-col class="col-12 grey lighten-5">
+                <v-col class="col-12 grey lighten-5" v-if="reservoirByTurn">
+                  <v-row class="border-bottom py-3" no-gutters>
+                    <v-col class="col-5 d-flex align-center">
+                      <span>Medio dia</span>
+                    </v-col>
+                    <v-col class="col-4 d-flex align-center">
+                      <span>LIBRE</span>
+                    </v-col>
+                    <v-col class="col-3">
+                      <v-btn color="success darken-1" @click="createReservation( {from: '12:00:00.000', to: '13:00:00.000'})"
+                        v-show="!checkEmptyReservation( {from: '12:00:00.000', to: '13:00:00.000'})" block depressed>
+                        RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
+                      </v-btn>
+                      <v-btn color="red darken-1" class="white--text" v-show="checkEmptyReservation( {from: '12:00:00.000', to: '13:00:00.000'})" block
+                        depressed>
+                        RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                  <v-row class="border-bottom py-3" no-gutters>
+                    <v-col class="col-5 d-flex align-center">
+                      <span>Noche</span>
+                    </v-col>
+                    <v-col class="col-4 d-flex align-center">
+                      <span>LIBRE</span>
+                    </v-col>
+                    <v-col class="col-3">
+                      <v-btn color="success darken-1" @click="createReservation( {from: '21:00:00.000', to: '22:00:00.000'})"
+                        v-show="!checkEmptyReservation( {from: '21:00:00.000', to: '22:00:00.000'})" block depressed>
+                        RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
+                      </v-btn>
+                      <v-btn color="red darken-1" class="white--text" v-show="checkEmptyReservation( {from: '21:00:00.000', to: '22:00:00.000'})" block
+                        depressed>
+                        RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-col>
+                <v-col class="col-12 grey lighten-5" v-else>
                   <v-row v-for="(hour,index) in arrayHourToHour" :key="index" class="border-bottom py-3" no-gutters>
                     <v-col class="col-5 d-flex align-center">
                       <span>{{ hour.from | formatHour }} - {{hour.to | formatHour }}</span>
@@ -129,9 +167,13 @@
       this.$store.dispatch('apartments/findAll')
     },
     methods: {
-
       allowedDates(date) {
-        return moment(date).isSameOrAfter(this.now);
+        var currentDate = this.now
+        const ruleBeforeTo = this.zone.attributes.rules.find((rule) => rule.rule.data.attributes.type === 'before_to');
+        if(ruleBeforeTo) {
+          currentDate = moment().add(ruleBeforeTo.value,ruleBeforeTo.rule.data.attributes.subtype).format("YYYY-MM-DD")
+        }
+        return moment(date).isSameOrAfter(currentDate);
       },
       showReservedHours() {
         this.$store.dispatch("zones/findAllReservations", {
@@ -145,6 +187,14 @@
         this.reservation.from = moment(hours.from, "HH:mm").format("HH:mm:ss.sss");
         this.reservation.to = moment(hours.to, "HH:mm").format("HH:mm:ss.sss");
         this.reservation.zone = this.zone
+
+
+        const rulePrePayment = this.zone.attributes.rules.find((rule) => rule.rule.data.attributes.type === 'prepayment');
+        console.log(rulePrePayment)
+        if(rulePrePayment) {
+          this.reservation.pending_payment = true
+        }
+
         await this.$store.dispatch("zones/addReservation", this.reservation);
         this.reservation = {};
         this.newReservationModal = true;
@@ -181,6 +231,10 @@
           });
         }
         return arrayOfHours;
+      },
+      reservoirByTurn(){
+        if(!this.zone.attributes) return false
+        return this.zone.attributes.rules.find((rule) => rule.rule.data.attributes.type === 'period') != undefined;
       }
     },
     watch: {

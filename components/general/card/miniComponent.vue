@@ -1,5 +1,5 @@
 <template>
-  <v-card class="rounded-lg p-relative" outlined :color="color+' lighten-3'">
+  <v-card class="rounded-lg p-relative" :color="color+' lighten-3'">
     <div class="main-bar rounded-xl" :class="color"></div>
     <v-card-text class="pl-12 pt-5">
       <h1 class="black--text mt-2">

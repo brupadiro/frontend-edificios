@@ -34,7 +34,10 @@ export const actions = {
     const {
       data: data
     } = await this.$axios.get('/rentals', {
-      params: params
+      params: params,
+      paramsSerializer: params => {
+        return qs.stringify(params,{arrayFormat: 'brackets'})
+      }
     })
     commit('setList', data)
   },

@@ -20,7 +20,7 @@
           </v-chip>
         </template>
         <template v-slot:item.invoice="{ item }">
-          <v-btn color="yellow" @click="generateInvoice(item)">
+          <v-btn color="secondary" @click="generateInvoice(item)">
             GENERAR FACTURA
           </v-btn>
         </template>

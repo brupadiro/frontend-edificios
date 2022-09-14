@@ -39,7 +39,7 @@
       </v-col>
     </v-row>
     <generalBottomBarComponent>
-      <v-btn text-color="white" class="yellow lighten-1 black--text rounded-lg font-weight-regular"
+      <v-btn text-color="white" class="secondary black--text rounded-lg font-weight-regular"
         @click="updateApartment()">
         Guardar apartamento&nbsp;<v-icon>mdi-home</v-icon>
       </v-btn>

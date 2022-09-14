@@ -64,7 +64,7 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="yellow lighten-1 black--text rounded-lg font-weight-regular" class="rounded-lg"
+        <v-btn color="secondary black--text rounded-lg font-weight-regular" class="rounded-lg"
           @click="addPayment()">
           Agregar factura&nbsp;&nbsp;<v-icon>mdi-content-save</v-icon>
         </v-btn>

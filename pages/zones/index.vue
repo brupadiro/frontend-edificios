@@ -5,7 +5,7 @@
         Zonas comunes
       </template>
       <template v-slot:subtitle>
-        <v-btn large color="yellow lighten-1 black--text rounded-lg font-weight-regular" @click="zonesModal = true">
+        <v-btn large color="secondary black--text rounded-lg font-weight-regular" @click="zonesModal = true">
           AGREGAR ZONA COMUN&nbsp;&nbsp;<v-icon>mdi-calendar</v-icon>
         </v-btn>
       </template>
@@ -32,7 +32,7 @@
 
                   </v-list-item-content>
                   <v-list-item-action>
-                    <v-btn depressed color="yellow font-weight-regular" @click="setZone(zone)">AGENDARSE</v-btn>
+                    <v-btn depressed color="secondary font-weight-regular" @click="setZone(zone)">AGENDARSE</v-btn>
                   </v-list-item-action>
                 </v-list-item>
                 <v-divider></v-divider>

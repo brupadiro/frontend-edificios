@@ -1,11 +1,11 @@
 <template>
   <div class="fill-width">
     <v-input v-bind="$attrs['class']" class="fill-width d-flex flex-column fill-width" hide-details>
-      <v-text-field outlined class="rounded-lg rounded-r-0 font-weight-regular input-width" ref="input" hide-details v-model="fieldValue" v-bind="$attrs"
+      <v-text-field outlined class="elevation-2 rounded-lg rounded-r-0 font-weight-regular input-width" ref="input" hide-details v-model="fieldValue" v-bind="$attrs"
         @focus="checkFocus()">
       </v-text-field>
-      <v-btn class="button-width rounded-l-0 rounded-lg" depressed color="yellow lighten-1 black--text rounded-lg font-weight-regular" height="55" x-large @click="handler()">
-        {{$data["button-label"]}}&nbsp;<slot name="icon"></slot>
+      <v-btn class="button-width rounded-l-0 black--text rounded-lg font-weight-regular" :color="buttonColor" height="55" x-large @click="handler()">
+        {{$data["button-label"]}}&nbsp;<v-icon color="white">{{icon}}</v-icon>
       </v-btn>
     </v-input>
     <v-snackbar color="success" v-model="actionSuccess">
@@ -31,6 +31,14 @@
         type: String,
         default: 'Guardar'
       },
+      icon: {
+        type: String,
+        default: 'mdi-content-save'
+      },
+      buttonColor: {
+        type: String,
+        default: 'primary'
+      }
     },
     data() {
       return {

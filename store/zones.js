@@ -7,8 +7,9 @@ export const state = {
   zones: {},
   areaReservations: {},
   zone: {
-    name:'',
-    capacity:1
+      name:'',
+      capacity:1,
+      rules:[]
   }
 }
 
@@ -32,7 +33,7 @@ export const actions = {
   }) {
     const {
       data: data
-    } = await this.$axios.get(`/zones`, {
+    } = await this.$axios.get(`/zones/?populate=rules.rule`, {
       params: {
         filters: query
       },
@@ -49,7 +50,7 @@ export const actions = {
   },params) {
     const {
       data: data
-    } = await this.$axios.get('/zones', {
+    } = await this.$axios.get('/zones/?populate=rules.rule', {
       params: params,
       paramsSerializer: params => {
         return qs.stringify(params, {
@@ -81,13 +82,7 @@ export const actions = {
     commit,
     state
   }) {
-    const {
-      data: data
-    } = await this.$axios.post(`/zones`, {data:state.zone})
-    commit('set', {
-      ...data.data.attributes,
-      id: data.data.id
-    })
+    await this.$axios.post(`/zones/?populate=rules.rule`, {data:state.zone})
   },
   async addReservation({
     commit,
@@ -107,10 +102,17 @@ export const actions = {
       commit('delete', id)
     }, 3000);
   },
+  setRule({
+    commit,
+  },rule){
+    commit('setRule',rule)
+  },
   clear({
     commit
   }) {
-    commit('set', {})
+    commit('set', {
+      rules:[]
+    })
   }
 }
 
@@ -118,6 +120,9 @@ export const mutations = {
   updateField,
   set(state, zone) {
     state.zone = zone
+  },
+  setRule(state,rule){
+    state.zone.rules.push(rule)
   },
   setSingleReservation(state, reservation) {
     state.areaReservations.data.push(reservation)
