@@ -170,25 +170,39 @@
                   <v-card outlined class="rounded-lg">
                     <v-card-title>
                       Alquileres
+                      <v-spacer></v-spacer>
+                      <v-btn color="secondary white--text rounded-lg font-weight-black"
+                        @click="openRentalForm=!openRentalForm;toggleFullScreen=true">
+                        AGREGAR NUEVO ALQUILER
+                      </v-btn>
                     </v-card-title>
                     <v-divider></v-divider>
+                    <v-card-text v-if="openRentalForm">
+                      <RentalsFormComponent>
+                        <template v-slot:actions>
+                          <v-btn color="secondary white--text rounded-lg font-weight-black" @click="addNewRental()">
+                            AGREGAR ALQUILER
+                          </v-btn>
+                        </template>
+                      </RentalsFormComponent>
+                    </v-card-text>
                     <v-card-text>
                       <v-data-table hide-default-footer disable-sort calculate-widths :headers="headersRentals"
-                    :items="rentals.data" class="font-weight-bold text-h5">
+                        :items="rentals.data" class="font-weight-bold text-h5">
 
-                    <template v-slot:item.name="{ item }">
-                      {{item.attributes.habitants |formatHabitants('name')}}
-                    </template>
-                    <template v-slot:item.doc="{ item }">
-                      {{item.attributes.habitants |formatHabitants('doc')}}
-                    </template>
-                    <template v-slot:item.attributes.start_date="{ item }">
-                      {{item.attributes.start_date | formatDate}}
-                    </template>
-                    <template v-slot:item.attributes.end_date="{ item }">
-                      {{item.attributes.end_date | formatDate}}
-                    </template>
-                  </v-data-table>
+                        <template v-slot:item.name="{ item }">
+                          {{item.attributes.habitants |formatHabitants('name')}}
+                        </template>
+                        <template v-slot:item.doc="{ item }">
+                          {{item.attributes.habitants |formatHabitants('doc')}}
+                        </template>
+                        <template v-slot:item.attributes.start_date="{ item }">
+                          {{item.attributes.start_date | formatDate}}
+                        </template>
+                        <template v-slot:item.attributes.end_date="{ item }">
+                          {{item.attributes.end_date | formatDate}}
+                        </template>
+                      </v-data-table>
 
                     </v-card-text>
                   </v-card>
@@ -198,13 +212,13 @@
             <v-tab-item>
               <propertiesVisitsComponent :apartment="data" outlined class="mt-3"></propertiesVisitsComponent>
             </v-tab-item>
-            <v-tab-item>
+            <v-tab-item v-if="data.attributes.invoices && data.attributes.invoices.data.length>0">
               <AccountingPaymentsComponent v-if="data.attributes.invoices" outlined class="mt-3"
                 :data="data.attributes.invoices">
               </AccountingPaymentsComponent>
             </v-tab-item>
             <v-tab-item class="py-4">
-              <propertiesCheckingAccountsComponent></propertiesCheckingAccountsComponent>
+              <propertiesCheckingAccountsComponent :apartment="data"></propertiesCheckingAccountsComponent>
             </v-tab-item>
 
           </v-tabs-items>
@@ -237,7 +251,7 @@
         return moment(date).format('DD/MM/YYYY')
       },
       formatHabitants(value, key) {
-        if(!value) return "-"
+        if (!value) return "-"
         if (value.data.length != 0) {
           return value.data[0].attributes[key]
         }
@@ -264,6 +278,7 @@
         ],
         toggleFullScreen: false,
         tab: 0,
+        openRentalForm: false,
         singlePropertyModal: false
       }
     },
@@ -273,6 +288,30 @@
         this.$store.dispatch('owners/find', {
           apartment: this.data.id
         })
+      },
+      async addNewRental() {
+        try {
+          this.$store.dispatch('habitants/set', {
+            apartment: this.data.id,
+            type: 'tenant'
+          })
+          const {
+            data: habitant
+          } = await this.$store.dispatch("habitants/create");
+          //add rental
+          this.$store.dispatch('rentals/set', {
+            apartment: this.data.id,
+            habitants: habitant.id
+          })
+          await this.$store.dispatch("rentals/create");
+          this.$store.dispatch("rentals/clear");
+          this.$store.dispatch("habitants/clear");
+          this.getRentals()
+          this.openRentalForm = false
+
+        } catch (e) {
+          console.log(e)
+        }
       },
       getRentals() {
         this.$store.dispatch('rentals/findAll', {
@@ -298,6 +337,10 @@
         if (val) {
           this.getOwner()
           this.getRentals()
+        } else {
+          this.$store.dispatch("rentals/clear")
+          this.toggleFullScreen = false
+          this.openRentalForm = false
         }
       }
     }

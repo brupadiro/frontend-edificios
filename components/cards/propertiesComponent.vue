@@ -46,7 +46,7 @@
 
       <!-- generate a lit of properties using vuetify v-data-table -->
 
-      <v-data-table hide-default-footer disable-sort calculate-widths :headers="finalHeaders" :items="data.data"
+      <v-data-table hide-default-footer disable-sort calculate-widths :headers="finalHeaders"  :items-per-page="-1" :items="data.data"
         class="font-weight-bold text-h5">
         <template v-slot:item.image="{ item }">
           <div class="d-flex justify-center pa-2">

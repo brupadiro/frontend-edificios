@@ -39,15 +39,20 @@ export const actions = {
   }, query) {
     const {
       data: data
-    } = await this.$axios.get(`/owners/`,{
-      params:{
-        filters:query
+    } = await this.$axios.get(`/owners/`, {
+      params: {
+        filters: query
       },
       paramsSerializer: params => {
-        return qs.stringify(params,{arrayFormat: 'brackets'})
+        return qs.stringify(params, {
+          arrayFormat: 'brackets'
+        })
       }
     })
-    commit('set',  {...data.data[0].attributes, id: data.data[0].id})
+    commit('set', {
+      ...data.data[0].attributes,
+      id: data.data[0].id
+    })
   },
   async create({
     state,
@@ -55,13 +60,27 @@ export const actions = {
     dispatch,
     getters,
     rootGetters
+  }, {
+    apartment
   }) {
-    const apartment = rootGetters['apartments/get']
-    await this.$axios.post('/owners', {
+    const {
+      data: data
+    } = await this.$axios.post('/owners', {
       data: {
         ...state.owner,
         apartment: apartment.id
       }
+    })
+    return data
+  },
+  async update({
+    state,
+    commit
+  }, id) {
+    const {
+      data: data
+    } = await this.$axios.put(`/owners/${state.owner.id}`, {
+      data: state.owner
     })
 
     if (state.owner.in_property) {
@@ -77,29 +96,10 @@ export const actions = {
         root: true
       })
     }
-  },
-  async update({
-    state,
-    commit
-  }, id) {
-    const {
-      data: data
-    } = await this.$axios.put(`/owners/${state.owner.id}`, {data:state.owner})
-    
-    if (state.owner.in_property) {
-      dispatch('habitants/set', {
-        name: state.owner.name,
-        doc: state.owner.doc,
-        apartment: apartment,
-        type: 'owner'
-      }, {
-        root: true
-      })
-      await dispatch('habitants/create', null, {
-        root: true
-      })
-    }
-    commit('set',  {...data.data.attributes, id: data.data.id})
+    commit('set', {
+      ...data.data.attributes,
+      id: data.data.id
+    })
   },
   async delete(id) {
     await this.$axios.delete(`/owners/${id}`)

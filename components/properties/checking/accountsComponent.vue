@@ -13,10 +13,12 @@
     </v-card-title>
     <v-tabs-items v-model="tab">
       <v-tab-item :value="0">
-        <propertiesCheckingSingleAccountComponent v-model="accounts" currency="USD"></propertiesCheckingSingleAccountComponent>
+        <propertiesCheckingSingleAccountComponent v-model="accounts" :apartment="apartment" currency="USD">
+        </propertiesCheckingSingleAccountComponent>
       </v-tab-item>
       <v-tab-item :value="1">
-        <propertiesCheckingSingleAccountComponent v-model="accounts" currency="UYU"></propertiesCheckingSingleAccountComponent>
+        <propertiesCheckingSingleAccountComponent v-model="accounts" :apartment="apartment" currency="UYU">
+        </propertiesCheckingSingleAccountComponent>
       </v-tab-item>
     </v-tabs-items>
   </v-card>
@@ -24,6 +26,12 @@
 
 <script>
   export default {
+    props: {
+      apartment: {
+        type: Object,
+        default: {}
+      }
+    },
     data() {
       return {
         tab: 0,
@@ -44,13 +52,23 @@
     },
     methods: {
       getAccounts() {
-        this.$axios.get('/checking-accounts').then(response => {
+        this.$axios.get('/checking-accounts', {
+          params: {
+            filters: {
+              apartment: this.apartment.id
+            }
+          },
+          paramsSerializer: params => {
+            return qs.stringify(params, {
+              arrayFormat: 'brackets'
+            })
+          }
+        }).then(response => {
           this.accounts = response.data.data
         })
       },
     },
-    computed: {
-    },
+    computed: {},
   }
 
 </script>

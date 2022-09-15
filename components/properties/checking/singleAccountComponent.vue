@@ -16,7 +16,7 @@
                 </FormsFieldsSelectComponent>
               </v-col>
               <v-col class="col-12">
-                <FormsFieldsTextComponent v-model="newMoovment.concept" label="Concepto">
+                <FormsFieldsTextComponent v-model="newMoovment.concept" placeholder="Opcional..." label="Concepto">
                 </FormsFieldsTextComponent>
               </v-col>
             </v-row>
@@ -51,7 +51,7 @@
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action-text class="font-weight-bold text-subtitle-2 black--text">
-                    {{currency | currency}} {{moovment.attributes.amount}}
+                  {{currency | currency}} {{moovment.attributes.amount}}
                 </v-list-item-action-text>
               </v-list-item>
               <v-divider v-show="index!=moovments.length" :key="`d${moovment.id}`"></v-divider>
@@ -89,6 +89,10 @@
       }
     },
     props: {
+      apartment: {
+        type: Object,
+        required: true
+      },
       currency: {
         type: String,
         default: 'USD'
@@ -109,11 +113,15 @@
     },
     methods: {
       addMoovment() {
-        this.newMoovment.currency = this.currency
         this.$axios.post('/checking-accounts', {
-          data: this.newMoovment
+          data: {
+            ...this.newMoovment,
+            currency: this.currency,
+            apartment: this.apartment.id
+          }
         }).then(response => {
-          this.$emit('input', response.data.data)
+          this.newMoovment = {}
+          this.$emit('input', [...this.value, response.data.data])
         })
       },
 

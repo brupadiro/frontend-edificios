@@ -45,6 +45,10 @@
         </v-col>
       </v-row>
     </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <slot name="actions"></slot>
+    </v-card-actions>
   </GeneralCardComponent>
 </template>
 
@@ -52,8 +56,13 @@
   import {
     mapFields
   } from 'vuex-map-fields';
+  import moment from 'moment';
   export default {
     props: {},
+    created() {
+      this.start_date = moment().format('YYYY-MM-DD');
+      this.end_date = moment().add(1, 'year').format('YYYY-MM-DD');
+    },
     computed: {
       ...mapFields('rentals', [
         'rental.warranty_type',

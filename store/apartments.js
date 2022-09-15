@@ -23,8 +23,8 @@ export const state = () => ({
     in_rent: false,
     files: {}
   },
-  files:{
-    data:[]
+  files: {
+    data: []
   }
 })
 
@@ -76,7 +76,7 @@ export const actions = {
       ...data.data[0].attributes,
       id: data.data[0].id
     })
-    commit('setFiles',data.data[0].attributes.files)
+    commit('setFiles', data.data[0].attributes.files)
   },
   async create({
     state,
@@ -84,7 +84,7 @@ export const actions = {
   }) {
 
 
-    var formatedData = function(apartment) {
+    var formatedData = function (apartment) {
       var data = JSON.parse(JSON.stringify(apartment))
       delete data.files
       return data
@@ -96,10 +96,7 @@ export const actions = {
     } = await this.$axios.post('/apartaments', {
       data: formatedData(state.apartment)
     })
-    commit('set', {
-      ...data.data.attributes,
-      id: data.data.id
-    })
+    return data
   },
   async update({
     commit,
@@ -108,7 +105,7 @@ export const actions = {
   }, files = []) {
 
 
-    var formatedData = function(apartment) {
+    var formatedData = function (apartment) {
       var data = JSON.parse(JSON.stringify(apartment))
       if (data.amenities.data != null) {
         data.amenities = data.amenities.data.map(amenity => amenity.id)
@@ -125,7 +122,9 @@ export const actions = {
     }
     const {
       data: data
-    } = await this.$axios.put(`/apartaments/${state.apartment.id}/?populate=*`,{data:formatedData(state.apartment)})
+    } = await this.$axios.put(`/apartaments/${state.apartment.id}/?populate=*`, {
+      data: formatedData(state.apartment)
+    })
     commit('set', {
       ...data.data.attributes,
       id: data.data.id
@@ -169,11 +168,17 @@ export const actions = {
       }
     })
   },
+  set({
+    commit
+  }, params) {
+    commit('set', params)
+  }
 
 }
 export const mutations = {
   updateField,
   set(state, apartment) {
+    console.log(apartment)
     state.apartment = apartment
   },
   setList(state, data) {

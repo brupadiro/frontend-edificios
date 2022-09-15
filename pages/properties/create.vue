@@ -27,17 +27,23 @@
               ARCHIVOS ADJUNTOS
             </v-card-title>
             <v-divider></v-divider>
-              <generalUploadFilesComponent v-model="files"></generalUploadFilesComponent>
+            <generalUploadFilesComponent v-model="files"></generalUploadFilesComponent>
           </GeneralCardComponent>
         </v-col>
       </v-row>
     </v-form>
     <generalBottomBarComponent app>
-      <v-btn text-color="white" class="secondary black--text rounded-lg font-weight-regular"
-        @click="createApartment()">
+      <v-btn text-color="white" class="secondary black--text rounded-lg font-weight-regular" @click="createApartment()">
         Guardar apartamento&nbsp;<v-icon>mdi-home</v-icon>
       </v-btn>
     </generalBottomBarComponent>
+    <!-- error snackbar-->
+    <v-snackbar v-model="errorInForm" :color="red">
+      Hubo un error al enviar, por favor revise los datos e intente nuevamente
+      <v-btn text @click="errorInForm = false">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -49,9 +55,7 @@
   export default {
     data() {
       return {
-        owner: {
-          in_property: false,
-        },
+        errorInForm: false,
         rental: {
           habitant: {}
         }
@@ -61,18 +65,61 @@
       async createApartment() {
         if (!this.$refs.form.validate())
           return;
-        await this.$store.dispatch("apartments/create");
-        //create owner
-        await this.$store.dispatch("owners/create");
-        if (this.apartment.in_rent) {
-          await this.$store.dispatch("rentals/create");
-          this.$store.dispatch("rentals/clear");
+
+        try {
+          //create apartment
+          const {
+            data: apartment
+          } = await this.$store.dispatch("apartments/create");
+          //check if apartment is in rent
+          if (this.apartment.in_rent) {
+            //add habitant
+            this.$store.dispatch('habitants/set', {
+              apartment: apartment.id,
+              type: 'tenant'
+            })
+            const {
+              data: habitant
+            } = await this.$store.dispatch("habitants/create");
+            //add rental
+            this.$store.dispatch('rentals/set', {
+              apartment: apartment.id,
+              habitants: habitant.id
+            })
+            await this.$store.dispatch("rentals/create");
+            this.$store.dispatch("rentals/clear");
+            //check if owner is in property
+          } else if (this.owner.in_property) {
+            //add owner as habitant
+            this.$store.dispatch('habitants/set', {
+              name: this.owner.name,
+              doc: this.owner.doc,
+              apartment: apartment.id,
+              type: 'owner'
+            })
+            const {
+              data: habitant
+            } = await this.$store.dispatch("habitants/create");
+
+          }
+
+          //create owner
+          await this.$store.dispatch("owners/create", {
+            apartment: apartment,
+          });
+          this.upload()
+          this.$store.dispatch("apartments/clear");
+          this.$store.dispatch("habitants/clear");
+          this.$store.dispatch("owners/clear");
+          this.$router.go(-1);
+
+        } catch (error) {
+          console.log(error)
+          this.errorInForm = true
+          setTimeout(() => {
+            this.errorInForm = false
+          }, 3000);
         }
-        this.upload()
-        this.$store.dispatch("apartments/clear");
-        this.$store.dispatch("habitants/clear");
-        this.$store.dispatch("owner/clear");
-        this.$router.go(-1);
       },
       async upload() {
         if (this.files.length == 0) return
@@ -99,6 +146,9 @@
       ]),
       apartment() {
         return this.$store.getters["apartments/get"];
+      },
+      owner() {
+        return this.$store.getters["owners/get"];
       }
     },
   }
