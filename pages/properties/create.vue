@@ -61,6 +61,11 @@
         }
       };
     },
+    created(){
+      this.$store.dispatch("apartments/clear");
+          this.$store.dispatch("habitants/clear");
+          this.$store.dispatch("owners/clear");
+    },
     methods: {
       async createApartment() {
         if (!this.$refs.form.validate())
