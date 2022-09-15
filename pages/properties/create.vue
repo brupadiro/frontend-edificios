@@ -107,7 +107,7 @@
           await this.$store.dispatch("owners/create", {
             apartment: apartment,
           });
-          this.upload()
+          this.upload(apartment.id)
           this.$store.dispatch("apartments/clear");
           this.$store.dispatch("habitants/clear");
           this.$store.dispatch("owners/clear");
@@ -121,11 +121,11 @@
           }, 3000);
         }
       },
-      async upload() {
+      async upload(apartmentID) {
         if (this.files.length == 0) return
         var form = new FormData()
         form.append('ref', 'api::apartament.apartament')
-        form.append('refId', this.apartment.id)
+        form.append('refId', apartmentID)
         form.append('field', 'files')
         this.files.data.forEach((file) => {
           if (file.attributes instanceof File) {
