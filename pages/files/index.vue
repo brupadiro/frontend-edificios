@@ -53,7 +53,7 @@
                   <v-divider></v-divider>
                   <v-card-text class="d-flex justify-center">
                     <template v-if="checkIfImage(file.attributes)">
-                      <v-img :src="file.attributes.url" width="100%" height="80" contain></v-img>
+                      <v-img :src="`https://forestapi.webcreativos.com.uy/`+file.attributes.url" width="100%" height="80" contain></v-img>
                     </template>
                     <template v-else>
                       <v-icon size="80">mdi-file-outline</v-icon>

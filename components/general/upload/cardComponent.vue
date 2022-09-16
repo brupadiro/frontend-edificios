@@ -18,7 +18,7 @@
     </v-card-text>
     <v-divider></v-divider>
     <v-card-actions style="height:55" v-show="file.attributes.url">
-      <v-btn block depressed :href="`https://forestapi.webcreativos.com.uy`+file.attributes.url" target="_blank" class="rounded-lg"
+      <v-btn block depressed :href="`https://forestapi.webcreativos.com.uy/`+file.attributes.url" target="_blank" class="rounded-lg"
         color="success darken-1">
         VER ARCHIVO&nbsp;
         <v-icon>mdi-magnify</v-icon>
