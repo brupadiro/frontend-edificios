@@ -39,6 +39,30 @@
         <v-col class="col-12">
           <generalCardComponent>
             <GeneralCardTitleComponent class="primary font-weight-regular white--text mb-3">
+              Areas del edificio
+            </GeneralCardTitleComponent>
+            <v-card-text>
+              <v-input>
+                <formsFieldsTextButtonComponent class="elevation-6 rounded-lg" notification-text="Amenitie agregado!" button-label="Agregar"
+                  v-model="amenity.name" @click="addArea()" label="Nombre del area">
+                  <template v-slot:icon>
+                      <v-icon>mdi-content-save</v-icon>
+                  </template>
+                </formsFieldsTextButtonComponent>
+              </v-input>
+            </v-card-text>
+            <v-card-text>
+              <v-chip-group multiple v-model="building.areas" column>
+                <formsFieldsCheckboxComponent v-for="area in areas.data" close @click:close="deleteArea(area.id)" notification-text="Amenitie eliminado" :key="'a'+area.id">
+                  {{area.attributes.name}}
+                </formsFieldsCheckboxComponent>
+              </v-chip-group>
+            </v-card-text>
+          </generalCardComponent>
+        </v-col>
+        <v-col class="col-12">
+          <generalCardComponent>
+            <GeneralCardTitleComponent class="primary font-weight-regular white--text mb-3">
               Amenities del edificio
             </GeneralCardTitleComponent>
             <v-card-text>
@@ -82,25 +106,41 @@
       }
     },
     created() {
-      this.getAmenities()
+      this.getAmenities() 
+      this.getAreas()
     },
     methods: {
       getAmenities() {
         this.$store.dispatch('amenities/find')
+      },
+      getAreas() {
+        this.$store.dispatch('areas/find')
       },
       addAmenity() {
         this.$store.dispatch('amenities/add', {
           data: this.amenity
         })
       },
+      addArea() {
+        this.$store.dispatch('areas/add', {
+          data: this.amenity
+        })
+      },
       deleteAmenitie(id) {
         this.$store.dispatch('amenities/delete', id)
+      },
+      deleteArea(id) {
+        this.$store.dispatch('areas/delete', id)
       },
     },
     computed: {
       amenities() {
         return this.$store.getters['amenities/getList']
+      },
+      areas() {
+        return this.$store.getters['areas/getList']
       }
+     
     }
   }
 

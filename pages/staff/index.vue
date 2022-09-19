@@ -14,7 +14,7 @@
       <v-col class="col-12">
         <GeneralCardComponent elevation="6">
           <v-card-title style="background:#333350" class="fill-width rounded-t-xl">
-            <v-tabs v-model="tab" hide-slider slider-color="primary" active-class="active-tab" grow>
+            <v-tabs v-model="tab" hide-slider slider-color="primary" background-color="primary" active-class="active-tab" grow>
               <v-tab ripple :value="1">
                 <span class="font-weight-black white--text">EMPLEADOS</span>
               </v-tab>
@@ -159,7 +159,7 @@
                   </FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-6">
-                  <FormsFieldsSelectComponent label="Area" :items="['Mantenimiento','Limpieza','Administracion']"
+                  <FormsFieldsSelectComponent label="Area" item-text="attributes.name" value="attributes.name" :items="areas.data"
                     v-model="staff.area"></FormsFieldsSelectComponent>
                 </v-col>
               </v-row>
@@ -215,8 +215,8 @@
       }
     },
     created() {
-            this.now = moment().format("YYYY-MM-DD");
-
+        this.now = moment().format("YYYY-MM-DD");
+        this.$store.dispatch('areas/find')
       this.getStaff()
       this.getTasks()
     },
@@ -274,6 +274,11 @@
             this.staffList = response.data
           })
       },
+    },
+    computed:{
+      areas() {
+        return this.$store.getters['areas/getList']
+      }
     }
   }
 

@@ -112,6 +112,11 @@
             "city": "Punta del este",
             "country": "Uruguay"
           },
+          images: {
+        // The logo on top of your invoice
+            "logo": "https://foresttower.netlify.app/logo.png",
+          },
+
           client: {
             "company": item.attributes.name,
             "address": item.attributes.address,
@@ -134,7 +139,7 @@
             price: item.attributes.amount,
           }, ],
           translate: {
-            "invoice": "FACTURA", // Default to 'INVOICE'
+            "invoice": "RECIBO", // Default to 'INVOICE'
             "number": "NUMERO", // Defaults to 'Number'
             "date": "FECHA", // Default to 'Date'
             // "due-date": "Verloopdatum", // Defaults to 'Due Date'

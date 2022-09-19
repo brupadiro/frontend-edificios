@@ -70,6 +70,9 @@
         </v-btn>
       </v-card-actions>
     </GeneralCardComponent>
+    <v-snackbar color="warning" v-model="snackErrorForm">
+      Hay campos requeridos incompletos
+    </v-snackbar>
   </v-dialog>
 
 </template>
@@ -88,6 +91,7 @@
     },
     data() {
       return {
+        snackErrorForm: false,
         rules:{
           required: [(value) => !!value || 'Este campo es requerido'],
           number: (value) => value.match(/^[0-9]*$/) || 'Este campo solo acepta numeros'
@@ -100,7 +104,13 @@
     },
     methods: {
       async addPayment() {
-        if(!this.$refs.form.validate()) return
+        if(!this.$refs.form.validate()) {
+          this.snackErrorForm = true
+          setTimeout(() => {
+            this.snackErrorForm = false
+          }, 3000)
+          return
+        }
         let invoice = await this.$store.dispatch('accounting/add')
         this.$store.dispatch('accounting/findAll')
         console.log(invoice)
