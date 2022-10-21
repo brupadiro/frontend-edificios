@@ -2,7 +2,7 @@
   <v-dialog max-width="700" :value="value" persistent>
     <GeneralCardComponent elevation="6">
       <generalCardTitleComponent>
-        RESERVAR
+        RESERVAR LAVANDERIA
         <v-spacer></v-spacer>
         <v-btn fab depressed small class="rounded-xl" color="grey lighten-3" @click="$emit('input', false)">
           <v-icon>mdi-close</v-icon>
@@ -13,17 +13,21 @@
         <v-card outlined>
           <v-card-text>
             <v-row>
-              <v-col class="col-12">
+              <v-col class="col-12" v-show="!apartment.id">
                 <formsFieldsSelectComponent v-model="reservation.apartment" item-text="attributes.number"
                   item-value="id" :items="apartmentsList.data" type="number" label="APARTAMENTO">
                 </formsFieldsSelectComponent>
               </v-col>
               <v-col class="col-12">
+                <FormsFieldsTextComponent v-model="reservation.bags" type="number" label="CANTIDAD DE BOLSAS">
+                </FormsFieldsTextComponent>
+              </v-col>
+              <v-col class="col-12">
                 <v-card outlined>
-                <v-sheet max-height="400">
-                  <v-date-picker v-model="reservation.date"  no-title scrollable locale="es" full-width
-                    :allowed-dates="allowedDates" class="elevation-0"></v-date-picker>
-                </v-sheet>
+                  <v-sheet max-height="400">
+                    <v-date-picker v-model="reservation.date" :allowed-dates="allowedDates" no-title scrollable
+                      locale="es" full-width class="elevation-0"></v-date-picker>
+                  </v-sheet>
                 </v-card>
               </v-col>
             </v-row>
@@ -65,36 +69,19 @@
                 <v-col class="col-12 grey lighten-5" v-if="reservoirByTurn">
                   <v-row class="border-bottom py-3" no-gutters>
                     <v-col class="col-5 d-flex align-center">
-                      <span>Medio dia</span>
-                    </v-col>
-                    <v-col class="col-4 d-flex align-center">
-                      <span>LIBRE</span>
-                    </v-col>
-                    <v-col class="col-3">
-                      <v-btn color="success darken-1" @click="createReservation( {from: '12:00:00.000', to: '13:00:00.000'})"
-                        v-show="!checkEmptyReservation( {from: '12:00:00.000', to: '13:00:00.000'})" block depressed>
-                        RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
-                      </v-btn>
-                      <v-btn color="red darken-1" class="white--text" v-show="checkEmptyReservation( {from: '12:00:00.000', to: '13:00:00.000'})" block
-                        depressed>
-                        RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                  <v-row class="border-bottom py-3" no-gutters>
-                    <v-col class="col-5 d-flex align-center">
                       <span>Noche</span>
                     </v-col>
                     <v-col class="col-4 d-flex align-center">
                       <span>LIBRE</span>
                     </v-col>
                     <v-col class="col-3">
-                      <v-btn color="success darken-1" @click="createReservation( {from: '21:00:00.000', to: '22:00:00.000'})"
+                      <v-btn color="success darken-1"
+                        @click="createReservation( {from: '21:00:00.000', to: '22:00:00.000'})"
                         v-show="!checkEmptyReservation( {from: '21:00:00.000', to: '22:00:00.000'})" block depressed>
                         RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
                       </v-btn>
-                      <v-btn color="red darken-1" class="white--text" v-show="checkEmptyReservation( {from: '21:00:00.000', to: '22:00:00.000'})" block
-                        depressed>
+                      <v-btn color="red darken-1" class="white--text"
+                        v-show="checkEmptyReservation( {from: '21:00:00.000', to: '22:00:00.000'})" block depressed>
                         RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
                       </v-btn>
                     </v-col>
@@ -153,15 +140,26 @@
         type: Object,
       },
       value: Boolean,
-      getColorCalendar: Function
+      getColorCalendar: Function,
+      apartment: {
+        type: Object,
+        default: () => ({})
+      }
     },
     data: () => ({
       now: null,
       newReservationModal: false,
-      reservation: {},
+      reservation: {
+        bags: 1
+      },
       selectedDate: null,
-      date: null
+      date: null,
     }),
+    created() {
+      if (this.apartment.id) {
+        this.reservation.apartment = this.apartment.id
+      }
+    },
     mounted() {
       this.now = moment().format("YYYY-MM-DD");
       this.$store.dispatch('apartments/findAll')
@@ -169,34 +167,30 @@
     methods: {
       allowedDates(date) {
         var currentDate = this.now
-        const ruleBeforeTo = this.zone.attributes.rules.find((rule) => rule.rule.data.attributes.type === 'before_to');
-        if(ruleBeforeTo) {
-          currentDate = moment().add(ruleBeforeTo.value,ruleBeforeTo.rule.data.attributes.subtype).format("YYYY-MM-DD")
-        }
         return moment(date).isSameOrAfter(currentDate);
       },
+
       showReservedHours() {
-        this.$store.dispatch("zones/findAllReservations", {
+        this.$store.dispatch("zones/laundry/findAll", {
           filters: {
-            date: this.reservation.date,
-            zone: this.zone.id
-          }
+            date: this.reservation.date
+          },
+          populate: '*'
         });
       },
       async createReservation(hours) {
         this.reservation.from = moment(hours.from, "HH:mm").format("HH:mm:ss.sss");
         this.reservation.to = moment(hours.to, "HH:mm").format("HH:mm:ss.sss");
         this.reservation.zone = this.zone
-
-
-        const rulePrePayment = this.zone.attributes.rules.find((rule) => rule.rule.data.attributes.type === 'prepayment');
-        console.log(rulePrePayment)
-        if(rulePrePayment) {
-          this.reservation.pending_payment = true
+        if (!this.reservation.apartment) {
+          return
         }
-
-        await this.$store.dispatch("zones/addReservation", this.reservation);
-        this.reservation = {};
+        await this.$store.dispatch("zones/laundry/add", this.reservation);
+        if (this.apartment) {
+          this.reservation = {
+            apartment: this.apartment.id
+          }
+        }
         this.newReservationModal = true;
         this.showReservedHours()
       },
@@ -208,7 +202,7 @@
         let numberOFPeoples = _.sumBy(reservationList, function (o) {
           return o.attributes.persons;
         });
-        if (numberOFPeoples > this.zone.attributes.capacity) {
+        if (numberOFPeoples > 10) {
           return true;
         }
         return false
@@ -216,7 +210,7 @@
     },
     computed: {
       reservationList() {
-        return this.$store.getters['zones/getReservationList']
+        return this.$store.getters['zones/laundry/getList']
       },
       apartmentsList() {
         return this.$store.getters['apartments/getList']
@@ -224,7 +218,8 @@
       arrayHourToHour() {
         let arrayOfHours = [];
         for (let i = 7; i < 24; i++) {
-          if (moment().isSameOrAfter(moment(i, "HH")) && this.reservation.date == moment().format("YYYY-MM-DD")) continue
+          if (moment().isSameOrAfter(moment(i, "HH")) && this.reservation.date == moment().format("YYYY-MM-DD"))
+            continue
           arrayOfHours.push({
             from: moment(i, "HH").format("HH:mm:00.000"),
             to: moment(i + 1, "HH").format("HH:mm:00.000")
@@ -232,13 +227,13 @@
         }
         return arrayOfHours;
       },
-      reservoirByTurn(){
-        if(!this.zone.attributes) return false
+      reservoirByTurn() {
+        if (!this.zone.attributes) return false
         return this.zone.attributes.rules.find((rule) => rule.rule.data.attributes.type === 'period') != undefined;
       }
     },
     watch: {
-      "reservation.date":function() {
+      "reservation.date": function () {
         this.showReservedHours()
       }
     }

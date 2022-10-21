@@ -1,22 +1,22 @@
 <template>
   <v-card>
-    <v-card-title>
+    <v-card-title v-if="!readOnly">
       <v-row>
         <v-col class="col-md-10 col-12">
           <v-input>
             <v-row>
               <v-col class="col-md-6 col-12">
-                <FormsFieldsTextComponent :label="`Monto (${currency})`" v-model="newMoovment.amount" type="number"
+                <FormsFieldsTextComponent :label="`Monto (${currency})`" v-model="amount" type="number"
                   prepend-inner-icon="mdi-currency-usd"></FormsFieldsTextComponent>
 
               </v-col>
               <v-col class="col-md-6 col-12">
-                <FormsFieldsSelectComponent v-model="newMoovment.type" label="Tipo"
+                <FormsFieldsSelectComponent v-model="type" label="Tipo"
                   :items="[{value: 'deposit',text: 'Deposito' }, {value: 'withdrawal',text: 'Retiro'}]">
                 </FormsFieldsSelectComponent>
               </v-col>
               <v-col class="col-12">
-                <FormsFieldsTextComponent v-model="newMoovment.concept" placeholder="Opcional..." label="Concepto">
+                <FormsFieldsTextComponent v-model="concept" placeholder="Opcional..." label="Concepto">
                 </FormsFieldsTextComponent>
               </v-col>
             </v-row>
@@ -79,6 +79,10 @@
 </template>
 
 <script>
+  import {
+    mapFields
+  } from 'vuex-map-fields';
+
   export default {
     filters: {
       currency(value) {
@@ -89,6 +93,10 @@
       }
     },
     props: {
+      readOnly:{
+        type: Boolean,
+        default: false
+      },
       apartment: {
         type: Object,
         required: true
@@ -104,29 +112,24 @@
     },
     data() {
       return {
-        newMoovment: {
-          amount: 0,
-          type: 'deposit',
-          concept: ''
-        },
       }
     },
     methods: {
       addMoovment() {
-        this.$axios.post('/checking-accounts', {
-          data: {
-            ...this.newMoovment,
-            currency: this.currency,
-            apartment: this.apartment.id
-          }
-        }).then(response => {
-          this.newMoovment = {}
-          this.$emit('input', [...this.value, response.data.data])
+        this.$store.dispatch('checkingaccounts/add', {
+          apartment: this.apartment.id,
+          currency: this.currency,
         })
       },
-
     },
     computed: {
+
+      ...mapFields('checkingaccounts', [
+        'moovment.amount',
+        'moovment.type',
+        'moovment.concept',
+      ]),
+
       moovments() {
         return this.value.filter(account => account.attributes.currency === this.currency)
       },

@@ -22,11 +22,11 @@
             <v-card-text class="py-6">
               <v-form ref="form">
                 <v-row>
-                  <v-col class="col-12 col-sm-6">
+                  <v-col class="col-12" :class="{'col-sm-6':!apartment.id,'col-sm-12':apartment.id}">
                     <formsFieldsTextComponent v-model="visit.name" prepend-inner-icon="mdi-account" label="NOMBRE">
                     </formsFieldsTextComponent>
                   </v-col>
-                  <v-col class="col-12 col-sm-6">
+                  <v-col class="col-12" v-show="!apartment.id">
                     <formsFieldsSelectComponent v-model="visit.apartment" item-text="attributes.number" item-value="id"
                       :items="apartmentsList.data" type="number" label="APARTAMENTO"></formsFieldsSelectComponent>
                   </v-col>
@@ -70,7 +70,7 @@
       </v-expand-transition>
       <v-divider></v-divider>
       <v-card-text class="v-card-text-overflow">
-        <v-list>
+        <v-list v-if="items.meta.pagination.total>0">
           <v-list-item class="elevation-2 rounded-lg my-3" v-for="item in items.data" :key="item.id">
             <v-list-item-avatar size="80" color="indigo darken-1" class="pa-2">
               <v-img src="/icons/person.png" contain></v-img>
@@ -82,11 +82,10 @@
               <v-list-item-subtitle>
                 <v-icon>mdi-note-text</v-icon>&nbsp;
                 <b class="black--text">{{item.attributes.doc_type}}: {{item.attributes.doc}}</b>
-                <template v-if="item.attributes.phone">
-                  &nbsp;-&nbsp;
-                  <v-icon>mdi-phone</v-icon>&nbsp;
-                  <b class="black--text">CI: {{item.attributes.phone}}</b>
-                </template>
+              </v-list-item-subtitle>
+              <v-list-item-subtitle v-if="item.attributes.phone">
+                <v-icon>mdi-phone</v-icon>&nbsp;
+                <b class="black--text">{{item.attributes.phone}}</b>
               </v-list-item-subtitle>
               <v-list-item-subtitle>
                 <v-icon>mdi-calendar</v-icon>&nbsp;
@@ -98,10 +97,24 @@
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-actions>
-              <v-btn v-show="!item.attributes.out_hour" color="secondary font-weight-regular rounded-lg" @click="setCheckout(item.id)">
-                CHECK OUT
+              <v-btn v-show="!item.attributes.out_hour" :fab="isMobile" rounded color="yellow"
+                class="font-weight-regular rounded-lg" @click="setCheckout(item.id)">
+                <v-icon v-if="isMobile" size="30">ion-ios-exit</v-icon>
+                <span v-else>CHECK OUT</span>
               </v-btn>
             </v-list-item-actions>
+          </v-list-item>
+        </v-list>
+        <v-list v-else>
+          <v-list-item class="elevation-2 rounded-lg my-3">
+            <v-list-item-avatar>
+              <v-icon size="60" color="primary">ion-ios-information-circle</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>
+                <h3>Aun no tienes visitas registradas</h3>
+              </v-list-item-title>
+            </v-list-item-content>
           </v-list-item>
         </v-list>
       </v-card-text>
@@ -199,20 +212,24 @@
           ...this.visit,
           apartment: this.apartment.id
         }
+
         this.$axios.post('/visits', {
           data: data
         }).then(response => {
           this.getVisits()
-          this.$emit('update')
+          //this.$emit('update')
           this.modalVisits = false
         })
       },
     },
     computed: {
+      isMobile() {
+        return this.$vuetify.breakpoint.xsOnly
+      },
       apartmentsList() {
         return this.$store.getters['apartments/getList']
-      }
-    }
+      },
+    },
   }
 
 </script>

@@ -4,7 +4,11 @@
       Facturas
     </generalCardTitleComponent>
     <v-card-text>
-      <v-data-table hide-default-footer :items="data.data" :headers="headers">
+      <v-data-table hide-default-footer  disable-sort :items="data.data" :headers="headers">
+        <template v-slot:no-data>
+          No hay facturas disponibles
+        </template>
+
         <template v-slot:item.attributes.createdAt="{ item }">
           {{ item.createdAt | formatDate }}
         </template>
@@ -12,7 +16,7 @@
           {{ item.attributes.type | formatType }}
         </template>
         <template v-slot:item.change_status="{ item }">
-          <v-btn color="info" v-show="item.attributes.status == 'pending'" @click="changeStatus(item.id)">
+          <v-btn color="info" v-show="item.attributes.status == 'pending'" :disabled="readonly" @click="changeStatus(item.id)">
             VALIDAR PAGO
           </v-btn>
           <v-chip color="success darken-1 font-weight-regular" label block v-show="item.attributes.status == 'payed'">
@@ -21,7 +25,7 @@
         </template>
         <template v-slot:item.invoice="{ item }">
           <v-btn color="secondary" @click="generateInvoice(item)">
-            GENERAR FACTURA
+            IMPIRMIR FACTURA
           </v-btn>
         </template>
 
@@ -37,6 +41,10 @@
   export default {
     mixins: [dateFunctions],
     props: {
+      readonly:{
+        type: Boolean,
+        default: false
+      },
       title: {
         type: Boolean,
         default: false
@@ -92,7 +100,7 @@
           text: 'Cambiar estado',
           value: 'change_status'
         }, {
-          text: 'Generar factura',
+          text: 'Imprimir factura',
           value: 'invoice'
         }]
       }

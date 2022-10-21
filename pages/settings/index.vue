@@ -43,17 +43,18 @@
             </GeneralCardTitleComponent>
             <v-card-text>
               <v-input>
-                <formsFieldsTextButtonComponent class="elevation-6 rounded-lg" notification-text="Amenitie agregado!" button-label="Agregar"
-                  v-model="amenity.name" @click="addArea()" label="Nombre del area">
+                <formsFieldsTextButtonComponent class="elevation-6 rounded-lg" notification-text="Amenitie agregado!"
+                  button-label="Agregar" v-model="amenity.name" @click="addArea()" label="Nombre del area">
                   <template v-slot:icon>
-                      <v-icon>mdi-content-save</v-icon>
+                    <v-icon>mdi-content-save</v-icon>
                   </template>
                 </formsFieldsTextButtonComponent>
               </v-input>
             </v-card-text>
             <v-card-text>
               <v-chip-group multiple v-model="building.areas" column>
-                <formsFieldsCheckboxComponent v-for="area in areas.data" close @click:close="deleteArea(area.id)" notification-text="Amenitie eliminado" :key="'a'+area.id">
+                <formsFieldsCheckboxComponent v-for="area in areas.data" close @click:close="deleteArea(area.id)"
+                  notification-text="Amenitie eliminado" :key="'a'+area.id">
                   {{area.attributes.name}}
                 </formsFieldsCheckboxComponent>
               </v-chip-group>
@@ -67,20 +68,50 @@
             </GeneralCardTitleComponent>
             <v-card-text>
               <v-input>
-                <formsFieldsTextButtonComponent class="elevation-6 rounded-lg" notification-text="Amenitie agregado!" button-label="Agregar"
-                  v-model="amenity.name" @click="addAmenity()" label="Nombre del amenitie">
+                <formsFieldsTextButtonComponent class="elevation-6 rounded-lg" notification-text="Amenitie agregado!"
+                  button-label="Agregar" v-model="amenity.name" @click="addAmenity()" label="Nombre del amenitie">
                   <template v-slot:icon>
-                      <v-icon>mdi-content-save</v-icon>
+                    <v-icon>mdi-content-save</v-icon>
                   </template>
                 </formsFieldsTextButtonComponent>
               </v-input>
             </v-card-text>
             <v-card-text>
               <v-chip-group multiple v-model="building.amenities" column>
-                <formsFieldsCheckboxComponent v-for="amenity in amenities.data" close @click:close="deleteAmenitie(amenity.id)" notification-text="Amenitie eliminado" :key="'a'+amenity.id">
+                <formsFieldsCheckboxComponent v-for="amenity in amenities.data" close
+                  @click:close="deleteAmenitie(amenity.id)" notification-text="Amenitie eliminado"
+                  :key="'a'+amenity.id">
                   {{amenity.attributes.name}}
                 </formsFieldsCheckboxComponent>
               </v-chip-group>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" text-color="white" @click="saveSettings()">
+                Guardar
+              </v-btn>
+            </v-card-actions>
+          </generalCardComponent>
+        </v-col>
+        <v-col class="col-12">
+          <generalCardComponent>
+            <GeneralCardTitleComponent class="primary font-weight-regular white--text mb-3">
+              Usuarios
+            </GeneralCardTitleComponent>
+            <v-card-text>
+              <v-row>
+                <v-col class="col-md-12 col-6">
+                  <formsFieldsTextComponent label="CI" v-model="user.username"></formsFieldsTextComponent>
+                </v-col>
+                <v-col class="col-md-12 col-6">
+                  <formsFieldsTextComponent label="Password" type="Password" v-model="user.password">
+                  </formsFieldsTextComponent>
+
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-data-table :headers="headers" :items="users"></v-data-table>
+            <v-card-text>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -102,12 +133,24 @@
     data() {
       return {
         building: {},
-        amenity: {}
+        amenity: {},
+        user:{},
+        headers: [{
+          text:"CI",
+          value:"username"
+        },{
+          text:"Nombre",
+          value:"name",
+        },{
+          text:"Acciones",
+          value:"id",
+        }]
       }
     },
     created() {
-      this.getAmenities() 
+      this.getAmenities()
       this.getAreas()
+      this.getUsers()
     },
     methods: {
       getAmenities() {
@@ -115,6 +158,11 @@
       },
       getAreas() {
         this.$store.dispatch('areas/find')
+      },
+      getUsers() {
+        this.$store.dispatch('users/find', {
+            type: 'admin'
+        })
       },
       addAmenity() {
         this.$store.dispatch('amenities/add', {
@@ -134,13 +182,16 @@
       },
     },
     computed: {
+      users(){
+        return this.$store.getters['users/get']
+      },
       amenities() {
         return this.$store.getters['amenities/getList']
       },
       areas() {
         return this.$store.getters['areas/getList']
       }
-     
+
     }
   }
 

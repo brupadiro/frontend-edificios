@@ -7,8 +7,7 @@
     <v-card-text class="pa-md-6">
       <v-row>
         <v-col class="col-12 col-sm-6">
-          <formsFieldsTextComponent prepend-inner-icon="mdi-account" v-model="name"
-            label="Nombre del propietario">
+          <formsFieldsTextComponent prepend-inner-icon="mdi-account" v-model="name" label="Nombre del propietario">
           </formsFieldsTextComponent>
         </v-col>
         <v-col class="col-12 col-sm-6">
@@ -16,14 +15,20 @@
             label="Documento de identidad">
           </formsFieldsTextComponent>
         </v-col>
+        <v-col class="col-12 col-sm-12">
+          <formsFieldsTextComponent prepend-inner-icon="mdi-file" :error-messages="errorUserExists"
+            @input="checkIfUserExists($event)" v-model="username" type="number" label="Celular/Telefono">
+          </formsFieldsTextComponent>
+          <span v-if="errorUserExists.length>0" class="error--text">{{errorUserExists[0]}}</span>
+        </v-col>
         <v-col class="col-12">
-          <v-card outlined class="rounded-lg" v-show="!in_rent">
+          <v-card class="rounded-lg" v-show="!in_rent">
             <v-card-title class="text-subtitle-2 font-weight-regular">
               RESIDE EN LA PROPIEDAD
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
-              <v-radio-group hide-details  v-model="in_property">
+              <v-radio-group hide-details v-model="in_property">
                 <v-row>
                   <v-col class="col-md-6">
                     <formsFieldsRadioComponent :value="true" label="SI">
@@ -45,13 +50,20 @@
 </template>
 
 <script>
-import { mapFields } from 'vuex-map-fields';
-
+  import {
+    mapFields
+  } from 'vuex-map-fields';
+  import usersMixins from '~/plugins/mixins/forms/users.js'
   export default {
-    computed:{
-      ...mapFields('owners',[
-        'owner.name',
-        'owner.doc',
+    mixins: [usersMixins],
+    computed: {
+      ...mapFields('owners', [
+        'user.name',
+        'user.doc',
+        'user.username',
+        'user.id'
+      ]),
+      ...mapFields('owners', [
         'owner.in_property'
       ]),
       in_rent() {
