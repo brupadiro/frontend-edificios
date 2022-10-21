@@ -25,14 +25,9 @@
           </formsFieldsTextComponent>
         </v-col>
         <v-col class="col-4">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
           <formsFieldsTextComponent prepend-inner-icon="ion-md-expand" v-on="on" v-bind="attrs" :rules="rules.required" type="number"
             v-model="square_meters" label="M²">
           </formsFieldsTextComponent>
-            </template>
-            <span>Metros cuadrados</span>
-          </v-tooltip>
         </v-col>
         <v-col class="col-12">
           <v-card outlined class="rounded-lg">
