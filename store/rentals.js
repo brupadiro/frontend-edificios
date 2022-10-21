@@ -9,6 +9,13 @@ export const state = () => ({
     warranty_type: '',
     start_date: '',
     end_date: '',
+    user: null,
+  },
+  user: {
+    name: '',
+    doc: '',
+    username: '',
+    type: 'tenant',
   },
   tenants: {
     data: [],
@@ -23,6 +30,12 @@ export const getters = {
   ) {
     return state.tenants
 
+  },
+  user(state) {
+    return state.user
+  },
+  get(state) {
+    return state.rental
   },
   getField
 }
@@ -48,7 +61,7 @@ export const actions = {
   }, query) {
     const {
       data: data
-    } = await this.$axios.get(`/rentals/`, {
+    } = await this.$axios.get(`/rentals/?populate=user`, {
       params: {
         filters: query
       },
@@ -58,18 +71,32 @@ export const actions = {
         })
       }
     })
-    commit('set', {
-      ...data.data[0].attributes,
-      id: data.data[0].id
-    })
+
+
+    if (data.meta.pagination.total > 0) {
+      if (data.data[0].attributes.user.data == null) {
+        data.data[0].attributes.user.data = {}
+      }
+      commit('set', {
+        ...data.data[0].attributes,
+        id: data.data[0].id
+      })
+      return data.data[0].attributes
+
+    } else {
+      return {
+        user: {
+          data: {}
+        }
+      }
+    }
   },
   async create({
     dispatch,
     state,
     rootGetters,
     commit
-  }) {
-
+  }, user) {
     const {
       data: data
     } = await this.$axios.post('/rentals', {
@@ -96,6 +123,13 @@ export const actions = {
   async delete(id) {
     await this.$axios.delete(`/rentals/${id}`)
   },
+
+  setUser({
+    commit
+  }, user) {
+    commit('setUser', user)
+  },
+
   clear({
     commit
   }) {
@@ -117,6 +151,12 @@ export const mutations = {
   set(state, data) {
     state.rental = {
       ...state.rental,
+      ...data
+    }
+  },
+  setUser(state, data) {
+    state.user = {
+      ...state.user,
       ...data
     }
   },

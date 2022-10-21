@@ -17,7 +17,7 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
-            <cardsPropertiesComponent outlined @changePage="search.pagination.page = $event" :data="data" expanded></cardsPropertiesComponent>
+            <propertiesListComponent outlined @changePage="search.pagination.page = $event" :data="data" expanded></propertiesListComponent>
           </v-card-text>
           <v-divider></v-divider>
         </generalCardComponent>

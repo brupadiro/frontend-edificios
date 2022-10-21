@@ -5,7 +5,7 @@
     </GeneralCardTitleComponent>
     <v-card-text class="my-3">
       <v-row>
-        <v-col class="col-md-6 col-12">
+        <v-col class="col-md-12 col-12">
           <GeneralCardMiniComponent>
             <template v-slot:title>
               $ {{inPayments}}
@@ -26,7 +26,7 @@
 
           </GeneralCardMiniComponent>
         </v-col>
-        <v-col class="col-md-12 col-12">
+        <v-col class="col-md-6 col-12">
           <GeneralCardMiniComponent color="orange">
             <template v-slot:title>
               $ {{pendingPayments}}
