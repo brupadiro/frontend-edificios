@@ -4,6 +4,13 @@
 @import '~vuetify/src/styles/styles.sass';
 $main-font: 'Montserrat';
 
+
+@keyframes jump {
+  0%   {transform: translate3d(0,0,0) scale3d(1,1,1);}
+  40%  {transform: translate3d(0,30%,0) scale3d(.7,1.5,1);}
+  100% {transform: translate3d(0,100%,0) scale3d(1.5,.7,1);}
+}
+
 body {
 
   .v-application {
@@ -22,7 +29,11 @@ body {
     .fill-width {
       width: 100% !important;
     }
-
+    .loading {
+      transform-origin: 50% 50%;
+      animation: jump .5s linear alternate infinite;
+    }
+    
     //@grid
     .align-stretch {
       align-items: stretch;
@@ -64,6 +75,7 @@ body {
     .text-h5,
     .text-h6,
     .v-toolbar__content,
+    .v-stepper__label,
     .text-subtitle-1,
     .text-subtitle-2,
     .v-card__title {

@@ -148,10 +148,10 @@
             :items="rentals.data" class="font-weight-bold text-h5">
 
             <template v-slot:item.name="{ item }">
-              {{item.attributes.habitants |formatHabitants('name')}}
+              {{item.attributes.user.data.name}}
             </template>
             <template v-slot:item.doc="{ item }">
-              {{item.attributes.habitants |formatHabitants('doc')}}
+              {{item.attributes.user.data.doc}}
             </template>
             <template v-slot:item.attributes.start_date="{ item }">
               {{item.attributes.start_date | formatDate}}
@@ -192,9 +192,8 @@
       })
     },
     filters:{
-      formatHabitants: (habitants, type) => {
-        console.log(habitants)
-        let data = habitants.data[0].attributes[type]
+      formatHabitants: (user, type) => {
+        let data = user.data.attributes[type]
         return data ? data : ''
       }
     },
@@ -203,11 +202,11 @@
         openRentalForm: false,
         headersRentals: [{
             text: 'Nombre',
-            value: 'name'
+            value: 'attributes.user.data.attributes.name'
           },
           {
             text: 'Documento',
-            value: 'doc'
+            value: 'attributes.user.data.attributes.doc'
           },
           {
             text: 'Fecha de inicio',

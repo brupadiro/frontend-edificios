@@ -42,11 +42,11 @@
           await this.generateFunction("Owners");
         } else if (this.value == 3) {
           await this.generateFunction("Files");
+          this.$router.go(-1)
         } else if (this.value == 4) {
           await this.generateFunction("Rentals");
-        } else {
-          this.$router.go(-1);
-        }
+          this.$router.go(-1)
+        } 
       },
     },
     computed: {

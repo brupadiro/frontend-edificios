@@ -99,18 +99,36 @@
               Usuarios
             </GeneralCardTitleComponent>
             <v-card-text>
-              <v-row>
-                <v-col class="col-md-12 col-6">
-                  <formsFieldsTextComponent label="CI" v-model="user.username"></formsFieldsTextComponent>
-                </v-col>
-                <v-col class="col-md-12 col-6">
-                  <formsFieldsTextComponent label="Password" type="Password" v-model="user.password">
-                  </formsFieldsTextComponent>
+              <v-form ref="form">
+                <v-row>
+                  <v-col class="col-12 col-md-10">
+                    <v-row>
+                      <v-col class="col-md-4 col-12">
+                        <formsFieldsTextComponent label="CI" v-model="user.username"></formsFieldsTextComponent>
+                      </v-col>
+                      <v-col class="col-md-4 col-12">
+                        <formsFieldsTextComponent label="Nombre" v-model="user.name"></formsFieldsTextComponent>
+                      </v-col>
+                      <v-col class="col-md-4 col-12">
+                        <formsFieldsTextComponent label="Password" type="Password" v-model="user.password">
+                        </formsFieldsTextComponent>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                  <v-col class="col-12 col-md-2">
+                    <v-btn color="secondary" class="mt-8 rounded-lg" large @click="addUser()">Guardar</v-btn>
+                  </v-col>
+                </v-row>
 
-                </v-col>
-              </v-row>
+              </v-form>
             </v-card-text>
-            <v-data-table :headers="headers" :items="users"></v-data-table>
+            <v-data-table :headers="headers" :items="users">
+              <template v-slot:item.id="{ item }">
+                <v-icon small @click="deleteItem(item)">
+                  mdi-delete
+                </v-icon>
+              </template>
+            </v-data-table>
             <v-card-text>
             </v-card-text>
             <v-card-actions>
@@ -134,20 +152,22 @@
       return {
         building: {},
         amenity: {},
-        user:{},
+        user: {},
         headers: [{
-          text:"CI",
-          value:"username"
-        },{
-          text:"Nombre",
-          value:"name",
-        },{
-          text:"Acciones",
-          value:"id",
+          text: "CI",
+          value: "username"
+        }, {
+          text: "Nombre",
+          value: "name",
+        }, {
+          text: "Acciones",
+          value: "id",
+          align: 'center'
         }]
       }
     },
     created() {
+      this.building = this.$auth.user.building
       this.getAmenities()
       this.getAreas()
       this.getUsers()
@@ -160,19 +180,34 @@
         this.$store.dispatch('areas/find')
       },
       getUsers() {
-        this.$store.dispatch('users/find', {
-            type: 'admin'
+        this.$store.dispatch('users/findAll', {
+          type: 'admin'
+        })
+      },
+      addUser() {
+        if (!this.$refs.form.validate()) return
+        this.user.building = this.$auth.user.building.id
+        this.$store.dispatch('users/set', this.user)
+        this.$store.dispatch('users/create', {
+          type: 'admin'
+        }).then(() => {
+          this.user = {}
+          this.getUsers()
+        })
+      },
+      searchUsers() {
+
+      },
+      deleteItem() {
+        this.$store.dispatch('users/delete', {
+          id: this.user.id
         })
       },
       addAmenity() {
-        this.$store.dispatch('amenities/add', {
-          data: this.amenity
-        })
+        this.$store.dispatch('amenities/add', this.amenity)
       },
       addArea() {
-        this.$store.dispatch('areas/add', {
-          data: this.amenity
-        })
+        this.$store.dispatch('areas/add', this.amenity)
       },
       deleteAmenitie(id) {
         this.$store.dispatch('amenities/delete', id)
@@ -182,8 +217,8 @@
       },
     },
     computed: {
-      users(){
-        return this.$store.getters['users/get']
+      users() {
+        return this.$store.getters['users/getList']
       },
       amenities() {
         return this.$store.getters['amenities/getList']

@@ -21,7 +21,7 @@ export const state = () => ({
     square_meters: 0,
     payment_method: 0,
     amenities: [],
-    expenses_currency:'UYU',
+    expenses_currency: 'UYU',
     expenses_payment_method: 'Card',
     expenses_cost: 0,
     in_rent: true,
@@ -43,29 +43,31 @@ export const getters = {
 
 
 export const actions = {
-  interceptor({},response) {
-      if(response.data) {
-        var attributes = {}
-        if(response.data.attributes){
-          attributes = response.data.attributes
-        } else if(response.data[0].attributes) {
-          attributes = response.data[0].attributes
-        } else{
-          return response
-        }
-        console.log(attributes)
-        if (attributes.amenities.data) {
-          attributes.amenities = attributes.amenities.data.map((amenity) => {
-            return amenity.id
-          })
-        }
-        if (attributes.invoices.data) {
-          attributes.invoices = attributes.invoices.data.map((amenity) => {
-            return amenity.id
-          })
-        }
+  interceptor({}, response) {
+    if (response.data) {
+      var attributes = {}
+      if (response.data.attributes) {
+        attributes = response.data.attributes
+      } else if (response.data[0].attributes) {
+        attributes = response.data[0].attributes
+      } else {
+        return response
       }
-      return {data:response}
+      console.log(attributes)
+      if (attributes.amenities.data) {
+        attributes.amenities = attributes.amenities.data.map((amenity) => {
+          return amenity.id
+        })
+      }
+      if (attributes.invoices.data) {
+        attributes.invoices = attributes.invoices.data.map((amenity) => {
+          return amenity.id
+        })
+      }
+    }
+    return {
+      data: response
+    }
   },
 
 
@@ -73,6 +75,14 @@ export const actions = {
     state,
     commit
   }, params = {}) {
+    if (params.filters) {
+      params.filters.building = this.$auth.user.building.id
+    } else {
+      params.filters = {
+        building: this.$auth.user.building.id
+      }
+    }
+    console.log("aca")
     const {
       data: data
     } = await this.$axios.get('/apartaments', {
@@ -89,6 +99,8 @@ export const actions = {
     commit,
     dispatch
   }, query) {
+
+
     const {
       data: data
     } = await this.$axios.get(`/apartaments/`, {
@@ -101,8 +113,8 @@ export const actions = {
           arrayFormat: 'brackets'
         })
       }
-    }).then((data)=>{
-      return dispatch('interceptor',data.data)
+    }).then((data) => {
+      return dispatch('interceptor', data.data)
     })
     console.log(data)
     commit('set', {
@@ -116,13 +128,17 @@ export const actions = {
     commit,
     dispatch
   }) {
+    var buldingId = this.$auth.user.building.id
 
     const {
       data: data
     } = await this.$axios.post('/apartaments?populate=amenities,invoices', {
-      data: state.apartment
-    }).then((data)=>{
-      return dispatch('interceptor',data.data)
+      data: {
+        ...state.apartment,
+        building: buldingId
+      }
+    }).then((data) => {
+      return dispatch('interceptor', data.data)
     })
     console.log(data)
     commit('set', {
@@ -141,8 +157,8 @@ export const actions = {
       data: data
     } = await this.$axios.put(`/apartaments/${state.apartment.id}/?populate=amenities,invoices`, {
       data: state.apartment
-    }).then((data)=>{
-      return dispatch('interceptor',data.data)
+    }).then((data) => {
+      return dispatch('interceptor', data.data)
     })
     commit('set', {
       ...data.data.attributes,
@@ -188,7 +204,7 @@ export const actions = {
       }
     })
   },
-  async checkIfExists({},number){
+  async checkIfExists({}, number) {
     const {
       data: data
     } = await this.$axios.get(`/apartaments/`, {
@@ -203,7 +219,7 @@ export const actions = {
         })
       }
     })
-    return data.meta.pagination.total>0
+    return data.meta.pagination.total > 0
   },
   set({
     commit
@@ -225,7 +241,7 @@ export const mutations = {
     console.log(data)
     state.files = data
   },
-  deleteApartmentFiles(state){
+  deleteApartmentFiles(state) {
     delete state.apartment.files
   }
 

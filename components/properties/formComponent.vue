@@ -25,7 +25,7 @@
           </formsFieldsTextComponent>
         </v-col>
         <v-col class="col-4">
-          <formsFieldsTextComponent prepend-inner-icon="ion-md-expand" v-on="on" v-bind="attrs" :rules="rules.required" type="number"
+          <formsFieldsTextComponent prepend-inner-icon="ion-md-expand"  :rules="rules.required" type="number"
             v-model="square_meters" label="M²">
           </formsFieldsTextComponent>
         </v-col>

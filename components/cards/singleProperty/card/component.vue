@@ -24,7 +24,7 @@
     <v-card-text>
       <v-tabs-items v-model="tab">
         <v-tab-item>
-          <cardSinglePropertyCardSheetComponent :readOnly="readOnly" :data="data"></cardSinglePropertyCardSheetComponent>
+          <cardsSinglePropertyCardSheetComponent :readOnly="readOnly" :data="data"></cardsSinglePropertyCardSheetComponent>
         </v-tab-item>
         <v-tab-item>
           <propertiesVisitsComponent :apartment="data" outlined class="mt-3"></propertiesVisitsComponent>

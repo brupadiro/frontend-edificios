@@ -33,6 +33,7 @@
     },
     methods: {
       getProperties() {
+        console.log("aca")
         this.$store.dispatch('apartments/findAll', {populate:'*', pagination:{limit:5},sort:'id:desc'})
       },
     },

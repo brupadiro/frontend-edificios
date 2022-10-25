@@ -5,6 +5,7 @@ import {
 var qs = require('qs');
 
 export const state = () => ({
+  users:[],
   user: {
     name: '',
     doc: '',
@@ -16,13 +17,34 @@ export const getters = {
   getField,
   get(state) {
     return state.user;
+  },
+  getList(state) {
+    return state.users;
   }
+
 }
 export const actions = {
   set({
     commit
   }, data) {
     commit('set', data)
+  },
+  async findAll({
+    commit
+  }, query) {
+    const {
+      data: data
+    } = await this.$axios.get(`/users/`, {
+      params: {
+        filters: query
+      },
+      paramsSerializer: params => {
+        return qs.stringify(params, {
+          arrayFormat: 'brackets'
+        })
+      }
+    })
+    commit("setList", data)
   },
   async find({
     commit
@@ -110,7 +132,22 @@ export const actions = {
     })
     return data.length>0
 
-  }
+  },
+  async login({}, {username, password}){
+      this.$auth.loginWith('local', {
+        data: {
+          identifier: username,
+          password: password
+        }
+      }).then(() => {
+        setTimeout(() => {
+          this.$router.push('/')
+        }, 1000);
+      }).catch((error) => {
+        console.log('login error', error)
+      })
+    }
+
 }
 export const mutations = {
   updateField,
@@ -119,5 +156,10 @@ export const mutations = {
       ...state.user,
       ...data
     }
+  },
+  setList(state, data) {
+    console.log(data)
+    state.users = data
   }
+
 }

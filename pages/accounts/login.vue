@@ -55,19 +55,8 @@
       },
     }),
     methods: {
-      login() {
-        this.$auth.loginWith('local', {
-          data: {
-            identifier: this.user.username,
-            password: this.user.password
-          }
-        }).then(() => {
-          setTimeout(() => {
-            this.$router.push('/')
-          }, 1000);
-        }).catch((error) => {
-          console.log('login error', error)
-        })
+      async login() {
+        await this.$store.dispatch('users/login', this.user)
       }
     }
   }

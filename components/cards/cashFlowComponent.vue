@@ -78,7 +78,7 @@
         return this.$store.getters['accounting/getList'] || {}
       },
       inPayments() {
-        if(!this.payments.data) return
+        if(!this.payments.data) return 0
         let inPayments =this.payments.data.filter((p)=>{
           return p.attributes.type == 'expenses'  && p.attributes.status == 'payed'
         }).reduce((acc, curr)=>{
@@ -88,7 +88,7 @@
         return inPayments
       },
       outPayments() {
-        if(!this.payments.data) return
+        if(!this.payments.data) return 0
         let inPayments =this.payments.data.filter((p)=>{
           return p.attributes.type == 'suppliers'
         }).reduce((acc, curr)=>{
@@ -98,7 +98,7 @@
         return inPayments
       },
       pendingPayments() {
-        if(!this.payments.data) return
+        if(!this.payments.data) return 0
         let inPayments =this.payments.data.filter((p)=>{
           return p.attributes.type != 'suppliers' && p.attributes.status == 'pending'
         }).reduce((acc, curr)=>{

@@ -131,6 +131,8 @@
         'payment.name',
         'payment.type',
         'payment.amount',
+        'payment.address',
+        'payment.comments',
         'payment.status',
         'payment.doc',
         'payment.currency',

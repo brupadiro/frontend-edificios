@@ -25,6 +25,20 @@ export const actions = {
   async findAll({
     commit
   }, params) {
+
+    if (params.filters) {
+      params.filters.apartment = {
+        building: this.$auth.user.building.id
+      }
+    } else {
+      params.filters = {
+        apartment: {
+          building: this.$auth.user.building.id
+        }
+      }
+    }
+
+
     const {
       data: data
     } = await this.$axios.get('/checking-accounts', {
