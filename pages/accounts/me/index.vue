@@ -124,7 +124,7 @@
     },
     methods: {
       getApartment() {
-        const apartmentId = this.$auth.user.data.apartment.id
+        const apartmentId = 79
         console.log(apartmentId)
         this.$store.dispatch('apartments/find', {
           id: apartmentId

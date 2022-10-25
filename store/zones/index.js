@@ -4,7 +4,9 @@ import {
 } from 'vuex-map-fields';
 var qs = require('qs');
 export const state = {
-  zones: {},
+  zones: {
+    data:[]
+  },
   areaReservations: {},
   zone: {
     name: '',
@@ -47,7 +49,7 @@ export const actions = {
   },
   async findAll({
     commit
-  }, params) {
+  }, params = {}) {
     if (params.filters) {
       params.filters.building = this.$auth.user.building.id
     } else {

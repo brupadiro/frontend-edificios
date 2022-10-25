@@ -181,7 +181,8 @@
       },
       getUsers() {
         this.$store.dispatch('users/findAll', {
-          type: 'admin'
+          type: 'admin',
+          building: this.$auth.user.building.id
         })
       },
       addUser() {

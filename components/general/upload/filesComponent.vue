@@ -75,7 +75,6 @@
       },
       onFileChange(e) {
         var files = e.target.files || e.dataTransfer.files
-        console.log(files)
         if (!files.length)
           return
         this.$emit('input', {

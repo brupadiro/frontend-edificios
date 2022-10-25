@@ -131,7 +131,9 @@
       ]),
 
       moovments() {
-        return this.value.filter(account => account.attributes.currency === this.currency)
+        if(Array.isArray(this.value))
+          return this.value.filter(account => account.attributes.currency === this.currency)
+        return []
       },
       total() {
         return this.moovments.reduce((total, moovment) => {

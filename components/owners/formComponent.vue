@@ -11,15 +11,15 @@
           </formsFieldsTextComponent>
         </v-col>
         <v-col class="col-12 col-sm-6">
-          <formsFieldsTextComponent prepend-inner-icon="mdi-file" v-model="doc" type="number"
+          <formsFieldsTextComponent prepend-inner-icon="mdi-file" @input="checkIfUserExists($event)" :error-messages="errorUserExists" v-model="username" type="number"
             label="Documento de identidad">
           </formsFieldsTextComponent>
+          <span v-if="errorUserExists.length>0" class="error--text">{{errorUserExists[0]}}</span>
         </v-col>
         <v-col class="col-12 col-sm-12">
-          <formsFieldsTextComponent prepend-inner-icon="mdi-file" :error-messages="errorUserExists"
-            @input="checkIfUserExists($event)" v-model="username" type="number" label="Celular/Telefono">
+          <formsFieldsTextComponent prepend-inner-icon="mdi-file" 
+             v-model="phone" type="number" label="Celular/Telefono">
           </formsFieldsTextComponent>
-          <span v-if="errorUserExists.length>0" class="error--text">{{errorUserExists[0]}}</span>
         </v-col>
         <v-col class="col-12">
           <v-card class="rounded-lg" v-show="!in_rent">
@@ -59,7 +59,7 @@
     computed: {
       ...mapFields('owners', [
         'user.name',
-        'user.doc',
+        'user.phone',
         'user.username',
         'user.id'
       ]),

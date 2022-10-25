@@ -117,19 +117,15 @@
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     layout: 'empty',
     data() {
       return {
         account: {
-          name: 'Bruno Diharce',
-          username: '49135739',
-          phone: '092017866'
         },
         building: {
-          location: 'Maldonado',
-          name: 'Edificio 1',
-          address: 'Calle 1'
+          location:'Maldonado'
         },
 
         step: 1,
@@ -153,14 +149,14 @@
         if (this.$refs.formAccount.validate()) {
           this.account.email = this.account.username + '@' + this.building.name.replace(/\s+/g, '') + '.com'
           this.account.password = this.account.username
-          this.$axios.post('/buildings', {
+          axios.post(this.$axios.defaults.baseURL+'/buildings', {
               data: this.building
             })
             .then((data) => {
               const buildingId = data.data.data.id
               this.account.building = buildingId
               this.account.type = 'admin'
-              this.$axios.post('/users', this.account)
+              axios.post(this.$axios.defaults.baseURL+'/users', this.account)
                 .then(async (data) => {
                   this.step++
                 }).then(async () => {

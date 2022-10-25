@@ -67,7 +67,7 @@
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
-    <propertiesActionsBottomBarComponent v-model="step"></propertiesActionsBottomBarComponent>
+    <propertiesActionsBottomBarComponent v-model="step" :files="files"></propertiesActionsBottomBarComponent>
     <!-- error snackbar-->
     <v-snackbar v-model="errorInForm" color="red">
       Hubo un error al enviar, por favor revise los datos e intente nuevamente
@@ -79,14 +79,14 @@
 </template>
 
 <script>
-  import {
-    mapFields
-  } from 'vuex-map-fields';
 
   export default {
     
     data() {
       return {
+        files:{
+          data:[]
+        },
         step:1,
         rental: {
           habitant: {}
@@ -205,9 +205,6 @@
 
     },
     computed: {
-      ...mapFields('apartments', [
-        'files',
-      ]),
       apartment() {
         return this.$store.getters["apartments/get"];
       },

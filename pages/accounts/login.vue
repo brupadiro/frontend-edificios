@@ -16,8 +16,8 @@
             <v-form>
               <v-row>
                 <v-col class="col-12">
-                  <FormsFieldsTextComponent v-model="user.username" prepend-inner-icon="mdi-email" :rules="rules.required"
-                    label-color="white--text" label="Email" type="email" required>
+                  <FormsFieldsTextComponent v-model="user.username" prepend-inner-icon="mdi-doc" :rules="rules.required"
+                    label-color="white--text" label="Documento" type="number" required>
                   </FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-12">

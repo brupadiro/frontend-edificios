@@ -226,6 +226,12 @@ export const actions = {
   }, params) {
     commit('set', params)
   },
+  setFiles({
+    commit
+  }, params) {
+    commit('setFiles', params)
+  },
+
 
 }
 export const mutations = {
@@ -238,7 +244,6 @@ export const mutations = {
     state.apartments = data
   },
   setFiles(state, data) {
-    console.log(data)
     state.files = data
   },
   deleteApartmentFiles(state) {

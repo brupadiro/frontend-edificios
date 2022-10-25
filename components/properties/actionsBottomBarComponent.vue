@@ -22,12 +22,17 @@
 
 <script>
   import apartmentsMixins from '~/plugins/mixins/forms/apartments.js'
-  import {
-    mapFields
-  } from 'vuex-map-fields';
 
   export default {
     props: {
+      files: {
+        type: Object,
+        default: () => {
+          return {
+            data: []
+          }
+        }
+      },
       value: {
         type: Number,
         required: true
@@ -60,10 +65,6 @@
       }
     },
     watch: {
-      ...mapFields('apartments', [
-        'files',
-      ]),
-
       step(val) {
         this.$emit('input', val)
       }

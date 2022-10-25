@@ -72,7 +72,7 @@ export default {
       await this.$store.dispatch('users/clear')
     },
     async createFiles() {
-      if (this.files.length == 0) return
+      if (this.files.data.length == 0) return
       var form = new FormData()
       form.append('ref', 'api::apartament.apartament')
       form.append('refId', this.apartment.id)
@@ -95,9 +95,6 @@ export default {
 
   },
   computed: {
-    ...mapFields('apartments', [
-      'files',
-    ]),
     apartment() {
       return this.$store.getters["apartments/get"];
     },

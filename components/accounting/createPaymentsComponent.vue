@@ -37,7 +37,7 @@
               </formsFieldsSelectComponent>
             </v-col>
             <v-col class="col-md-9 col-8">
-              <formsFieldsTextComponent prepend-inner-icon="mdi-currency-usd" :rules="rules.required" type="number" v-model="amount"
+              <formsFieldsTextComponent prepend-inner-icon="mdi-currency-usd" type="number" v-model="amount"
                 label="Costo">
               </formsFieldsTextComponent>
             </v-col>

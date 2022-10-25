@@ -127,6 +127,7 @@
     },
     computed: {
       zoneList() {
+
         var zones = _.cloneDeep(this.$store.getters['zones/getList'])
         zones.data= zones.data.filter((z)=>{
           var onlyOwners = z.attributes.rules.find((r)=>{
