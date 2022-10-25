@@ -52,14 +52,12 @@ export const actions = {
     commit
   }, params = {}) {
     if (params.filters) {
-      params.filters.apartment = {
+      params.filters = {
         building: this.$auth.user.building.id
       }
     } else {
       params.filters = {
-        apartment: {
           building: this.$auth.user.building.id
-        }
       }
     }
 
@@ -84,7 +82,10 @@ export const actions = {
     const {
       data: data
     } = await this.$axios.post(`/payments`, {
-      data: state.payment
+      data: {
+        ...state.payment,
+        building: this.$auth.user.building.id
+      }
     })
     commit('set', {
       ...data.data.attributes,
