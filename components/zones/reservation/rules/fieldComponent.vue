@@ -85,6 +85,9 @@
       },
       addRule() {
         this.$emit('input', JSON.parse(JSON.stringify(this.selectedRule)))
+      },
+      removeRule(index) {
+        this.$store.dispatch('zones/removeRule',index)
       }
     },
     computed: {

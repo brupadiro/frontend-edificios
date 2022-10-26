@@ -126,6 +126,12 @@ export const actions = {
   }, rule) {
     commit('setRule', rule)
   },
+  removeRule({
+    commit,
+  }, index) {
+    commit('removeRule', index)
+  },
+
   clear({
     commit
   }) {
@@ -142,6 +148,9 @@ export const mutations = {
   },
   setRule(state, rule) {
     state.zone.rules.push(rule)
+  },
+  removeRule(state, index) {
+    state.zone.rules.splice(index, 1)
   },
   setSingleReservation(state, reservation) {
     state.areaReservations.data.push(reservation)
