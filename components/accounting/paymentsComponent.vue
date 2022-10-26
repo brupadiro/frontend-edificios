@@ -4,7 +4,7 @@
       Facturas
     </generalCardTitleComponent>
     <v-card-text>
-      <v-data-table hide-default-footer  disable-sort :items="data.data" :headers="headers">
+      <v-data-table :items-per-page="-1" hide-default-footer  disable-sort :items="data.data" :headers="headers">
         <template v-slot:no-data>
           No hay facturas disponibles
         </template>

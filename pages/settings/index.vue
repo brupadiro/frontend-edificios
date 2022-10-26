@@ -18,22 +18,27 @@
             <v-card-text>
               <v-row>
                 <v-col class="col-12">
-                  <formsFieldsTextComponent label="Nombre del edificio"></formsFieldsTextComponent>
+                  <formsFieldsTextComponent label="Nombre del edificio" v-model="building.name"></formsFieldsTextComponent>
 
                 </v-col>
                 <v-col class="col-12">
-                  <formsFieldsTextComponent prepend-inner-icon="mdi-map-marker" label="Direccion">
+                  <formsFieldsTextComponent prepend-inner-icon="mdi-map-marker" v-model="building.address" label="Direccion">
                   </formsFieldsTextComponent>
 
                 </v-col>
                 <v-col class="col-12">
-                  <formsFieldsSelectComponent :items="['Maldonado']" prepend-inner-icon="mdi-map" label="Localidad">
+                  <formsFieldsSelectComponent :items="['Maldonado']" prepend-inner-icon="mdi-map" v-model="building.location" label="Localidad">
                   </formsFieldsSelectComponent>
 
                 </v-col>
-
               </v-row>
             </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" text-color="white" @click="saveSettings()">
+                Guardar datos
+              </v-btn>
+            </v-card-actions>
           </generalCardComponent>
         </v-col>
         <v-col class="col-12">
@@ -85,12 +90,6 @@
                 </formsFieldsCheckboxComponent>
               </v-chip-group>
             </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" text-color="white" @click="saveSettings()">
-                Guardar
-              </v-btn>
-            </v-card-actions>
           </generalCardComponent>
         </v-col>
         <v-col class="col-12">
@@ -116,7 +115,7 @@
                     </v-row>
                   </v-col>
                   <v-col class="col-12 col-md-2">
-                    <v-btn color="secondary" class="mt-8 rounded-lg" large @click="addUser()">Guardar</v-btn>
+                    <v-btn color="secondary" class="mt-8 rounded-lg" large @click="addUser()">Guardar usuario</v-btn>
                   </v-col>
                 </v-row>
 
@@ -142,6 +141,9 @@
 
       </v-row>
     </v-form>
+    <v-snackbar color="success" v-model="dataSnackbar">
+      Datos guardados con exito
+    </v-snackbar>
   </v-container>
 
 </template>
@@ -163,7 +165,8 @@
           text: "Acciones",
           value: "id",
           align: 'center'
-        }]
+        }],
+        dataSnackbar: false,
       }
     },
     created() {
@@ -173,6 +176,13 @@
       this.getUsers()
     },
     methods: {
+      saveSettings() {
+        this.$axios.put('/buildings/' + this.$auth.user.building.id, {
+          data:this.building
+        }).then(response => {
+          this.dataSnackbar = true
+        })
+      },
       getAmenities() {
         this.$store.dispatch('amenities/find')
       },
