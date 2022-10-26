@@ -45,7 +45,12 @@
         <v-icon>mdi-home</v-icon>
       </v-btn>
     </generalBottomBarComponent>
-
+    <v-snackbar v-model="errorInForm" color="red">
+      Hubo un error al guardar, por favor revise los datos e intente nuevamente
+      <v-btn text @click="errorInForm = false">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -58,6 +63,7 @@
     data() {
       return {
         step: 1,
+        errorInForm: false,
       }
     },
     mounted() {
@@ -88,7 +94,10 @@
         }
       },
       async updateApartment() {
-        if (!this.$refs.form.validate()) return
+        if (!this.$refs.form.validate()) {
+          this.errorInForm = true
+          return
+        }
         await this.updateOwner()
         if (this.apartment.in_rent) {
           await this.updateRentals()

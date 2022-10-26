@@ -53,7 +53,7 @@
                   <v-divider></v-divider>
                   <v-card-text class="d-flex justify-center">
                     <template v-if="checkIfImage(file.attributes)">
-                      <v-img :src="'https://edificios-oa6js.ondigitalocean.app'+file.attributes.url" width="100%" height="80" contain></v-img>
+                      <v-img :src="'https://backlog.gestus360.com'+file.attributes.url" width="100%" height="80" contain></v-img>
                     </template>
                     <template v-else>
                       <v-icon size="80">mdi-file-outline</v-icon>
@@ -61,7 +61,7 @@
                   </v-card-text>
                   <v-divider></v-divider>
                   <v-card-actions style="height:55" v-show="file.attributes.url">
-                    <v-btn block depressed :href="'https://edificios-oa6js.ondigitalocean.app'+file.attributes.url" target="_blank"
+                    <v-btn block depressed :href="'https://backlog.gestus360.com'+file.attributes.url" target="_blank"
                       class="rounded-lg" color="success darken-1">
                       VER ARCHIVO&nbsp;
                       <v-icon>mdi-magnify</v-icon>
