@@ -11,15 +11,15 @@
           </formsFieldsTextComponent>
         </v-col>
         <v-col class="col-12 col-sm-6">
-          <formsFieldsTextComponent prepend-inner-icon="mdi-file" :rules="rules.required" v-model="doc" type="number"
+          <formsFieldsTextComponent prepend-inner-icon="mdi-file" :error-messages="errorUserExists" :rules="rules.required" v-model="username" type="number"
+            @input="checkIfUserExists($event)"
             label="Documento de identidad">
           </formsFieldsTextComponent>
+          <span v-if="errorUserExists.length>0" class="error--text">{{errorUserExists[0]}}</span>
         </v-col>
         <v-col class="col-6">
-          <formsFieldsTextComponent prepend-inner-icon="mdi-file" :error-messages="errorUserExists"
-            @input="checkIfUserExists($event)" v-model="username" type="number" label="Celular/Telefono">
+          <formsFieldsTextComponent prepend-inner-icon="mdi-file"  v-model="phone" type="number" label="Celular/Telefono">
           </formsFieldsTextComponent>
-          <span v-if="errorUserExists.length>0" class="error--text">{{errorUserExists[0]}}</span>
         </v-col>
         <v-col class="col-6">
           <formsFieldsSelectComponent prepend-inner-icon="mdi-file" v-model="warranty_type"
