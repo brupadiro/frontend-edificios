@@ -222,6 +222,7 @@
         this.$axios.post('/staff-entries', {
           data: this.entries
         }).then(response => {
+          this.entries = {}
           this.modalEntries = false
           this.getEntries()
         })
