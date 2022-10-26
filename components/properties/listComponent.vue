@@ -133,7 +133,7 @@
           value: 'attributes.rooms',
           align: 'center'
         },{
-            text: 'Banios',
+            text: 'Baños',
             value: 'attributes.bathrooms',
             align: 'center'
           }, {
@@ -168,7 +168,7 @@
         var headers = this.headers
         if (this.expanded) {
           var expandedHeaders = [{
-            text: 'Banios',
+            text: 'Baños',
             value: 'attributes.bathrooms',
             align: 'center'
           }, {
