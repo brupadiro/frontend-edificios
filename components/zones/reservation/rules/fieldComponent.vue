@@ -23,7 +23,7 @@
           </v-col>
           <v-col class="col-6">
             <v-btn small depressed :disabled="!update" class="rounded-l-0" color="red" block height="55"
-              @click="removeRule()">
+              @click="removeRule(index)">
               <v-icon color="white">mdi-delete</v-icon>
             </v-btn>
           </v-col>
@@ -37,6 +37,10 @@
 <script>
   export default {
     props: {
+      index: {
+        type: Number,
+        required: true
+      },
       value: {
         type: Object,
         default: () => {

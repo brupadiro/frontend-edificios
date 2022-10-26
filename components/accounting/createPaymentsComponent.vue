@@ -20,7 +20,7 @@
 
             </v-col>
             <v-col class="col-12">
-              <formsFieldsSelectComponent v-model="apartment" v-if="type != 'suppliers'" :rules="rules.required" item-text="attributes.number"
+              <formsFieldsSelectComponent v-model="apartment" v-if="type != 'suppliers'" item-text="attributes.number"
                 item-value="id" :items="apartmentsList.data" type="number" label="APARTAMENTO">
               </formsFieldsSelectComponent>
 
