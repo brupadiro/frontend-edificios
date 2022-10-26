@@ -14,7 +14,8 @@
       <v-col class="col-12">
         <GeneralCardComponent elevation="6">
           <v-card-title style="background:#333350" class="fill-width rounded-t-xl">
-            <v-tabs v-model="tab" hide-slider slider-color="primary" background-color="primary" active-class="active-tab" grow>
+            <v-tabs v-model="tab" hide-slider slider-color="primary" background-color="primary"
+              active-class="active-tab" grow>
               <v-tab ripple :value="1">
                 <span class="font-weight-black white--text">EMPLEADOS</span>
               </v-tab>
@@ -45,8 +46,7 @@
                   <GeneralCardTitleComponent>
                     Lista de tareas
                     <v-spacer></v-spacer>
-                    <v-btn color="secondary black--text rounded-lg font-weight-regular"
-                      @click="modalTask = true">
+                    <v-btn color="secondary black--text rounded-lg font-weight-regular" @click="modalTask = true">
                       <v-icon>mdi-plus</v-icon>&nbsp;nueva tarea
                     </v-btn>
                   </GeneralCardTitleComponent>
@@ -55,10 +55,10 @@
                       <GeneralCardComponent v-show="modalTask" outlined>
                         <GeneralCardTitleComponent>Nueva tarea</GeneralCardTitleComponent>
                         <v-card-text>
-                          <v-form ref="form">
+                          <v-form ref="formTask">
                             <v-row>
                               <v-col class="col-12">
-                                <FormsFieldsSelectComponent v-model="task.staff" :items="staffList.data" item-value="id"
+                                <FormsFieldsSelectComponent v-model="task.staff" :rules="rules.required" :items="staffList.data" item-value="id"
                                   item-text="attributes.name" return-object prepend-inner-icon="mdi-account"
                                   label="ASIGNADA A">
                                 </FormsFieldsSelectComponent>
@@ -68,7 +68,8 @@
                                   v-model="task.description"></v-textarea>
                               </v-col>
                               <v-col class="col-12">
-                                <FormsFieldsTextComponent type="date" label="Fecha" v-model="task.date">
+                                <FormsFieldsTextComponent type="date" label="Fecha" :rules="rules.required"
+                                  v-model="task.date">
                                 </FormsFieldsTextComponent>
                               </v-col>
                             </v-row>
@@ -79,7 +80,8 @@
                             CERRAR
                           </v-btn>
                           <v-spacer></v-spacer>
-                          <v-btn color="secondary" class="font-weight-regular rounded-lg" @click="addTask()">Agregar tarea
+                          <v-btn color="secondary" class="font-weight-regular rounded-lg" @click="addTask()">Agregar
+                            tarea
                           </v-btn>
                         </v-card-actions>
                       </GeneralCardComponent>
@@ -159,22 +161,28 @@
                   </FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-6">
-                  <FormsFieldsSelectComponent label="Area" item-text="attributes.name" value="attributes.name" :items="['Mantenimiento']"
-                    v-model="staff.area"></FormsFieldsSelectComponent>
+                  <FormsFieldsSelectComponent label="Area" item-text="attributes.name" value="attributes.name"
+                    :items="['Mantenimiento']" v-model="staff.area"></FormsFieldsSelectComponent>
                 </v-col>
               </v-row>
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="secondary black--text rounded-lg font-weight-regular" class="rounded-lg"
-              @click="addStaff()">AGREGAR STAFF&nbsp;&nbsp;
+            <v-btn color="secondary black--text rounded-lg font-weight-regular" class="rounded-lg" @click="addStaff()">
+              AGREGAR STAFF&nbsp;&nbsp;
               <v-icon>mdi-content-save</v-icon>
             </v-btn>
           </v-card-actions>
         </GeneralCardComponent>
       </v-dialog>
     </template>
+    <v-snackbar v-model="errorInForm" color="red">
+      Hubo un error en el formulario. revise nuevamente los datos
+      <v-btn color="white" text @click="errorInForm = false">
+        <v-icon color="black">mdi-close</v-icon>
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -184,6 +192,9 @@
   export default {
     data() {
       return {
+        rules: {
+          required: [v => !!v || 'Este campo es requerido']
+        },
         hourEntryMenu: false,
         hourExitMenu: false,
         modalStaff: false,
@@ -193,6 +204,7 @@
         taskList: {},
         staffList: {},
         staff: {},
+        errorInForm: false,
         headers: [{
           text: 'Nombre',
           align: 'left',
@@ -211,12 +223,12 @@
         }],
         focus: null,
         now: null,
-      type: "month",
+        type: "month",
       }
     },
     created() {
-        this.now = moment().format("YYYY-MM-DD");
-        this.$store.dispatch('areas/find')
+      this.now = moment().format("YYYY-MM-DD");
+      this.$store.dispatch('areas/find')
       this.getStaff()
       this.getTasks()
     },
@@ -247,7 +259,7 @@
           .then(response => {
             this.taskList = response.data.data.map(task => {
               return {
-                name:`${task.attributes.staff.data.attributes.name} - ${task.attributes.description.substr(0,10)}` ,
+                name: `${task.attributes.staff.data.attributes.name} - ${task.attributes.description.substr(0,10)}`,
                 zone: `${task.attributes.description}`,
                 staff: `${task.attributes.staff.data.attributes.name}`,
                 start: `${task.attributes.date} 00:00:00`,
@@ -258,6 +270,10 @@
           })
       },
       addTask() {
+        if(!this.$refs.formTask.validate()) {
+          this.errorInForm = true
+          return
+        }
         this.task.staff = this.task.staff.id
         this.$axios.post('/tasks', {
             data: this.task
@@ -275,7 +291,7 @@
           })
       },
     },
-    computed:{
+    computed: {
       areas() {
         return this.$store.getters['areas/getList']
       }
