@@ -21,7 +21,7 @@
        <newsCarouselComponent></newsCarouselComponent>
       </v-col>
     </v-row>
-      <v-divider class="mt-4 mb-4" :key="'d'+index"></v-divider>
+      <v-divider class="mt-4 mb-4"></v-divider>
     <template  v-for="(category,index) in categories" >
       <v-row :key="index">
         <v-col class="col-md-12" >
@@ -124,8 +124,7 @@
     },
     methods: {
       getApartment() {
-        const apartmentId = 79
-        console.log(apartmentId)
+        const apartmentId = this.$auth.user.data.apartment.id
         this.$store.dispatch('apartments/find', {
           id: apartmentId
         })
