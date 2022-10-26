@@ -115,14 +115,14 @@
             <v-form ref="form">
               <v-row>
                 <v-col class="col-12">
-                  <FormsFieldsTextComponent label="Nombre" v-model="staff.name"></FormsFieldsTextComponent>
+                  <FormsFieldsTextComponent label="Nombre" :rules="rules.required"  v-model="staff.name"></FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-4">
-                  <FormsFieldsSelectComponent :items="['CI', 'PASAPORTE']" label="Documento" type="number"
+                  <FormsFieldsSelectComponent :items="['CI', 'PASAPORTE']" :rules="rules.required"  label="Documento" type="number"
                     v-model="staff.doc_type"></FormsFieldsSelectComponent>
                 </v-col>
                 <v-col class="col-8">
-                  <FormsFieldsTextComponent label="_" type="number" v-model="staff.doc">
+                  <FormsFieldsTextComponent label="_" type="number" :rules="rules.required"  v-model="staff.doc">
                   </FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-12 col-sm-6">
@@ -157,11 +157,11 @@
                   </v-menu>
                 </v-col>
                 <v-col class="col-6">
-                  <FormsFieldsTextComponent label="Telefono" type="number" v-model="staff.phone">
+                  <FormsFieldsTextComponent label="Telefono" :rules="rules.required"  type="number" v-model="staff.phone">
                   </FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-6">
-                  <FormsFieldsSelectComponent label="Area" item-text="attributes.name" value="attributes.name"
+                  <FormsFieldsSelectComponent label="Area" :rules="rules.required"  item-text="attributes.name" value="attributes.name"
                     :items="['Mantenimiento']" v-model="staff.area"></FormsFieldsSelectComponent>
                 </v-col>
               </v-row>
@@ -260,7 +260,7 @@
 
 
       addStaff() {
-        if(!this.$refs.form.validate() || checkDateBefore) {
+        if(!this.$refs.form.validate()) {
           this.errorInForm = true
           return
         }
