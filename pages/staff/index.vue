@@ -157,7 +157,7 @@
                   </v-menu>
                 </v-col>
                 <v-col class="col-6">
-                  <FormsFieldsTextComponent label="Telefono" type="number" v-model="staff.area">
+                  <FormsFieldsTextComponent label="Telefono" type="number" v-model="staff.phone">
                   </FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-6">
