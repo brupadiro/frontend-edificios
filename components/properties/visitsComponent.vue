@@ -39,7 +39,7 @@
                       </v-col>
                       <v-col class="col-8">
                         <formsFieldsTextComponent v-model="visit.doc" type="number"
-                          prepend-inner-icon="mdi-file-document" label="DOCUMENTO"></formsFieldsTextComponent>
+                          prepend-inner-icon="mdi-file-document" label="DOCUMENTO (SIN PUNTOS NI GUIONES)"></formsFieldsTextComponent>
                       </v-col>
                     </v-row>
                   </v-col>

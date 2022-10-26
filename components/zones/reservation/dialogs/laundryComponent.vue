@@ -21,6 +21,9 @@
               <v-col class="col-12">
                 <FormsFieldsTextComponent v-model="reservation.bags" type="number" label="CANTIDAD DE BOLSAS">
                 </FormsFieldsTextComponent>
+                <span v-if="reservation.bags == 0 || reservation.bags ==''" class="error--text">
+                  Necesitas minimo 1 bolsa
+                </span>
               </v-col>
               <v-col class="col-12">
                 <v-card outlined>
