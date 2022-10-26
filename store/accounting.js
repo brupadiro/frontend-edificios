@@ -120,7 +120,16 @@ export const actions = {
   clear({
     commit
   }) {
-    commit('set', {})
+    commit('set',  {
+      type: 'expenses',
+      amount: 0,
+      status: 'pending',
+      currency: 'USD',
+      address: '',
+      comments: '',
+      name: '',
+      doc: '',
+    })
   },
   generateInvoice({state},data) {
     let invoice = JSON.parse(JSON.stringify(data));
