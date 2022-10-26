@@ -155,6 +155,7 @@
 <script>
   import dateFunctions from '~/plugins/mixins/dateFunctions.js';
   import textFunctions from '~/plugins/mixins/dateFunctions.js';
+  import moment from 'moment'
   var qs = require('qs');
   export default {
 
@@ -217,6 +218,7 @@
       },
       addEntry() {
         this.entries.type = this.entries.type == 0 ?'IN':'OUT'
+        this.entries.hour = moment(this.entries.hour).format('HH:mm:ss') +".000"
         this.$axios.post('/staff-entries', {
           data: this.entries
         }).then(response => {
