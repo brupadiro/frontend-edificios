@@ -92,7 +92,8 @@
               </v-avatar>
               &nbsp;
               <div class="pt-4">
-                <h6 class="white--text font-weight-regular">{{owner.user.data.attributes.name}}</h6>
+                <h6 class="white--text font-weight-regular" v-if="owner.user && owner.user.data">
+                  {{owner.user.data.attributes.name}}</h6>
                 <p class="text-subtitle-2 white--text">Propietario</p>
               </div>
             </v-card-title>
@@ -103,7 +104,8 @@
                   <p class="white--text">Documento</p>
                 </v-col>
                 <v-col class="col-12 col-sm-6 text-right">
-                  <p class="white--text">{{owner.user.data.attributes.username}}</p>
+                  <p class="white--text" v-if="owner.user && owner.user.data">{{owner.user.data.attributes.username}}
+                  </p>
                 </v-col>
                 <v-col class="col-12 col-sm-6">
                   <p class="white--text">Expensas</p>
@@ -144,7 +146,7 @@
           </RentalsFormComponent>
         </v-card-text>
         <v-card-text>
-          <v-data-table hide-default-footer disable-sort calculate-widths :headers="headersRentals"
+          <v-data-table :items-per-page="-1" hide-default-footer disable-sort calculate-widths :headers="headersRentals"
             :items="rentals.data" class="font-weight-bold text-h5">
             <!-- no data slot -->
             <template v-slot:no-data>
@@ -160,10 +162,10 @@
               {{item.attributes.user.data.doc}}
             </template>
             <template v-slot:item.attributes.start_date="{ item }">
-              {{item.attributes.start_date | formatDate}}
+              {{item.attributes.start_date}}
             </template>
             <template v-slot:item.attributes.end_date="{ item }">
-              {{item.attributes.end_date | formatDate}}
+              {{item.attributes.end_date}}
             </template>
           </v-data-table>
 
@@ -197,7 +199,7 @@
         this.openRentalForm = false
       })
     },
-    filters:{
+    filters: {
       formatHabitants: (user, type) => {
         let data = user.data.attributes[type]
         return data ? data : ''
@@ -212,7 +214,7 @@
           },
           {
             text: 'Documento',
-            value: 'attributes.user.data.attributes.doc'
+            value: 'attributes.user.data.attributes.username'
           },
           {
             text: 'Fecha de inicio',
@@ -222,14 +224,47 @@
             text: 'Fecha de fin',
             value: 'attributes.end_date'
           },
-          {
-            text: 'Acciones',
-            value: 'actions',
-            sortable: false
-          },
         ],
 
       }
+    },
+    methods: {
+      async addNewRental() {
+        try {
+          var rentalUser = this.$store.getters['rentals/user']
+          rentalUser.building = this.$auth.user.building.id
+          this.$store.dispatch('users/set', rentalUser)
+          const {
+            data: user
+          } = await this.$store.dispatch("users/create", {
+            type: 'tenant'
+          });
+
+          this.$store.dispatch('rentals/set', {
+            apartment: this.data.id,
+            user: user.id
+          })
+          await this.$store.dispatch("rentals/create");
+          this.$store.dispatch("rentals/clear");
+          //check if owner is in property
+          await this.$store.dispatch('users/clear')
+           this.$store.dispatch('rentals/clearUser')
+         this.getRentals()
+          this.openRentalForm = false
+
+        } catch (e) {
+          console.log(e)
+        }
+      },
+        getRentals() {
+          this.$store.dispatch('rentals/findAll', {
+            filters: {
+              apartment: this.data.id,
+            },
+            populate: '*'
+          })
+        }
+
     },
     computed: {
       owner() {

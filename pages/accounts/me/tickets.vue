@@ -37,60 +37,14 @@
         </generalCardComponent>
       </v-col>
       <v-col class="col-12">
-        <generalCardComponent>
-          <generalCardTitleComponent>
-            Mis tickets
-          </generalCardTitleComponent>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-data-table :headers="headers" hide-default-footer :items="tickets.data">
-              <template v-slot:item.attributes.priority="{ item }">
-                <v-chip :color="getColor(item.attributes.priority)" text-color="white">
-                  <b>{{ item.attributes.priority | priority }}</b>
-                </v-chip>
-              </template>
-              <template v-slot:item.attributes.status="{ item }">
-                <v-chip :color="getColor(item.attributes.status)" text-color="white">
-                  <b>{{ item.attributes.status | status }}</b>
-                </v-chip>
-              </template>
-              <template v-slot:item.attributes.createdAt="{ item }">
-                  <b>{{ item.attributes.createdAt | date }}</b>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </generalCardComponent>
+        <ticketsListComponent></ticketsListComponent>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-  import moment from 'moment'
   export default {
-    filters:{
-      date(value){
-        return moment(value).format('DD/MM/YYYY') + ' a las ' + moment(value).format('HH:mm')
-      },
-      priority(value){
-        switch(value){
-          case 'Low':
-            return 'Baja'
-          case 'Medium':
-            return 'Media'
-          case 'High':
-            return 'Alta'
-        }
-      },
-      status(value){
-        switch(value){
-          case 'Open':
-            return 'Abierto'
-          case 'Closed':
-            return 'Cerrado'
-        }
-      }
-    },
     data() {
       return {
         ticket: {
@@ -112,32 +66,10 @@
         tickets: {
           data: []
         },
-        headers: [{
-            text: 'Descripcion',
-            value: 'attributes.description'
-          },
-          {
-            text: 'Area',
-            value: 'attributes.area'
-          },
-          {
-            text: 'Prioridad',
-            value: 'attributes.priority'
-          },
-          {
-            text: 'Estado',
-            value: 'attributes.status'
-          },
-          {
-            text: 'Fecha de creacion',
-            value: 'attributes.createdAt'
-          }
-        ]
       }
     },
     created() {
       this.getAreas()
-      this.getTickets()
     },
     methods: {
       getAreas() {
@@ -151,33 +83,11 @@
             })
           })
       },
-      getColor(color) {
-        switch (color) {
-          case 'Low':
-          case 'Open':
-            return 'green'
-          case 'Medium':
-            return 'yellow'
-          case 'High':
-          case 'Closed':
-            return 'red'
-        }
-      },
-      getTickets() {
-        this.$axios.get('/tickets', {
-            params: {
-              apartment: 66
-            }
-          })
-          .then(response => {
-            this.tickets = response.data
-          })
-      },
     addTicket() {
-      this.ticket.apartment=66
+      this.ticket.apartment=this.$auth.user.data.apartment.id
       this.$axios.post('/tickets', {data:this.ticket})
         .then(response => {
-          this.getTickets()
+          this.$root.$emit('tickets')
         })
     },
     },

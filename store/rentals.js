@@ -44,18 +44,6 @@ export const actions = {
   async findAll({
     commit
   }, params = {}) {
-    if (params.filters) {
-      params.filters.apartment = {
-        building: this.$auth.user.building.id
-      }
-    } else {
-      params.filters = {
-        apartment: {
-          building: this.$auth.user.building.id
-        }
-      }
-    }
-
 
     const {
       data: data
@@ -142,6 +130,11 @@ export const actions = {
   }, user) {
     commit('setUser', user)
   },
+  clearUser({
+    commit
+  }, user) {
+    commit('clearUser', user)
+  },
 
   clear({
     commit
@@ -173,6 +166,15 @@ export const mutations = {
       ...data
     }
   },
+  clearUser(state, data) {
+    state.user = {
+      name: '',
+      doc: '',
+      username: '',
+      type: 'tenant',
+    }
+  },
+
   setList(state, data) {
     state.tenants = data
   }

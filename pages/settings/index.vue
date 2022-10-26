@@ -18,16 +18,19 @@
             <v-card-text>
               <v-row>
                 <v-col class="col-12">
-                  <formsFieldsTextComponent label="Nombre del edificio" v-model="building.name"></formsFieldsTextComponent>
-
-                </v-col>
-                <v-col class="col-12">
-                  <formsFieldsTextComponent prepend-inner-icon="mdi-map-marker" v-model="building.address" label="Direccion">
+                  <formsFieldsTextComponent label="Nombre del edificio" v-model="building.name">
                   </formsFieldsTextComponent>
 
                 </v-col>
                 <v-col class="col-12">
-                  <formsFieldsSelectComponent :items="['Maldonado']" prepend-inner-icon="mdi-map" v-model="building.location" label="Localidad">
+                  <formsFieldsTextComponent prepend-inner-icon="mdi-map-marker" v-model="building.address"
+                    label="Direccion">
+                  </formsFieldsTextComponent>
+
+                </v-col>
+                <v-col class="col-12">
+                  <formsFieldsSelectComponent :items="['Maldonado']" prepend-inner-icon="mdi-map"
+                    v-model="building.location" label="Localidad">
                   </formsFieldsSelectComponent>
 
                 </v-col>
@@ -132,7 +135,9 @@
             </v-card-text>
           </generalCardComponent>
         </v-col>
-
+        <v-col class="col-12">
+          <ticketsListComponent></ticketsListComponent>
+        </v-col>
       </v-row>
     </v-form>
     <v-snackbar color="success" v-model="dataSnackbar">
@@ -172,7 +177,7 @@
     methods: {
       saveSettings() {
         this.$axios.put('/buildings/' + this.$auth.user.building.id, {
-          data:this.building
+          data: this.building
         }).then(response => {
           this.dataSnackbar = true
         })

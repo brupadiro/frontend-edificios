@@ -104,30 +104,6 @@
             apartment: this.data.id
           })
         },
-        async addNewRental() {
-          try {
-            this.$store.dispatch('habitants/set', {
-              apartment: this.data.id,
-              type: 'tenant'
-            })
-            const {
-              data: habitant
-            } = await this.$store.dispatch("habitants/create");
-            //add rental
-            this.$store.dispatch('rentals/set', {
-              apartment: this.data.id,
-              habitants: habitant.id
-            })
-            await this.$store.dispatch("rentals/create");
-            this.$store.dispatch("rentals/clear");
-            this.$store.dispatch("habitants/clear");
-            this.getRentals()
-            this.openRentalForm = false
-  
-          } catch (e) {
-            console.log(e)
-          }
-        },
         getRentals() {
           this.$store.dispatch('rentals/findAll', {
             filters: {
