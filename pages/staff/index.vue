@@ -215,6 +215,21 @@
           align: 'left',
           sortable: false,
           value: 'attributes.doc'
+        },{
+          text: 'Hora de entrada',
+          align: 'left',
+          sortable: false,
+          value: 'attributes.entry_hour'
+        },{
+          text: 'Hora de salida',
+          align: 'left',
+          sortable: false,
+          value: 'attributes.exit_hour'
+        },{
+          text: 'Telefono',
+          align: 'left',
+          sortable: false,
+          value: 'attributes.phone'
         }, {
           text: 'Area',
           align: 'left',
@@ -270,7 +285,11 @@
           })
       },
       addTask() {
-        if(!this.$refs.formTask.validate()) {
+        //date
+
+        const checkDateBefore = moment(this.task.date).isBefore(moment().format("YYYY-MM-DD"))
+
+        if(!this.$refs.formTask.validate() || checkDateBefore) {
           this.errorInForm = true
           return
         }
