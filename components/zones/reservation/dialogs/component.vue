@@ -19,6 +19,11 @@
                 </formsFieldsSelectComponent>
               </v-col>
               <v-col class="col-12">
+                <formsFieldsTextComponent v-model="reservation.persons" item-text="attributes.number"
+                  item-value="id" type="number" label="CANTIDAD DE PERSONAS">
+                </formsFieldsTextComponent>
+              </v-col>
+              <v-col class="col-12">
                 <v-card outlined>
                 <v-sheet max-height="400">
                   <v-date-picker v-model="reservation.date"  no-title scrollable locale="es" full-width
@@ -31,7 +36,7 @@
         </v-card>
       </v-card-text>
       <v-expand-transition hide-on-leave="true">
-        <v-card-text v-show="reservation.date!=null && reservation.apartment != null">
+        <v-card-text>
           <v-card outlined>
             <v-card-text>
               <v-row>
@@ -87,6 +92,7 @@
                     </v-col>
                     <v-col class="col-4 d-flex align-center">
                       <span>LIBRE</span>
+                      
                     </v-col>
                     <v-col class="col-3">
                       <v-btn color="success darken-1" @click="createReservation( {from: '21:00:00.000', to: '22:00:00.000'})"
@@ -104,6 +110,7 @@
                   <v-row v-for="(hour,index) in arrayHourToHour" :key="index" class="border-bottom py-3" no-gutters>
                     <v-col class="col-5 d-flex align-center">
                       <span>{{ hour.from | formatHour }} - {{hour.to | formatHour }}</span>
+                       
                     </v-col>
                     <v-col class="col-4 d-flex align-center">
                       <span>LIBRE</span>
@@ -115,6 +122,7 @@
                       </v-btn>
                       <v-btn color="red darken-1" class="white--text" v-show="checkEmptyReservation(hour)" block
                         depressed>
+                       
                         RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
                       </v-btn>
                     </v-col>
@@ -162,7 +170,9 @@
     data: () => ({
       now: null,
       newReservationModal: false,
-      reservation: {},
+      reservation: {
+        persons:1
+      },
       selectedDate: null,
       date: null,
     }),
@@ -222,12 +232,12 @@
         if (numberOFPeoples > this.zone.attributes.capacity) {
           return true;
         }
-        return false
+        return numberOFPeoples
       },
     },
     computed: {
       reservationList() {
-        return this.$store.getters['zones/getReservationList']
+        return this.$store.getters['zones/reservations/getList']
       },
       apartmentsList() {
         return this.$store.getters['apartments/getList']
