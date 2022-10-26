@@ -38,7 +38,8 @@ export default {
     },
     async createRentals() {
       //add habitant
-      const rentalUser = this.$store.getters['rentals/user']
+      var rentalUser = this.$store.getters['rentals/user']
+      rentalUser.building =this.$auth.user.building.id
       this.$store.dispatch('users/set', rentalUser)
       const {
         data: user
@@ -57,7 +58,8 @@ export default {
     },
     async createOwners() {
       //add owner as habitant
-      const ownerUser = this.$store.getters['owners/user']
+      var ownerUser = this.$store.getters['owners/user']
+      ownerUser.building =this.$auth.user.building.id
       this.$store.dispatch('users/set', ownerUser)
       const {
         data: user

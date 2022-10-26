@@ -217,7 +217,10 @@
         }
 
         await this.$store.dispatch("zones/reservations/add", this.reservation);
-        this.reservation = {};
+        this.reservation = {
+          apartment:this.reservation.apartment,
+          persons:1
+        };
         this.newReservationModal = true;
         this.showReservedHours()
       },

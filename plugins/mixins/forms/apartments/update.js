@@ -31,6 +31,7 @@ export default {
 
 
     async updateUser(user, type) {
+      user.building =this.$auth.user.building.id
       this.$store.dispatch('users/set', user)
       if (!user.id) {
         const {
