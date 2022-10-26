@@ -93,7 +93,7 @@ export const actions = {
     commit,
     state
   }) {
-    buldingId = this.$auth.user.building.id
+    var buldingId = this.$auth.user.building.id
     await this.$axios.post(`/zones/?populate=rules.rule`, {
       data: {
         ...state.zone,
