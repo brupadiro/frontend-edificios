@@ -87,7 +87,7 @@
         files:{
           data:[]
         },
-        step:2,
+        step:1,
         rental: {
           habitant: {}
         }

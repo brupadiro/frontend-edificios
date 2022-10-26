@@ -130,12 +130,6 @@
             </v-data-table>
             <v-card-text>
             </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" text-color="white" @click="saveSettings()">
-                Guardar
-              </v-btn>
-            </v-card-actions>
           </generalCardComponent>
         </v-col>
 
