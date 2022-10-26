@@ -159,7 +159,7 @@
                   </FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-6">
-                  <FormsFieldsSelectComponent label="Area" item-text="attributes.name" value="attributes.name" :items="areas.data"
+                  <FormsFieldsSelectComponent label="Area" item-text="attributes.name" value="attributes.name" :items="['Mantenimiento']"
                     v-model="staff.area"></FormsFieldsSelectComponent>
                 </v-col>
               </v-row>
