@@ -134,7 +134,7 @@
 
               <v-list-item-subtitle>
                 <v-icon>mdi-clock</v-icon>&nbsp;
-                {{ item.attributes.createdAt | formatDate }}
+                {{ item.attributes | formatDate }}
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-avatar size="80" color="green">
@@ -153,13 +153,10 @@
 </template>
 
 <script>
-  import dateFunctions from '~/plugins/mixins/dateFunctions.js';
-  import textFunctions from '~/plugins/mixins/dateFunctions.js';
   import moment from 'moment'
   var qs = require('qs');
   export default {
 
-    mixins: [dateFunctions, textFunctions],
     props: {
       staffItems: [],
       title: {
@@ -197,6 +194,16 @@
             }
           }
         },
+      }
+    },
+    filters:{
+      capitalize(value){
+        if (!value) return ''
+        value = value.toString()
+        return value.charAt(0).toUpperCase() + value.slice(1)
+      },
+      createdAt(item){
+        return moment(item.createdAt).format('DD/MM/YYYY') +' a las '+ moment(item.hour,'HH:mm').format('HH:mm')
       }
     },
     mounted() {
