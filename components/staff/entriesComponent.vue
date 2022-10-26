@@ -134,7 +134,7 @@
 
               <v-list-item-subtitle>
                 <v-icon>mdi-clock</v-icon>&nbsp;
-                {{ item.attributes | formatDate }}
+                {{ item.attributes | createdAt }}
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-avatar size="80" color="green">
