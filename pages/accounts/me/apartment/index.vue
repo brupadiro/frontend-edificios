@@ -34,14 +34,14 @@ export default {
   },
   created(){
         this.$store.dispatch('apartments/find', {
-            id: 66
+            id: this.$auth.user.data.apartment.id
         })
           this.$store.dispatch('owners/find', {
-            apartment: 66
+            apartment: this.$auth.user.data.apartment.id
           })
           this.$store.dispatch('rentals/findAll', {
             filters: {
-              apartment: 66
+              apartment: this.$auth.user.data.apartment.id
             },
             populate: '*'
           })

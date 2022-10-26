@@ -92,7 +92,7 @@
               </v-avatar>
               &nbsp;
               <div class="pt-4">
-                <h6 class="white--text font-weight-regular">{{owner.name}}</h6>
+                <h6 class="white--text font-weight-regular">{{owner.user.data.attributes.name}}</h6>
                 <p class="text-subtitle-2 white--text">Propietario</p>
               </div>
             </v-card-title>
@@ -103,7 +103,7 @@
                   <p class="white--text">Documento</p>
                 </v-col>
                 <v-col class="col-12 col-sm-6 text-right">
-                  <p class="white--text">{{owner.doc}}</p>
+                  <p class="white--text">{{owner.user.data.attributes.username}}</p>
                 </v-col>
                 <v-col class="col-12 col-sm-6">
                   <p class="white--text">Expensas</p>
@@ -146,6 +146,12 @@
         <v-card-text>
           <v-data-table hide-default-footer disable-sort calculate-widths :headers="headersRentals"
             :items="rentals.data" class="font-weight-bold text-h5">
+            <!-- no data slot -->
+            <template v-slot:no-data>
+              <v-alert :value="true" color="warning" small icon="mdi-alert-circle">
+                No se encontraron alquileres para esta propiedad
+              </v-alert>
+            </template>
 
             <template v-slot:item.name="{ item }">
               {{item.attributes.user.data.name}}
