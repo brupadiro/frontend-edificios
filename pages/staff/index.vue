@@ -64,7 +64,7 @@
                                 </FormsFieldsSelectComponent>
                               </v-col>
                               <v-col class="col-12">
-                                <v-textarea outlined class="elevation-3 rounded-lg" label="Descripcion de la tarea"
+                                <v-textarea outlined class="elevation-3 rounded-lg" :rules="rules.required" label="Descripcion de la tarea"
                                   v-model="task.description"></v-textarea>
                               </v-col>
                               <v-col class="col-12">
