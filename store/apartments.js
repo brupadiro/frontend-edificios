@@ -153,10 +153,14 @@ export const actions = {
     dispatch
   }) {
     commit('deleteApartmentFiles')
+    var buldingId = this.$auth.user.building.id
     const {
       data: data
     } = await this.$axios.put(`/apartaments/${state.apartment.id}/?populate=amenities,invoices`, {
-      data: state.apartment
+      data: {
+        ...state.apartment,
+        building: buldingId
+      }
     }).then((data) => {
       return dispatch('interceptor', data.data)
     })
