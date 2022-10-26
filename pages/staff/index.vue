@@ -260,6 +260,11 @@
 
 
       addStaff() {
+        if(!this.$refs.form.validate() || checkDateBefore) {
+          this.errorInForm = true
+          return
+        }
+
         this.$axios.post('/staffs', {
             data: this.staff
           })
