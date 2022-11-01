@@ -4,12 +4,12 @@
       <v-carousel-item v-for="(nw,index) in news.data" :key="nw.id">
         <GeneralCardComponent height="200" elevation="6" :color="generateColor(index)">
           <GeneralCardTitleComponent class="d-flex justify-space-between fill-width white--text">
-            <span>{{nw.attributes.title}}</span><span>{{nw.attributes.createdAt | formatDate}}</span>
+            <span>{{nw.title}}</span><span>{{nw.createdAt | formatDate}}</span>
           </GeneralCardTitleComponent>
           <v-divider></v-divider>
           <v-card-text>
             <p class="white--text font-weight-regular">
-              {{nw.attributes.content}}
+              {{nw.content}}
             </p>
           </v-card-text>
           <v-card-actions>
@@ -27,12 +27,12 @@
     <v-dialog v-model="openNewsModal" max-width="600">
       <GeneralCardComponent height="400" class="p-relative">
         <GeneralCardTitleComponent class="d-flex justify-space-between fill-width">
-          <span>{{newInfo.attributes.title}}</span><span>{{newInfo.attributes.createdAt | formatDate}}</span>
+          <span>{{newInfo.title}}</span><span>{{newInfo.createdAt | formatDate}}</span>
         </GeneralCardTitleComponent>
         <v-divider></v-divider>
         <v-card-text class="mt-6">
           <p class="font-weight-regular">
-            {{newInfo.attributes.content}}
+            {{newInfo.content}}
           </p>
         </v-card-text>
         <div class="p-absolute card-actions-dialog fill-width">

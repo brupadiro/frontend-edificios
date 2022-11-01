@@ -19,7 +19,7 @@
                 </formsFieldsTextareaComponent>
               </v-col>
               <v-col class="col-12">
-                <FormsFieldsSelectComponent label="Area" item-text="attributes.name" value="attributes.name"
+                <FormsFieldsSelectComponent label="Area" item-text="name" value="name"
                   :items="areas.data" v-model="ticket.area"></FormsFieldsSelectComponent>
               </v-col>
               <v-col class="col-12">

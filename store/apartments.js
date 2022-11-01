@@ -26,9 +26,7 @@ export const state = () => ({
     expenses_cost: 0,
     in_rent: true,
   },
-  files: {
-    data: []
-  }
+  files: []
 })
 
 export const getters = {
@@ -46,10 +44,10 @@ export const actions = {
   interceptor({}, response) {
     if (response.data) {
       var attributes = {}
-      if (response.data.attributes) {
-        attributes = response.data.attributes
-      } else if (response.data[0].attributes) {
-        attributes = response.data[0].attributes
+      if (response) {
+        attributes = response
+      } else if (response.data[0]) {
+        attributes = response.data[0]
       } else {
         return response
       }
@@ -59,8 +57,8 @@ export const actions = {
           return amenity.id
         })
       }
-      if (attributes.invoices.data) {
-        attributes.invoices = attributes.invoices.data.map((amenity) => {
+      if (attributes.invoices) {
+        attributes.invoices = attributes.invoices.map((amenity) => {
           return amenity.id
         })
       }
@@ -113,15 +111,12 @@ export const actions = {
           arrayFormat: 'brackets'
         })
       }
-    }).then((data) => {
-      return dispatch('interceptor', data.data)
     })
     console.log(data)
     commit('set', {
-      ...data.data[0].attributes,
-      id: data.data[0].id
+      ...data.data[0]
     })
-    commit('setFiles', data.data[0].attributes.files)
+    commit('setFiles', data.data[0].files)
   },
   async create({
     state,
@@ -137,12 +132,10 @@ export const actions = {
         ...state.apartment,
         building: buldingId
       }
-    }).then((data) => {
-      return dispatch('interceptor', data.data)
     })
     console.log(data)
     commit('set', {
-      ...data.data.attributes,
+      ...data,
       id: data.data.id
     })
     return data
@@ -161,12 +154,9 @@ export const actions = {
         ...state.apartment,
         building: buldingId
       }
-    }).then((data) => {
-      return dispatch('interceptor', data.data)
     })
     commit('set', {
-      ...data.data.attributes,
-      id: data.data.id
+      ...data,
     })
     return data
   },
@@ -202,7 +192,7 @@ export const actions = {
     this.$axios.put('/apartaments/' + params.id, {
       data: {
         invoices: [
-          ...data.data.attributes.invoices.data,
+          ...data.invoices,
           params.invoice
         ]
       }

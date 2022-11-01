@@ -63,7 +63,7 @@
               <v-chip-group multiple v-model="building.areas" column>
                 <formsFieldsCheckboxComponent v-for="area in areas.data" close @click:close="deleteArea(area.id)"
                   notification-text="Amenitie eliminado" :key="'a'+area.id">
-                  {{area.attributes.name}}
+                  {{area.name}}
                 </formsFieldsCheckboxComponent>
               </v-chip-group>
             </v-card-text>
@@ -89,7 +89,7 @@
                 <formsFieldsCheckboxComponent v-for="amenity in amenities.data" close
                   @click:close="deleteAmenitie(amenity.id)" notification-text="Amenitie eliminado"
                   :key="'a'+amenity.id">
-                  {{amenity.attributes.name}}
+                  {{amenity.name}}
                 </formsFieldsCheckboxComponent>
               </v-chip-group>
             </v-card-text>

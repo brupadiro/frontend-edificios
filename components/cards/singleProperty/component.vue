@@ -49,8 +49,8 @@
       },
       formatHabitants(value, key) {
         if (!value) return "-"
-        if (value.data.length != 0) {
-          return value.data[0].attributes[key]
+        if (value.length != 0) {
+          return value[0][key]
         }
       },
     },

@@ -5,7 +5,7 @@ import {
 var qs = require('qs');
 
 export const state = () => ({
-  users:[],
+  users: [],
   user: {
     name: '',
     doc: '',
@@ -86,10 +86,14 @@ export const actions = {
         type: type,
         password: state.user.username
       })
-      return {data:data}
+      return {
+        data: data
+      }
 
     } catch (error) {
-      return {data:false}
+      return {
+        data: false
+      }
     }
   },
   async update({
@@ -99,10 +103,14 @@ export const actions = {
       const {
         data: data
       } = await this.$axios.put(`/users/${state.user.id}`, state.user)
-      return {data:data}
-  
+      return {
+        data: data
+      }
+
     } catch (error) {
-      return {data:false}
+      return {
+        data: false
+      }
     }
   },
   clear({
@@ -115,7 +123,7 @@ export const actions = {
       type: 'owner',
     })
   },
-  async checkIfExists({},username){
+  async checkIfExists({}, username) {
     const {
       data: data
     } = await this.$axios.get(`/users/`, {
@@ -130,23 +138,29 @@ export const actions = {
         })
       }
     })
-    return data.length>0
+    return data.length > 0
 
   },
-  async login({}, {username, password}){
+  async login({}, {
+    username,
+    password
+  }) {
+
+    return new Promise(async (resolve, reject) => {
       this.$auth.loginWith('local', {
         data: {
           identifier: username,
           password: password
         }
-      }).then(() => {
-        setTimeout(() => {
-          this.$router.push('/')
-        }, 1000);
+      }).then((response) => {
+        console.log(response)
+        resolve(response)
       }).catch((error) => {
-        console.log('login error', error)
+        console.log(error)
+        reject(error)
       })
-    }
+    })
+  }
 
 }
 export const mutations = {

@@ -59,7 +59,7 @@
                             <v-row>
                               <v-col class="col-12">
                                 <FormsFieldsSelectComponent v-model="task.staff" :rules="rules.required" :items="staffList.data" item-value="id"
-                                  item-text="attributes.name" return-object prepend-inner-icon="mdi-account"
+                                  item-text="name" return-object prepend-inner-icon="mdi-account"
                                   label="ASIGNADA A">
                                 </FormsFieldsSelectComponent>
                               </v-col>
@@ -161,7 +161,7 @@
                   </FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-6">
-                  <FormsFieldsSelectComponent label="Area" :rules="rules.required"  item-text="attributes.name" value="attributes.name"
+                  <FormsFieldsSelectComponent label="Area" :rules="rules.required"  item-text="name" value="name"
                     :items="['Mantenimiento']" v-model="staff.area"></FormsFieldsSelectComponent>
                 </v-col>
               </v-row>
@@ -209,32 +209,32 @@
           text: 'Nombre',
           align: 'left',
           sortable: false,
-          value: 'attributes.name'
+          value: 'name'
         }, {
           text: 'Documento',
           align: 'left',
           sortable: false,
-          value: 'attributes.doc'
+          value: 'doc'
         },{
           text: 'Hora de entrada',
           align: 'left',
           sortable: false,
-          value: 'attributes.entry_hour'
+          value: 'entry_hour'
         },{
           text: 'Hora de salida',
           align: 'left',
           sortable: false,
-          value: 'attributes.exit_hour'
+          value: 'exit_hour'
         },{
           text: 'Telefono',
           align: 'left',
           sortable: false,
-          value: 'attributes.phone'
+          value: 'phone'
         }, {
           text: 'Area',
           align: 'left',
           sortable: false,
-          value: 'attributes.area'
+          value: 'area'
         }],
         focus: null,
         now: null,
@@ -279,11 +279,11 @@
           .then(response => {
             this.taskList = response.data.data.map(task => {
               return {
-                name: `${task.attributes.staff.data.attributes.name} - ${task.attributes.description.substr(0,10)}`,
-                zone: `${task.attributes.description}`,
-                staff: `${task.attributes.staff.data.attributes.name}`,
-                start: `${task.attributes.date} 00:00:00`,
-                end: `${task.attributes.date} 23:59:00`,
+                name: `${task.staff.name} - ${task.description.substr(0,10)}`,
+                zone: `${task.description}`,
+                staff: `${task.staff.name}`,
+                start: `${task.date} 00:00:00`,
+                end: `${task.date} 23:59:00`,
                 allDay: true,
               }
             });

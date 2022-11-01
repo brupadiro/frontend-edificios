@@ -30,10 +30,10 @@
           <v-card-text>
             <v-row>
               <v-col class="d-flex justify-center" v-for="zone in zoneList.data" :key="zone.id">
-                <v-icon :color="generateColor(zone.attributes.name)">mdi-circle</v-icon>
+                <v-icon :color="generateColor(zone.name)">mdi-circle</v-icon>
                 &nbsp;&nbsp;
                 <span class="font-weight-black black--text">
-                  {{ zone.attributes.name }}
+                  {{ zone.name }}
                 </span>
               </v-col>
             </v-row>
@@ -182,13 +182,13 @@
             return formatedHour;
           }
           var reservation = {
-            apto: `${r.attributes.apartment.data.attributes.number}`,
-            start: `${r.attributes.date} ${formatHour(r.attributes.from)}`,
-            end: `${r.attributes.date} ${formatHour(r.attributes.to)}`,
+            apto: `${r.apartment.number}`,
+            start: `${r.date} ${formatHour(r.from)}`,
+            end: `${r.date} ${formatHour(r.to)}`,
           }
-          if(r.attributes.zone) {
-            reservation.zone = `${r.attributes.zone.data.attributes.name}`
-            reservation.color= this.generateColor(r.attributes.zone.data.attributes.name)
+          if(r.zone) {
+            reservation.zone = `${r.zone.name}`
+            reservation.color= this.generateColor(r.zone.name)
 
           } else {
             reservation.zone = `Lavanderia`            

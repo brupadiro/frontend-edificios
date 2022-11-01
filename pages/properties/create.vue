@@ -97,6 +97,8 @@
       //this.$store.dispatch("apartments/clear");
       this.$store.dispatch("habitants/clear");
       this.$store.dispatch("owners/clear");
+      this.$store.dispatch("owners/clearUser");
+      this.$store.dispatch("rentals/clearUser");
     },
     methods: {
       async createApartment2() {
@@ -191,9 +193,9 @@
         form.append('ref', 'api::apartament.apartament')
         form.append('refId', apartmentID)
         form.append('field', 'files')
-        this.files.data.forEach((file) => {
-          if (file.attributes instanceof File) {
-            form.append(`files`, file.attributes, file.attributes.name);
+        this.files.forEach((file) => {
+          if (file instanceof File) {
+            form.append(`files`, file, file.name);
           }
         });
         await this.$axios.post('/upload', form, {

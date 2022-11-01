@@ -31,10 +31,10 @@
                   </v-list-item-avatar>
                   <v-list-item-content>
                     <v-list-item-title>
-                      <h3>{{zone.attributes.name}}</h3>
+                      <h3>{{zone.name}}</h3>
                     </v-list-item-title>
                     <v-list-item-title>
-                      Capacidad: {{zone.attributes.capacity}}
+                      Capacidad: {{zone.capacity}}
                     </v-list-item-title>
 
                   </v-list-item-content>
@@ -130,8 +130,8 @@
 
         var zones = _.cloneDeep(this.$store.getters['zones/getList'])
         zones.data= zones.data.filter((z)=>{
-          var onlyOwners = z.attributes.rules.find((r)=>{
-            if(r.rule.data.attributes.type == 'only_owners'){
+          var onlyOwners = z.rules.find((r)=>{
+            if(r.rule.type == 'only_owners'){
                 return true
             }
           })

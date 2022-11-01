@@ -53,19 +53,19 @@
             <v-icon size="80">mdi-home</v-icon>
           </div>
         </template>
-        <template v-slot:item.attributes.number="{ item }">
-          Apto {{ item.attributes.number }}
+        <template v-slot:item.number="{ item }">
+          Apto {{ item.number }}
         </template>
-        <template v-slot:item.attributes.expenses_cost="{ item }">
-          {{ item.attributes.expenses_currency | currency }} {{ item.attributes.expenses_cost }}
+        <template v-slot:item.expenses_cost="{ item }">
+          {{ item.expenses_currency | currency }} {{ item.expenses_cost }}
         </template>
-        <template v-slot:item.attributes.expenses_payment_method="{ item }">
-          {{ item.attributes.expenses_payment_method | paymentMethod }}
+        <template v-slot:item.expenses_payment_method="{ item }">
+          {{ item.expenses_payment_method | paymentMethod }}
         </template>
 
-        <template v-slot:item.attributes.in_rent="{ item }">
-          <span class="text-subtitle-1 font-weight-regular">{{item.status}}</span>
-          <v-icon size="24" class="mb-1" :color="setColorStatus(item.attributes.in_rent)">mdi-circle</v-icon>
+        <template v-slot:item.in_rent="{ item }">
+          <span class="text-subtitle-1 font-weight-regular">{{item.in_rent}}</span>
+          <v-icon size="24" class="mb-1" :color="setColorStatus(item.in_rent)">mdi-circle</v-icon>
         </template>
         <template v-slot:item.actions="{item}">
           <cardsSinglePropertyComponent :data="item"></cardsSinglePropertyComponent>
@@ -126,19 +126,19 @@
           align: 'center'
         }, {
           text: 'Numero',
-          value: 'attributes.number',
+          value: 'number',
           align: 'center'
         }, {
           text: 'Habitaciones',
-          value: 'attributes.rooms',
+          value: 'rooms',
           align: 'center'
         },{
             text: 'Baños',
-            value: 'attributes.bathrooms',
+            value: 'bathrooms',
             align: 'center'
           }, {
           text: 'En alquiler',
-          value: 'attributes.in_rent',
+          value: 'in_rent',
           align: 'center'
         }, {
           text: 'Acciones',
@@ -169,15 +169,15 @@
         if (this.expanded) {
           var expandedHeaders = [{
             text: 'Baños',
-            value: 'attributes.bathrooms',
+            value: 'bathrooms',
             align: 'center'
           }, {
             text: 'Expensas',
-            value: 'attributes.expenses_cost',
+            value: 'expenses_cost',
             align: 'center'
           }, {
             text: 'Metodo de pago (Expensas)',
-            value: 'attributes.expenses_payment_method',
+            value: 'expenses_payment_method',
             align: 'center'
           }]
           headers.splice(headers.length - 1, 0, ...expandedHeaders)

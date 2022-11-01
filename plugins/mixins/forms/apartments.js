@@ -74,14 +74,14 @@ export default {
       await this.$store.dispatch('users/clear')
     },
     async createFiles() {
-      if (this.files.data.length == 0) return
+      if (this.files.length == 0) return
       var form = new FormData()
       form.append('ref', 'api::apartament.apartament')
       form.append('refId', this.apartment.id)
       form.append('field', 'files')
-      this.files.data.forEach((file) => {
-        if (file.attributes instanceof File) {
-          form.append(`files`, file.attributes, file.attributes.name);
+      this.files.forEach((file) => {
+        if (file instanceof File) {
+          form.append(`files`, file, file.name);
         }
       });
       try {

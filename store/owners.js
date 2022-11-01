@@ -80,10 +80,9 @@ export const actions = {
       }
     } else {
       commit('set', {
-        ...data.data[0].attributes,
-        id: data.data[0].id
+        ...data.data[0]
       })
-      return data.data[0].attributes
+      return data.data[0]
 
     }
   },
@@ -114,8 +113,7 @@ export const actions = {
       data: state.owner
     })
     commit('set', {
-      ...data.data.attributes,
-      id: data.data.id
+      ...data,
     })
   },
   async delete(id) {

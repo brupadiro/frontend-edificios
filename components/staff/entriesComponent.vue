@@ -119,27 +119,27 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>
-                <h3>{{item.attributes.name | capitalize}}</h3>
+                <h3>{{item.name | capitalize}}</h3>
               </v-list-item-title>
               <v-list-item-subtitle>
                 <v-icon>mdi-note-text</v-icon>&nbsp;
-                <b class="black--text">{{item.attributes.staff.data.attributes.doc_type}}: {{item.attributes.staff.data.attributes.doc | capitalize}}</b>
-                <template v-if="item.attributes.phone">
+                <b class="black--text">{{item.staff.doc_type}}: {{item.staff.doc | capitalize}}</b>
+                <template v-if="item.phone">
                   &nbsp;-&nbsp;
                   <v-icon>mdi-phone</v-icon>&nbsp;
-                  <b class="black--text">CI: {{item.attributes.staff.data.attributes.phone | capitalize}}</b>
+                  <b class="black--text">CI: {{item.staff.phone | capitalize}}</b>
 
                 </template>
               </v-list-item-subtitle>
 
               <v-list-item-subtitle>
                 <v-icon>mdi-clock</v-icon>&nbsp;
-                {{ item.attributes | createdAt }}
+                {{ item | createdAt }}
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-avatar size="80" color="green">
               <span class="white--text text-h6 font-weight-bold">
-                {{ item.attributes.type | capitalize }}
+                {{ item.type | capitalize }}
               </span>
             </v-list-item-avatar>
           </v-list-item>
@@ -239,10 +239,10 @@
       staffList() {
         return this.staffItems.map(item => {
           return {
-            text: item.attributes.name,
+            text: item.name,
             value: item.id,
             staff: item.id,
-            ...item.attributes
+            ...item
           }
         })
       }

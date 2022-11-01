@@ -80,9 +80,9 @@
       inPayments() {
         if(!this.payments.data) return 0
         let inPayments =this.payments.data.filter((p)=>{
-          return p.attributes.type == 'expenses'  && p.attributes.status == 'payed'
+          return p.type == 'expenses'  && p.status == 'payed'
         }).reduce((acc, curr)=>{
-          return acc + curr.attributes.amount
+          return acc + curr.amount
         },0)
         console.log(inPayments)
         return inPayments
@@ -90,9 +90,9 @@
       outPayments() {
         if(!this.payments.data) return 0
         let inPayments =this.payments.data.filter((p)=>{
-          return p.attributes.type == 'suppliers'
+          return p.type == 'suppliers'
         }).reduce((acc, curr)=>{
-          return acc + curr.attributes.amount
+          return acc + curr.amount
         },0)
         console.log(inPayments)
         return inPayments
@@ -100,9 +100,9 @@
       pendingPayments() {
         if(!this.payments.data) return 0
         let inPayments =this.payments.data.filter((p)=>{
-          return p.attributes.type != 'suppliers' && p.attributes.status == 'pending'
+          return p.type != 'suppliers' && p.status == 'pending'
         }).reduce((acc, curr)=>{
-          return acc + curr.attributes.amount
+          return acc + curr.amount
         },0)
         console.log(inPayments)
         return inPayments

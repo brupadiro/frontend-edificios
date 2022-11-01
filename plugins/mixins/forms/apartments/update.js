@@ -13,8 +13,8 @@ export default {
         apartment: this.$route.params.id
       })
       this.$store.dispatch('owners/setUser', {
-        id: owner.user.data.id,
-        ...owner.user.data.attributes
+        id: owner.user.id,
+        ...owner.user
       })
 
       if (this.apartment.in_rent) {
@@ -22,8 +22,8 @@ export default {
           apartment: this.$route.params.id
         })
         this.$store.dispatch('rentals/setUser', {
-          id: rental.user.data.id,
-          ...rental.user.data.attributes
+          id: rental.user.id,
+          ...rental.user
         })
       }
     },
@@ -87,9 +87,9 @@ export default {
         form.append('ref', 'api::apartament.apartament')
         form.append('refId', this.apartment.id)
         form.append('field', 'files')
-        this.files.data.forEach((file) => {
-          if (file.attributes instanceof File) {
-            form.append(`files`, file.attributes, file.attributes.name);
+        this.files.forEach((file) => {
+          if (file instanceof File) {
+            form.append(`files`, file, file.name);
           }
         });
         await this.$axios.post('/upload', form, {

@@ -27,7 +27,7 @@
                     </formsFieldsTextComponent>
                   </v-col>
                   <v-col class="col-12" v-show="!apartment.id">
-                    <formsFieldsSelectComponent v-model="visit.apartment" item-text="attributes.number" item-value="id"
+                    <formsFieldsSelectComponent v-model="visit.apartment" item-text="number" item-value="id"
                       :items="apartmentsList.data" type="number" label="APARTAMENTO"></formsFieldsSelectComponent>
                   </v-col>
                   <v-col class="col-12 col-sm-6">
@@ -77,27 +77,27 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>
-                <h3>{{item.attributes.name}}</h3>
+                <h3>{{item.name}}</h3>
               </v-list-item-title>
               <v-list-item-subtitle>
                 <v-icon>mdi-note-text</v-icon>&nbsp;
-                <b class="black--text">{{item.attributes.doc_type}}: {{item.attributes.doc}}</b>
+                <b class="black--text">{{item.doc_type}}: {{item.doc}}</b>
               </v-list-item-subtitle>
-              <v-list-item-subtitle v-if="item.attributes.phone">
+              <v-list-item-subtitle v-if="item.phone">
                 <v-icon>mdi-phone</v-icon>&nbsp;
-                <b class="black--text">{{item.attributes.phone}}</b>
+                <b class="black--text">{{item.phone}}</b>
               </v-list-item-subtitle>
               <v-list-item-subtitle>
                 <v-icon>mdi-calendar</v-icon>&nbsp;
-                {{ item.attributes.createdAt | formatDate }}
+                {{ item.createdAt | formatDate }}
               </v-list-item-subtitle>
               <v-list-item-subtitle>
                 <v-icon>mdi-clock</v-icon>&nbsp;
-                Hora de salida: {{ item.attributes.out_hour | formatHour }}
+                Hora de salida: {{ item.out_hour | formatHour }}
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-actions>
-              <v-btn v-show="!item.attributes.out_hour" :fab="isMobile" rounded color="yellow"
+              <v-btn v-show="!item.out_hour" :fab="isMobile" rounded color="yellow"
                 class="font-weight-regular rounded-lg" @click="setCheckout(item.id)">
                 <v-icon v-if="isMobile" size="30">ion-ios-exit</v-icon>
                 <span v-else>CHECK OUT</span>
@@ -153,13 +153,13 @@
         hourMenu: false,
         headers: [{
           text: 'Fecha',
-          value: 'attributes.createdAt'
+          value: 'createdAt'
         }, {
           text: 'Documento',
-          value: 'attributes.doc'
+          value: 'doc'
         }, {
           text: 'Nombre',
-          value: 'attributes.name'
+          value: 'name'
         }],
         tab: 0,
         items: {

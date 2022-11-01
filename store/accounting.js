@@ -46,7 +46,7 @@ export const actions = {
         })
       }
     })
-    commit('set', data.data[0].attributes)
+    commit('set', data.data[0])
   },
   async findAll({
     commit
@@ -88,7 +88,7 @@ export const actions = {
       }
     })
     commit('set', {
-      ...data.data.attributes,
+      ...data.data,
       id: data.data.id
     })
     dispatch('clear')

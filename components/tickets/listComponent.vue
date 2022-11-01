@@ -6,21 +6,21 @@
     <v-divider></v-divider>
     <v-card-text>
       <v-data-table :headers="headers" hide-default-footer :items="tickets.data">
-        <template v-slot:item.attributes.priority="{ item }">
-          <v-chip :color="getColor(item.attributes.priority)" text-color="white">
-            <b>{{ item.attributes.priority | priority }}</b>
+        <template v-slot:item.priority="{ item }">
+          <v-chip :color="getColor(item.priority)" text-color="white">
+            <b>{{ item.priority | priority }}</b>
           </v-chip>
         </template>
-        <template v-slot:item.attributes.status="{ item }">
-          <v-chip :color="getColor(item.attributes.status)" text-color="white">
-            <b>{{ item.attributes.status | status }}</b>
+        <template v-slot:item.status="{ item }">
+          <v-chip :color="getColor(item.status)" text-color="white">
+            <b>{{ item.status | status }}</b>
           </v-chip>
         </template>
-        <template v-slot:item.attributes.createdAt="{ item }">
-          <b>{{ item.attributes.createdAt | date }}</b>
+        <template v-slot:item.createdAt="{ item }">
+          <b>{{ item.createdAt | date }}</b>
         </template>
         <template v-slot:item.id="{ item }">
-          <v-btn small rounded color="yellow" v-if="item.attributes.status!='Closed'" @click="updateStatus(item)">
+          <v-btn small rounded color="yellow" v-if="item.status!='Closed'" @click="updateStatus(item)">
             Cerrar ticket
           </v-btn>
         </template>
@@ -43,23 +43,23 @@
         },
         headers: [{
             text: 'Descripcion',
-            value: 'attributes.description'
+            value: 'description'
           },
           {
             text: 'Area',
-            value: 'attributes.area'
+            value: 'area'
           },
           {
             text: 'Prioridad',
-            value: 'attributes.priority'
+            value: 'priority'
           },
           {
             text: 'Estado',
-            value: 'attributes.status'
+            value: 'status'
           },
           {
             text: 'Fecha de creacion',
-            value: 'attributes.createdAt'
+            value: 'createdAt'
           },
           {
             text: 'Cambiar estado',

@@ -9,14 +9,14 @@
             <v-col class="col-12" v-for="nw in news.data" :key="nw.id">
                 <GeneralCardComponent>
                     <GeneralCardTitleComponent class="d-flex justify-space-between"> 
-                        <span>{{nw.attributes.title}}</span>
+                        <span>{{nw.title}}</span>
                         <v-chip>
-                            {{nw.attributes.createdAt | date}}
+                            {{nw.createdAt | date}}
                         </v-chip>
                     </GeneralCardTitleComponent>
                     <v-divider></v-divider>
                     <v-card-text>
-                        <p class="font-weight-regular black--text text-subtitle-1">{{nw.attributes.content}}</p>
+                        <p class="font-weight-regular black--text text-subtitle-1">{{nw.content}}</p>
                     </v-card-text>
                 </GeneralCardComponent>
             </v-col>

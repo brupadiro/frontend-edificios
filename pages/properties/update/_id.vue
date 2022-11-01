@@ -66,6 +66,11 @@
         errorInForm: false,
       }
     },
+    created() {
+      //this.$store.dispatch("apartments/clear");
+      this.$store.dispatch("rentals/clearUser");
+    },
+
     mounted() {
       this.getApartment()
     },
@@ -79,8 +84,8 @@
           apartment: this.$route.params.id
         })
         this.$store.dispatch('owners/setUser', {
-          id: owner.user.data.id,
-          ...owner.user.data.attributes
+          id: owner.user.id,
+          ...owner.user
         })
 
         if (this.apartment.in_rent) {
@@ -88,8 +93,8 @@
             apartment: this.$route.params.id
           })
           this.$store.dispatch('rentals/setUser', {
-            id: rental.user.data.id,
-            ...rental.user.data.attributes
+            id: rental.user.id,
+            ...rental.user
           })
         }
       },
@@ -106,7 +111,7 @@
         //create owner
         if (this.apartment.in_rent) {}
 
-        this.upload()
+        await this.upload()
         this.$router.go(-1)
       },
 

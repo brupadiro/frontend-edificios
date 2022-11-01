@@ -67,19 +67,24 @@
                     <v-form ref="formAccount" v-model="valid" lazy-validation>
                       <v-row>
                         <v-col class="col-12">
-                          <formsFieldsTextComponent label="Nombre" label-color="white--text" v-model="account.name"
+                          <formsFieldsTextComponent label="Nombre" label-color="white--text" :rules="rules.required" v-model="account.name"
                             prepend-inner-icon="ion-ios-person">
                           </formsFieldsTextComponent>
                         </v-col>
                         <v-col class="col-12">
-                          <formsFieldsTextComponent label="Documento de identidad" label-color="white--text"
+                          <formsFieldsTextComponent label="Documento de identidad" :rules="rules.min" label-color="white--text"
                             v-model="account.username" type="number" prepend-inner-icon="ion-ios-document">
                           </formsFieldsTextComponent>
                         </v-col>
                         <v-col class="col-12">
-                          <formsFieldsTextComponent v-model="account.phone" label-color="white--text"
+                          <formsFieldsTextComponent v-model="account.phone"  :rules="rules.required" label-color="white--text"
                             prepend-inner-icon="mdi-phone" label="Telefono">
                           </formsFieldsTextComponent>
+                        </v-col>
+                        <v-col class="col-12">
+                          <formsFieldsPasswordComponent v-model="account.password" :rules="rules.required"
+                            label-color="white--text" label="Password" required>
+                          </formsFieldsPasswordComponent>
                         </v-col>
                       </v-row>
                     </v-form>
@@ -134,6 +139,7 @@
 
 
         rules: {
+          min:[v => v.length >= 8 || 'Minimo 8 caracteres'],
           required: [v => !!v || 'Este campo es requerido']
         },
         showPassword: false,
@@ -146,6 +152,7 @@
         }
       },
       validAccount() {
+        console.log(this.$refs.formAccount)
         if (this.$refs.formAccount.validate()) {
           this.account.email = this.account.username + '@' + this.building.name.replace(/\s+/g, '') + '.com'
           this.account.password = this.account.username

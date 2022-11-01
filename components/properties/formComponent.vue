@@ -78,7 +78,7 @@
                 <v-chip filter active-class="primary" class="font-weight-bold text-uppercase" label
                   close-icon="cursor-pointer" :value="amenity.id" v-for="amenity in amenitiesList.data"
                   :key="'a'+amenity.id">
-                  {{amenity.attributes.name}}&nbsp;
+                  {{amenity.name}}&nbsp;
                 </v-chip>
               </v-chip-group>
             </v-card-text>

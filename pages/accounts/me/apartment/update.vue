@@ -56,8 +56,8 @@
           apartment: this.$auth.user.data.apartment.id
         })
         this.$store.dispatch('owners/setUser', {
-          id: owner.user.data.id,
-          ...owner.user.data.attributes
+          id: owner.user.id,
+          ...owner.user
         })
 
         if (this.apartment.in_rent) {
@@ -65,8 +65,8 @@
             apartment: this.$auth.user.data.apartment.id
           })
           this.$store.dispatch('rentals/setUser', {
-            id: rental.user.data.id,
-            ...rental.user.data.attributes
+            id: rental.user.id,
+            ...rental.user
           })
         }
       },

@@ -75,14 +75,13 @@ export const actions = {
 
 
     if (data.meta.pagination.total > 0) {
-      if (data.data[0].attributes.user.data == null) {
-        data.data[0].attributes.user.data = {}
+      if (data.data[0].user == null) {
+        data.data[0].user = {}
       }
       commit('set', {
-        ...data.data[0].attributes,
-        id: data.data[0].id
+        ...data.data[0]
       })
-      return data.data[0].attributes
+      return data.data[0]
 
     } else {
       return {
@@ -117,7 +116,7 @@ export const actions = {
       data: state.rental
     })
     commit('set', {
-      ...data.data.attributes,
+      ...data,
       id: data.data.id
     })
   },

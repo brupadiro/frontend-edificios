@@ -45,7 +45,7 @@ export const actions = {
         })
       }
     })
-    commit('set', data.data[0].attributes)
+    commit('set', data.data[0])
   },
   async findAll({
     commit

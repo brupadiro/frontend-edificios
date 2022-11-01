@@ -14,7 +14,7 @@
           <v-card-text>
             <v-row>
               <v-col class="col-12" v-show="!apartment.id">
-                <formsFieldsSelectComponent v-model="reservation.apartment" item-text="attributes.number"
+                <formsFieldsSelectComponent v-model="reservation.apartment" item-text="number"
                   item-value="id" :items="apartmentsList.data" type="number" label="APARTAMENTO">
                 </formsFieldsSelectComponent>
               </v-col>
@@ -198,12 +198,12 @@
         this.showReservedHours()
       },
       checkEmptyReservation(hours) {
-        if (!this.reservationList.data || this.zone.attributes == null) return
+        if (!this.reservationList.data || this.zone == null) return
         let reservationList = this.reservationList.data.filter(reservation => {
-          return reservation.attributes.from == hours.from && reservation.attributes.to == hours.to;
+          return reservation.from == hours.from && reservation.to == hours.to;
         })
         let numberOFPeoples = _.sumBy(reservationList, function (o) {
-          return o.attributes.persons;
+          return o.persons;
         });
         if (numberOFPeoples > 10) {
           return true;
@@ -231,8 +231,8 @@
         return arrayOfHours;
       },
       reservoirByTurn() {
-        if (!this.zone.attributes) return false
-        return this.zone.attributes.rules.find((rule) => rule.rule.data.attributes.type === 'period') != undefined;
+        if(!this.zone || !this.zone.rules) return false
+        return this.zone.rules.find((rule) => rule.rule.type === 'period') != undefined;
       }
     },
     watch: {

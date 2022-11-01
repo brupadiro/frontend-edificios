@@ -43,15 +43,18 @@
       async changeStep() {
         if (this.value == 1) {
           await this.generateFunction("Apartments");
+          return
         } else if (this.value == 2) {
           await this.generateFunction("Owners");
+          return
         } else if (this.value == 3) {
           await this.generateFunction("Files");
-          this.$router.go(-1)
+          return
         } else if (this.value == 4) {
           await this.generateFunction("Rentals");
-          this.$router.go(-1)
+          return
         } 
+          this.$router.go(-1)
       },
     },
     computed: {

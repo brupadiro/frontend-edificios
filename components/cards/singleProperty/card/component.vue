@@ -13,7 +13,7 @@
         <v-tab ripple :value="2">
           <span class="font-weight-black white--text">RESERVAS</span>
         </v-tab>
-        <v-tab ripple :value="3" v-if="data.attributes.invoices && data.attributes.invoices.data.length>0">
+        <v-tab ripple :value="3" v-if="data.invoices && data.invoices.length>0">
           <span class="font-weight-black white--text">FACTURAS</span>
         </v-tab>
         <v-tab ripple :value="4">
@@ -32,9 +32,9 @@
         <v-tab-item class="pa-4">
           <zonesReservationComponent></zonesReservationComponent>
         </v-tab-item>
-        <v-tab-item v-if="data.attributes.invoices && data.attributes.invoices.data.length>0">
-          <AccountingPaymentsComponent v-if="data.attributes.invoices" outlined class="mt-3"
-            :data="data.attributes.invoices">
+        <v-tab-item v-if="data.invoices && data.invoices.length>0">
+          <AccountingPaymentsComponent v-if="data.invoices" outlined class="mt-3"
+            :data="data.invoices">
           </AccountingPaymentsComponent>
         </v-tab-item>
         <v-tab-item class="py-4">
@@ -85,11 +85,11 @@
             },
             {
               text: 'Desde',
-              value: 'attributes.start_date',
+              value: 'start_date',
             },
             {
               text: 'Hasta',
-              value: 'attributes.end_date',
+              value: 'end_date',
             },
           ],
           tab: 0,

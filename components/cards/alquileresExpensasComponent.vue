@@ -120,24 +120,24 @@
     computed: {
       pendingAmount() {
         return this.apartmentsWithPendingPayments.data.reduce((total, apartment) => {
-          return total + apartment.attributes.invoices.data.filter((invoice) => invoice.attributes.status ==
+          return total + apartment.invoices.filter((invoice) => invoice.status ==
             'pending').reduce((total, invoice) => {
-            return total + invoice.attributes.amount
+            return total + invoice.amount
           }, 0)
         }, 0)
 
       },
       totalAmount() {
         return this.apartmentsWithPendingPayments.data.reduce((total, apartment) => {
-          return total + apartment.attributes.invoices.data.reduce((total, invoice) => {
-            return total + invoice.attributes.amount
+          return total + apartment.invoices.reduce((total, invoice) => {
+            return total + invoice.amount
           }, 0)
         }, 0)
 
       },
       countApartmentsWithPendingPayments() {
         return this.apartmentsWithPendingPayments.data.filter((apartment) => {
-          return apartment.attributes.invoices.data.find((invoice) => invoice.attributes.status == 'pending') != undefined
+          return apartment.invoices.find((invoice) => invoice.status == 'pending') != undefined
         }).length
       }
 

@@ -9,17 +9,17 @@
           No hay facturas disponibles
         </template>
 
-        <template v-slot:item.attributes.createdAt="{ item }">
+        <template v-slot:item.createdAt="{ item }">
           {{ item.createdAt | formatDate }}
         </template>
-        <template v-slot:item.attributes.type="{ item }">
-          {{ item.attributes.type | formatType }}
+        <template v-slot:item.type="{ item }">
+          {{ item.type | formatType }}
         </template>
         <template v-slot:item.change_status="{ item }">
-          <v-btn color="info" v-show="item.attributes.status == 'pending'" :disabled="readonly" @click="changeStatus(item.id)">
+          <v-btn color="info" v-show="item.status == 'pending'" :disabled="readonly" @click="changeStatus(item.id)">
             VALIDAR PAGO
           </v-btn>
-          <v-chip color="success darken-1 font-weight-regular" label block v-show="item.attributes.status == 'payed'">
+          <v-chip color="success darken-1 font-weight-regular" label block v-show="item.status == 'payed'">
             PAGA
           </v-chip>
         </template>
@@ -86,16 +86,16 @@
           value: 'createdAt'
         }, {
           text: 'Tipo',
-          value: 'attributes.type'
+          value: 'type'
         }, {
           text: 'Nombre / Razon social',
-          value: 'attributes.name'
+          value: 'name'
         }, {
           text: 'Moneda',
-          value: 'attributes.currency'
+          value: 'currency'
         }, {
           text: 'Monto',
-          value: 'attributes.amount'
+          value: 'amount'
         }, {
           text: 'Cambiar estado',
           value: 'change_status'
@@ -126,25 +126,25 @@
           },
 
           client: {
-            "company": item.attributes.name,
-            "address": item.attributes.address,
+            "company": item.name,
+            "address": item.address,
             "zip": "20100",
             "city": "Punta del Este",
             "country": "Uruguay"
           },
           information: {
             number: item.id,
-            "date": moment(item.attributes.createdAt).format('DD/MM/YYYY'),
+            "date": moment(item.createdAt).format('DD/MM/YYYY'),
           },
           "settings": {
-            "currency": item.attributes
+            "currency": item
               .currency // See documentation 'Locales and Currency' for more info. Leave empty for no currency.
           },
           products: [{
             quantity: "1",
-            description: item.attributes.type,
+            description: item.type,
             "tax-rate": 22,
-            price: item.attributes.amount,
+            price: item.amount,
           }, ],
           translate: {
             "invoice": "RECIBO", // Default to 'INVOICE'

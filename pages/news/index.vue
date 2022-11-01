@@ -49,8 +49,8 @@
             <v-row>
               <v-col class="col-12">
                 <v-data-table :headers="headers" hide-default-footer :items="news.data">
-                  <template v-slot:item.attributes.createdAt="{ item }">
-                    <b>{{ item.attributes.createdAt | date }}</b>
+                  <template v-slot:item.createdAt="{ item }">
+                    <b>{{ item.createdAt | date }}</b>
                   </template>
                   <template v-slot:item.id="{ item }">
                     <v-btn color="red" fab block x-small class="rounded-lg white--text" elevation="1" @click="deleteNews(item.id)">
@@ -81,15 +81,15 @@
         openNewsForm: false,
         headers: [{
             text: 'Título',
-            value: 'attributes.title'
+            value: 'title'
           },
           {
             text: 'Contenido',
-            value: 'attributes.content'
+            value: 'content'
           },
           {
             text: 'Fecha',
-            value: 'attributes.createdAt'
+            value: 'createdAt'
           },
           {
             text: 'Acciones',

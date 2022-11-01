@@ -19,7 +19,7 @@
                   &nbsp;
                   &nbsp;
                   <div>
-                    <h3>N {{data.attributes.number}}</h3>
+                    <h3>N {{data.number}}</h3>
                   </div>
                 </v-row>
                 <v-row no-gutters>
@@ -31,7 +31,7 @@
                   &nbsp;
                   &nbsp;
                   <div>
-                    <h3>{{data.attributes.square_meters}} m</h3>
+                    <h3>{{data.square_meters}} m</h3>
                     <p class="font-weight-light text-subtitle-2">Metros cubiertos</p>
                   </div>
                 </v-row>
@@ -44,7 +44,7 @@
                   &nbsp;
                   &nbsp;
                   <div>
-                    <h3>{{data.attributes.rooms}}</h3>
+                    <h3>{{data.rooms}}</h3>
                     <p class="font-weight-light text-subtitle-2">Habitaciones</p>
                   </div>
                 </v-row>
@@ -57,10 +57,10 @@
               <h5>Amenities</h5>
             </v-col>
             <v-col class="col-12">
-              <v-row no-gutters v-if="data.attributes.amenities">
+              <v-row no-gutters v-if="data.amenities">
                 <v-chip class="margin-right-5" color="grey lighten-1 black--text mr-2 mb-2 font-weight-regular" label
-                  dark v-for="amenity in data.attributes.amenities.data" :key="amenity.id">
-                  {{amenity.attributes.name}}
+                  dark v-for="amenity in data.amenities.data" :key="amenity.id">
+                  {{amenity.name}}
                 </v-chip>
               </v-row>
             </v-col>
@@ -92,8 +92,8 @@
               </v-avatar>
               &nbsp;
               <div class="pt-4">
-                <h6 class="white--text font-weight-regular" v-if="owner.user && owner.user.data">
-                  {{owner.user.data.attributes.name}}</h6>
+                <h6 class="white--text font-weight-regular" v-if="owner.user">
+                  {{owner.user.name}}</h6>
                 <p class="text-subtitle-2 white--text">Propietario</p>
               </div>
             </v-card-title>
@@ -104,15 +104,15 @@
                   <p class="white--text">Documento</p>
                 </v-col>
                 <v-col class="col-12 col-sm-6 text-right">
-                  <p class="white--text" v-if="owner.user && owner.user.data">{{owner.user.data.attributes.username}}
+                  <p class="white--text" v-if="owner.user">{{owner.user.username}}
                   </p>
                 </v-col>
                 <v-col class="col-12 col-sm-6">
                   <p class="white--text">Expensas</p>
                 </v-col>
                 <v-col class="col-12 col-sm-6 text-right">
-                  <p class="white--text text-h6 font-weight-black">{{data.attributes.expenses_currency}}
-                    {{data.attributes.expenses_cost}}</p>
+                  <p class="white--text text-h6 font-weight-black">{{data.expenses_currency}}
+                    {{data.expenses_cost}}</p>
                 </v-col>
                 <v-col class="col-12">
                   <v-btn color="secondary rounded-lg font-weight-regular" block class="text-capitalize">
@@ -156,16 +156,16 @@
             </template>
 
             <template v-slot:item.name="{ item }">
-              {{item.attributes.user.data.name}}
+              {{item.user.name}}
             </template>
             <template v-slot:item.doc="{ item }">
-              {{item.attributes.user.data.doc}}
+              {{item.user.doc}}
             </template>
-            <template v-slot:item.attributes.start_date="{ item }">
-              {{item.attributes.start_date}}
+            <template v-slot:item.start_date="{ item }">
+              {{item.start_date}}
             </template>
-            <template v-slot:item.attributes.end_date="{ item }">
-              {{item.attributes.end_date}}
+            <template v-slot:item.end_date="{ item }">
+              {{item.end_date}}
             </template>
           </v-data-table>
 
@@ -201,7 +201,7 @@
     },
     filters: {
       formatHabitants: (user, type) => {
-        let data = user.data.attributes[type]
+        let data = user[type]
         return data ? data : ''
       }
     },
@@ -210,19 +210,19 @@
         openRentalForm: false,
         headersRentals: [{
             text: 'Nombre',
-            value: 'attributes.user.data.attributes.name'
+            value: 'user.name'
           },
           {
             text: 'Documento',
-            value: 'attributes.user.data.attributes.username'
+            value: 'user.username'
           },
           {
             text: 'Fecha de inicio',
-            value: 'attributes.start_date'
+            value: 'start_date'
           },
           {
             text: 'Fecha de fin',
-            value: 'attributes.end_date'
+            value: 'end_date'
           },
         ],
 

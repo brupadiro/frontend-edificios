@@ -41,17 +41,17 @@
             <template v-for="(moovment,index) in moovments">
               <v-list-item :key="moovment.id">
                 <v-list-item-avatar color="primary">
-                  <v-icon color="green" v-if="moovment.attributes.type =='deposit'">mdi-arrow-right</v-icon>
+                  <v-icon color="green" v-if="moovment.type =='deposit'">mdi-arrow-right</v-icon>
                   <v-icon color="red" v-else>mdi-arrow-left</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-subtitle class="font-weight-light black--text">
-                    <span v-if="moovment.attributes.concept">{{moovment.attributes.concept}}</span>
+                    <span v-if="moovment.concept">{{moovment.concept}}</span>
                     <span v-else>Sin concepto</span>
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action-text class="font-weight-bold text-subtitle-2 black--text">
-                  {{currency | currency}} {{moovment.attributes.amount}}
+                  {{currency | currency}} {{moovment.amount}}
                 </v-list-item-action-text>
               </v-list-item>
               <v-divider v-show="index!=moovments.length" :key="`d${moovment.id}`"></v-divider>
@@ -132,15 +132,15 @@
 
       moovments() {
         if(Array.isArray(this.value))
-          return this.value.filter(account => account.attributes.currency === this.currency)
+          return this.value.filter(account => account.currency === this.currency)
         return []
       },
       total() {
         return this.moovments.reduce((total, moovment) => {
-          if (moovment.attributes.type === 'deposit') {
-            return total + moovment.attributes.amount
+          if (moovment.type === 'deposit') {
+            return total + moovment.amount
           } else {
-            return total - moovment.attributes.amount
+            return total - moovment.amount
           }
         }, 0)
       },

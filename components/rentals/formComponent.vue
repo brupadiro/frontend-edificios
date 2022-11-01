@@ -91,7 +91,7 @@
       ]),
       ...mapFields('rentals', [
         'user.name',
-        'user.doc',
+        'user.phone',
         'user.id',
         'user.username',
       ]),
