@@ -131,6 +131,11 @@ export const actions = {
       doc: '',
     })
   },
+  set({
+    commit
+  },data) {
+    commit('set', data)
+  },
   generateInvoice({state},data) {
     let invoice = JSON.parse(JSON.stringify(data));
     easyinvoice.createInvoice(invoice, function (result) {

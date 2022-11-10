@@ -113,7 +113,6 @@
         }
         let invoice = await this.$store.dispatch('accounting/add')
         this.$store.dispatch('accounting/findAll')
-        console.log(invoice)
         if(this. apartment) {
           this.$store.dispatch('apartments/addInvoices',{
             id:this.apartment,

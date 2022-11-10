@@ -14,27 +14,47 @@
           <v-card-text>
             <v-row>
               <v-col class="col-12" v-show="!apartment.id">
-                <formsFieldsSelectComponent v-model="reservation.apartment" item-text="number"
-                  item-value="id" :items="apartmentsList.data" type="number" label="APARTAMENTO">
+                <formsFieldsSelectComponent v-model="reservation.apartment" item-text="number" item-value="id"
+                  :items="apartmentsList.data" type="number" label="APARTAMENTO">
+                </formsFieldsSelectComponent>
+              </v-col>
+              <v-col class="col-12" v-show="!apartment.id">
+                <formsFieldsSelectComponent :items="[{value:true,text:'Si'},{value:false,text:'No'}]"
+                  v-model="reservation.owner" label="ES PROPIETARIO">
                 </formsFieldsSelectComponent>
               </v-col>
               <v-col class="col-12">
-                <formsFieldsTextComponent v-model="reservation.persons" item-text="number"
-                  item-value="id" type="number" label="CANTIDAD DE PERSONAS">
+                <formsFieldsTextComponent v-model="reservation.persons" item-text="number" item-value="id" type="number"
+                  label="CANTIDAD DE PERSONAS">
                 </formsFieldsTextComponent>
               </v-col>
               <v-col class="col-12">
                 <v-card outlined>
-                <v-sheet max-height="400">
-                  <v-date-picker v-model="reservation.date"  no-title scrollable locale="es" full-width
-                    :allowed-dates="allowedDates" class="elevation-0"></v-date-picker>
-                </v-sheet>
+                  <v-sheet max-height="400">
+                    <v-date-picker v-model="reservation.date" no-title scrollable locale="es" full-width
+                      :allowed-dates="allowedDates" class="elevation-0"></v-date-picker>
+                  </v-sheet>
                 </v-card>
               </v-col>
             </v-row>
           </v-card-text>
         </v-card>
       </v-card-text>
+      <v-card-subtitle>
+        <v-btn @click="termsModal = true" outlined block>Terminos y condiciones de la reserva</v-btn>
+        <v-dialog v-model="termsModal" width="600" >
+          <GeneralCardComponent >
+            <GeneralCardTitleComponent>Terminos y condiciones de la reserva</GeneralCardTitleComponent>
+            <v-divider></v-divider>
+            <v-card-text>
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="secondary" @click="termsModal = false">Cerrar</v-btn>
+            </v-card-actions>
+          </GeneralCardComponent>
+        </v-dialog>
+      </v-card-subtitle>
       <v-expand-transition hide-on-leave="true">
         <v-card-text>
           <v-card outlined>
@@ -76,12 +96,13 @@
                       <span>LIBRE</span>
                     </v-col>
                     <v-col class="col-3">
-                      <v-btn color="success darken-1" @click="createReservation( {from: '12:00:00.000', to: '13:00:00.000'})"
+                      <v-btn color="success darken-1"
+                        @click="createReservation( {from: '12:00:00.000', to: '13:00:00.000'})"
                         v-show="!checkEmptyReservation( {from: '12:00:00.000', to: '13:00:00.000'})" block depressed>
                         RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
                       </v-btn>
-                      <v-btn color="red darken-1" class="white--text" v-show="checkEmptyReservation( {from: '12:00:00.000', to: '13:00:00.000'})" block
-                        depressed>
+                      <v-btn color="red darken-1" class="white--text"
+                        v-show="checkEmptyReservation( {from: '12:00:00.000', to: '13:00:00.000'})" block depressed>
                         RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
                       </v-btn>
                     </v-col>
@@ -92,15 +113,16 @@
                     </v-col>
                     <v-col class="col-4 d-flex align-center">
                       <span>LIBRE</span>
-                      
+
                     </v-col>
                     <v-col class="col-3">
-                      <v-btn color="success darken-1" @click="createReservation( {from: '21:00:00.000', to: '22:00:00.000'})"
+                      <v-btn color="success darken-1"
+                        @click="createReservation( {from: '21:00:00.000', to: '22:00:00.000'})"
                         v-show="!checkEmptyReservation( {from: '21:00:00.000', to: '22:00:00.000'})" block depressed>
                         RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
                       </v-btn>
-                      <v-btn color="red darken-1" class="white--text" v-show="checkEmptyReservation( {from: '21:00:00.000', to: '22:00:00.000'})" block
-                        depressed>
+                      <v-btn color="red darken-1" class="white--text"
+                        v-show="checkEmptyReservation( {from: '21:00:00.000', to: '22:00:00.000'})" block depressed>
                         RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
                       </v-btn>
                     </v-col>
@@ -110,7 +132,7 @@
                   <v-row v-for="(hour,index) in arrayHourToHour" :key="index" class="border-bottom py-3" no-gutters>
                     <v-col class="col-5 d-flex align-center">
                       <span>{{ hour.from | formatHour }} - {{hour.to | formatHour }}</span>
-                       
+
                     </v-col>
                     <v-col class="col-4 d-flex align-center">
                       <span>LIBRE</span>
@@ -122,7 +144,7 @@
                       </v-btn>
                       <v-btn color="red darken-1" class="white--text" v-show="checkEmptyReservation(hour)" block
                         depressed>
-                       
+
                         RESERVAR&nbsp;<v-icon>mdi-calendar</v-icon>
                       </v-btn>
                     </v-col>
@@ -170,14 +192,16 @@
     data: () => ({
       now: null,
       newReservationModal: false,
+      termsModal: false,
       reservation: {
-        persons:1
+        persons: 1,
+        owner:true
       },
       selectedDate: null,
       date: null,
     }),
     created() {
-      if(this.apartment) {
+      if (this.apartment) {
         this.reservation.apartment = this.apartment.id
       }
     },
@@ -189,8 +213,8 @@
       allowedDates(date) {
         var currentDate = this.now
         const ruleBeforeTo = this.zone.rules.find((rule) => rule.rule.type === 'before_to');
-        if(ruleBeforeTo) {
-          currentDate = moment().add(ruleBeforeTo.value,ruleBeforeTo.rule.subtype).format("YYYY-MM-DD")
+        if (ruleBeforeTo) {
+          currentDate = moment().add(ruleBeforeTo.value, ruleBeforeTo.rule.subtype).format("YYYY-MM-DD")
         }
         return moment(date).isSameOrAfter(currentDate);
       },
@@ -209,21 +233,49 @@
 
 
         const rulePrePayment = this.zone.rules.find((rule) => rule.rule.type === 'prepayment');
-        if(rulePrePayment) {
-          this.reservation.pending_payment = true
+        if (!rulePrePayment) {
+          this.generateInvoiceToApartment()
         }
-        if(!this.reservation.apartment) {
+        if (!this.reservation.apartment) {
           return
         }
 
         await this.$store.dispatch("zones/reservations/add", this.reservation);
         this.reservation = {
-          apartment:this.reservation.apartment,
-          persons:1
+          apartment: this.reservation.apartment,
+          persons: 1
         };
         this.newReservationModal = true;
         this.showReservedHours()
       },
+      async generateInvoiceToApartment() {
+          this.reservation.pending_payment = true
+          var amount = 0
+          if (this.reservation.owner) {
+            amount = 3000
+          } else {
+            amount = 1500
+          }
+
+          this.$store.dispatch('accounting/set', {
+            type: 'others',
+            amount: amount,
+            status: 'pending',
+            currency: 'UYU',
+            address: '',
+            comments: '',
+            name: 'test',
+            doc: '1',
+          })
+          let invoice = await this.$store.dispatch('accounting/add')
+          if (this.apartment) {
+            this.$store.dispatch('apartments/addInvoices', {
+              id: this.reservation.apartment,
+              invoice: invoice
+            })
+          }
+      },
+
       checkEmptyReservation(hours) {
         if (!this.reservationList.data || this.zone == null) return
         let reservationList = this.reservationList.data.filter(reservation => {
@@ -248,7 +300,8 @@
       arrayHourToHour() {
         let arrayOfHours = [];
         for (let i = 7; i < 24; i++) {
-          if (moment().isSameOrAfter(moment(i, "HH")) && this.reservation.date == moment().format("YYYY-MM-DD")) continue
+          if (moment().isSameOrAfter(moment(i, "HH")) && this.reservation.date == moment().format("YYYY-MM-DD"))
+            continue
           arrayOfHours.push({
             from: moment(i, "HH").format("HH:mm:00.000"),
             to: moment(i + 1, "HH").format("HH:mm:00.000")
@@ -256,14 +309,14 @@
         }
         return arrayOfHours;
       },
-      reservoirByTurn(){
+      reservoirByTurn() {
         console.log(this.zone)
-        if(!this.zone || !this.zone.rules) return false
+        if (!this.zone || !this.zone.rules) return false
         return this.zone.rules.find((rule) => rule.rule.type === 'period') != undefined;
       }
     },
     watch: {
-      "reservation.date":function() {
+      "reservation.date": function () {
         this.showReservedHours()
       }
     }

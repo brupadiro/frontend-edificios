@@ -75,6 +75,8 @@
           return 'Renta'
         }else if(value == 'suppliers') {
           return 'Proveedores'
+        }else if(value == 'others') {
+          return 'Otros'
         }
       }
     },
