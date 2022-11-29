@@ -25,9 +25,9 @@
             {{item.end_date}}
           </template>
           <template v-slot:item.actions="{ item }">
-            <V-btn color="primary"  small @click="viewRental(item)">
+            <v-btn color="primary"  small @click="viewRental(item)">
               <v-icon>mdi-magnify</v-icon>
-            </V-btn>
+            </v-btn>
           </template>
         </v-data-table>
       </v-card-text>
