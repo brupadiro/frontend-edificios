@@ -90,9 +90,15 @@
         if (!this.$refs.form.validate()) return
         this.loading = true
         this.$store.dispatch('users/login', this.user)
-          .then(() => {
-            this.loading = false
-            this.$router.push('/')
+          .then((data) => {
+            console.log(data.data.user.type)
+            if(data.data.user.type == 'admin') {
+              this.$router.push('/')
+            } else if(data.data.user.type == 'staff') {
+              this.$router.push('/accounts/staff')
+            } else {
+              this.$router.push('/accounts/me')
+            }
           }).catch(() => {
             this.loading = false
           })

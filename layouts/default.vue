@@ -17,7 +17,11 @@
         this.$router.push('/accounts/login')
       }
       if(this.$auth.user.type != 'admin') {
-        this.$router.push('/accounts/me')
+        if(this.$auth.user.type == 'staff') {
+          this.$router.push('/accounts/staff')
+        } else {
+          this.$router.push('/accounts/me')
+        }
       } 
     },
     mounted() {

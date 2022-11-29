@@ -69,7 +69,7 @@ export default {
                 to: '/zones',
               },
               {
-                icon: 'dots-horizontal',
+                icon: 'more',
                 title: 'More',
                 subItems: [{
                     icon: 'numbers',

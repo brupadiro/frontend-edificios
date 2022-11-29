@@ -15,46 +15,12 @@
       <v-row>
         <v-col class="col-12">
           <generalCardComponent>
-            <v-card-title class="primary font-weight-regular white--text mb-3">
-              Datos del edificio
-            </v-card-title>
-            <v-card-text>
-              <v-row>
-                <v-col class="col-12">
-                  <formsFieldsTextComponent label="Nombre del edificio" v-model="building.name">
-                  </formsFieldsTextComponent>
-
-                </v-col>
-                <v-col class="col-12">
-                  <formsFieldsTextComponent prepend-inner-icon="mdi-map-marker" v-model="building.address"
-                    label="Direccion">
-                  </formsFieldsTextComponent>
-
-                </v-col>
-                <v-col class="col-12">
-                  <formsFieldsSelectComponent :items="['Maldonado']" prepend-inner-icon="mdi-map"
-                    v-model="building.location" label="Localidad">
-                  </formsFieldsSelectComponent>
-
-                </v-col>
-              </v-row>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" text-color="white" @click="saveSettings()">
-                Guardar datos
-              </v-btn>
-            </v-card-actions>
-          </generalCardComponent>
-        </v-col>
-        <v-col class="col-12">
-          <generalCardComponent>
             <GeneralCardTitleComponent class="primary font-weight-regular white--text mb-3">
               Areas del edificio
             </GeneralCardTitleComponent>
             <v-card-text>
               <v-input>
-                <formsFieldsTextButtonComponent class="elevation-6 rounded-lg" notification-text="Amenitie agregado!"
+                <formsFieldsTextButtonComponent  button-color="secondary" notification-text="Area agregada!"
                   button-label="Agregar" v-model="amenity.name" @click="addArea()" label="Nombre del area">
                   <template v-slot:icon>
                     <v-icon>mdi-content-save</v-icon>
@@ -79,8 +45,8 @@
             </GeneralCardTitleComponent>
             <v-card-text>
               <v-input>
-                <formsFieldsTextButtonComponent class="elevation-6 rounded-lg" notification-text="Amenitie agregado!"
-                  button-label="Agregar" v-model="amenity.name" @click="addAmenity()" label="Nombre del amenitie">
+                <formsFieldsTextButtonComponent notification-text="Amenitie agregado!"
+                  button-label="Agregar" button-color="secondary" v-model="amenity.name" @click="addAmenity()" label="Nombre del amenitie">
                   <template v-slot:icon>
                     <v-icon>mdi-content-save</v-icon>
                   </template>
@@ -106,7 +72,7 @@
             <v-card-text>
               <v-form ref="form">
                 <v-row>
-                  <v-col class="col-12 col-md-10">
+                  <v-col class="col-12 col-md-9">
                     <v-row>
                       <v-col class="col-md-4 col-12">
                         <formsFieldsTextComponent label="CI" v-model="user.username"></formsFieldsTextComponent>
@@ -120,14 +86,16 @@
                       </v-col>
                     </v-row>
                   </v-col>
-                  <v-col class="col-12 col-md-2">
-                    <v-btn color="secondary" class="mt-8 rounded-lg" large @click="addUser()">Guardar usuario</v-btn>
+                  <v-col class="col-12 col-md-3">
+                    <v-btn color="secondary" block class="mt-8 rounded-lg font-weight-regular black--text" large @click="addUser()">
+                      Guardar&nbsp;<v-icon>mdi-account</v-icon>
+                    </v-btn>
                   </v-col>
                 </v-row>
 
               </v-form>
             </v-card-text>
-            <v-data-table :headers="headers" :items="users">
+            <v-data-table :headers="headers" hide-default-footer :items="users">
               <template v-slot:item.id="{ item }">
                 <v-icon small @click="deleteItem(item)">
                   mdi-delete

@@ -32,8 +32,7 @@
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions style="height:55" v-show="file.url">
-              <v-btn block depressed :href="getUrl(file)" target="_blank"
-                class="rounded-lg" color="success darken-1">
+              <v-btn block depressed :href="getUrl(file)" target="_blank" class="rounded-lg" color="success darken-1">
                 VER ARCHIVO&nbsp;
                 <v-icon>mdi-magnify</v-icon>
               </v-btn>
@@ -49,7 +48,7 @@
 <script>
   export default {
     props: {
-      value: Object,
+      value: Array,
       readonly: {
         default: false,
         type: Boolean
@@ -57,16 +56,16 @@
     },
     data() {
       return {
+        files: [],
         showPreview: false
       }
     },
     mounted() {},
     methods: {
       getUrl(file) {
-        if(file.url)  {
+        if (file.url) {
           return file.url
-        }
-         else {
+        } else {
           return URL.createObjectURL(file);
         }
       },
@@ -87,9 +86,7 @@
           if (file.id) {
             this.$axios.delete('/upload/files/' + file.id)
           }
-          this.$emit('input', {
-            data: temporalValue.filter(f => f !== file)
-          })
+          this.$emit('input', temporalValue.filter(f => f !== file))
         }
 
       },
@@ -112,16 +109,14 @@
     },
     computed: {
       filesList() {
-        if (this.value != null) {
-          console.log(this.value)
-          return this.value.data.filter((file) => {
+        if (this.value) {
+          return this.value.filter((file) => {
             if (file instanceof File) {
               return file
             } else if (Object.keys(file).length) {
               return file
             }
           })
-
         } else {
           return []
         }

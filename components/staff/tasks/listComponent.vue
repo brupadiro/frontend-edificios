@@ -1,7 +1,7 @@
 <template>
   <div>
-    <GeneralCardComponent outlined>
-      <GeneralCardTitleComponent>
+    <GeneralCardComponent>
+      <GeneralCardTitleComponent class="primary white--text">
         Lista de tareas
         <v-spacer></v-spacer>
         <v-btn color="secondary black--text rounded-lg font-weight-regular" @click="modalTask = true">
@@ -9,7 +9,7 @@
         </v-btn>
       </GeneralCardTitleComponent>
       <v-card-text>
-        <v-data-table :headers="headers" hide-default-footer :items="taskList.data">
+        <v-data-table :loading="taskList.meta.pagination == undefined" loading-text="Cargando..." no-data-text="No hay datos disponibles" :headers="headers" hide-default-footer disable-sort :items="taskList.data">
           <template v-slot:item.priority="{ item }">
             <v-chip :color="getColor(item.priority)" text-color="white">
               <b>{{ item.priority | priority }}</b>

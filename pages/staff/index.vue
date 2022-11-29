@@ -33,7 +33,7 @@
           <v-card-text class="my-3">
             <v-tabs-items v-model="tab">
               <v-tab-item>
-                <v-data-table hide-default-footer :headers="headers" :items="staffList.data">
+                <v-data-table hide-default-footer :headers="headers" :loading="staffList.meta.pagination == undefined" loading-text="Cargando..." no-data-text="No hay datos disponibles" :items="staffList.data">
                   <template v-slot:item.photo="{ item }">
                     <v-hover v-slot="{ hover }">
                       <v-avatar size="70" color="primary" class="my-2" open-delay="200" v-ripple @click="showStaff(item)">

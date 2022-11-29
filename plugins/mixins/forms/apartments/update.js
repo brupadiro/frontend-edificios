@@ -85,7 +85,7 @@ export default {
         if (this.files.length == 0) return
         var form = new FormData()
         form.append('ref', 'api::apartament.apartament')
-        form.append('refId', this.apartment.id)
+        form.append('refId', this.$route.params.id)
         form.append('field', 'files')
         this.files.forEach((file) => {
           if (file instanceof File) {

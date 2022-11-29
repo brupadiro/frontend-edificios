@@ -15,7 +15,7 @@ export const state = () => ({
     staff: null,
     priority: 'Medium',
     apartment: null,
-    area: 0
+    area: null
   },
 })
 export const getters = {

@@ -56,7 +56,7 @@
                 ARCHIVOS ADJUNTOS
               </v-card-title>
               <v-divider></v-divider>
-              <generalUploadFilesComponent v-model="files"></generalUploadFilesComponent>
+              <generalUploadFilesComponent :value="files.data" @input="files.data = $event"></generalUploadFilesComponent>
             </GeneralCardComponent>
           </v-form>
         </v-stepper-content>
@@ -87,7 +87,7 @@
         files:{
           data:[]
         },
-        step:1,
+        step:3,
         rental: {
           habitant: {}
         }

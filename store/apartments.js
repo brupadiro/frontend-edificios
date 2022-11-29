@@ -71,8 +71,10 @@ export const actions = {
 
   async findAll({
     state,
-    commit
+    commit,
+    dispatch
   }, params = {}) {
+    dispatch('clearList')
     if (params.filters) {
       params.filters.building = this.$auth.user.building.id
     } else {
@@ -80,7 +82,6 @@ export const actions = {
         building: this.$auth.user.building.id
       }
     }
-    console.log("aca")
     const {
       data: data
     } = await this.$axios.get('/apartaments', {
@@ -97,7 +98,6 @@ export const actions = {
     commit,
     dispatch
   }, query) {
-
 
     const {
       data: data
@@ -182,6 +182,19 @@ export const actions = {
       in_rent: false,
     })
   },
+
+  clearList({
+    commit
+  }) {
+    commit('setList', {
+      data: [],
+      meta: {
+        pagination: {}
+      }
+    })
+  },
+
+
   async addInvoices({
     commit
   }, params) {

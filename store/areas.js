@@ -62,10 +62,6 @@ export const actions = {
 export const mutations = {
   setList(state, data) {
     state.areasList = data
-    state.areasList.data.unshift({
-      name: 'Seleccione una opcion',
-      id:0
-    })
   },
   delete(state, id) {
     state.areasList.data = state.areasList.data.filter((amenity) => amenity.id !== id)

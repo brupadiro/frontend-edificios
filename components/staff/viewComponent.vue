@@ -91,8 +91,15 @@
           filters:{ }
         }
       },
-      mounted() {
-        this.filters.staff = this.staff.id
+      watch:{
+        "staff": {
+          handler: function (val) {
+            if(val.id){
+              this.filters.staff = val.id
+            }
+          },
+          deep: true
+        }
       }
     }
   

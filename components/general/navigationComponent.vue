@@ -59,7 +59,7 @@
         <v-bottom-sheet v-if="item.subItems" :key="i" class="rounded-t-xl">
           <template v-slot:activator="{ on, attrs }">
             <v-btn v-bind="attrs" icon color="primary" v-on="on">
-              <v-icon color="secondary">{{ item.icon }}</v-icon>
+              <img :src="`/icons/${item.icon}.png`" width="30px">
             </v-btn>
           </template>
           <v-list color="primary">
@@ -67,7 +67,7 @@
               <v-list-item-content>
                 <v-btn color="white" outlined block height="50" class="btn-navigation"
                   active-class="btn-navigation-active  white--text" :to="subItem.to" exact>
-                  <v-icon>{{ subItem.icon }}</v-icon>
+                  <img :src="`/icons/${subItem.icon}.png`" width="30px">
                   <span>{{subItem.title}}</span>
                 </v-btn>
               </v-list-item-content>
@@ -76,7 +76,7 @@
         </v-bottom-sheet>
         <template v-else>
           <v-btn :key="i+'n'" color="primary" icon :to="item.to">
-            <v-icon color="secondary">{{ item.icon }}</v-icon>
+            <img :src="`/icons/${item.icon}.png`" width="30px">
           </v-btn>
         </template>
       </template>

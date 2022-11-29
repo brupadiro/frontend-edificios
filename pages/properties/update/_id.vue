@@ -28,7 +28,7 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
-              <generalUploadFilesComponent v-model="files"></generalUploadFilesComponent>
+              <generalUploadFilesComponent :value="files" @input="files = $event"></generalUploadFilesComponent>
             </v-card-text>
           </GeneralCardComponent>
         </v-col>

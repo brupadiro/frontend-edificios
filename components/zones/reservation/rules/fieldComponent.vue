@@ -4,10 +4,10 @@
       <v-col class="col-9">
         <v-row>
           <v-col :class="(selectedRule.rule.type=='before_to')?'col-6':'col-12'">
-            <FormsFieldsSelectComponent class="rounded-r-0" label="Regla" return-object :filled="update" :readonly="update" v-model="selectedRule.rule"
+            <FormsFieldsSelectComponent class="rounded-r-0" label="Regla" height="56" return-object :filled="update" :readonly="update" v-model="selectedRule.rule"
               :items="items" item-value="id" item-text="name"></FormsFieldsSelectComponent>
           </v-col>
-          <v-col :class="(selectedRule.rule.type=='before_to')?'col-6':'col-12'">
+          <v-col v-if="selectedRule.rule.type=='before_to'">
             <formsFieldsTextComponent class="rounded-l-0" v-model="selectedRule.value" 
               :filled="selectedRule.rule.id==null" :label="`Valor${currencyValue}`"></formsFieldsTextComponent>
           </v-col>

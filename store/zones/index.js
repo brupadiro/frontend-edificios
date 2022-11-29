@@ -94,7 +94,7 @@ export const actions = {
     state
   }) {
     var buldingId = this.$auth.user.building.id
-    await this.$axios.post(`/zones/?populate=rules.rule`, {
+    return await this.$axios.post(`/zones/?populate=rules.rule`, {
       data: {
         ...state.zone,
         building: buldingId

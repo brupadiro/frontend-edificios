@@ -18,7 +18,7 @@
             </v-col>
             <v-col class="col-12 col-md-12" v-show="!apto.id">
               <formsFieldsSelectComponent v-model="apartment" item-text="number" item-value="id"
-                :items="apartmentsList.data" type="number" label="APARTAMENTO">
+                :items="apartmentsList" type="number" label="APARTAMENTO">
               </formsFieldsSelectComponent>
             </v-col>
 
@@ -115,7 +115,12 @@
     },
     computed: {
       apartmentsList() {
-        return this.$store.getters['apartments/getList']
+        var apartments = JSON.parse(JSON.stringify(this.$store.getters['apartments/getList'].data))
+        apartments.unshift({
+          number: 'Seleccionar apartamento',
+          id: null
+        })
+        return apartments
       },
       areasList() {
         return this.$store.getters['areas/getList']

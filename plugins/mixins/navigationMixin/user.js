@@ -2,12 +2,12 @@ export default {
     data() {
         return {
             userItems: [{
-              icon: 'mdi-apps',
+              icon: 'apps',
               title: 'Inicio',
               to: '/accounts/me'
             },
             {
-              icon: 'mdi-logout',
+              icon: 'logout',
               title: 'Salir',
               to: '/accounts/logout'
             },

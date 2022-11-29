@@ -27,7 +27,7 @@
                   Subir archivos
                 </v-card-title>
                 <v-card-text>
-                  <generalUploadFilesComponent v-model="newFilesUpload"></generalUploadFilesComponent>
+                  <generalUploadFilesComponent :value="newFilesUpload" @input="newFilesUpload = $event"></generalUploadFilesComponent>
 
                 </v-card-text>
                 <v-card-actions>
@@ -100,9 +100,7 @@
         showFormFiles: false,
         files: [],
         newFilesSuccessModal: false,
-        newFilesUpload:{
-          data:[]
-        }
+        newFilesUpload:[]
       }
     },
     mounted() {

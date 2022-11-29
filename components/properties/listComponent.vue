@@ -11,7 +11,7 @@
           <v-progress-circular size="200" width="17" color="primary" :value="60" rotate="270">
             <v-progress-circular size="160" width="17" color="red" :value="35" rotate="135"
               class="progress-circular text-h5 font-weight-black">
-              <span class="black--text" v-if="data.meta.pagination && rentals.meta.pagination">{{data.meta.pagination.total + rentals.meta.pagination.total}}</span>
+              <span class="black--text">{{rentals}}</span>
             </v-progress-circular>
           </v-progress-circular>
         </v-col>
@@ -19,8 +19,11 @@
           <v-row>
             <v-col class="col-md-6">
               <generalCardMiniComponent>
-                <template v-slot:title v-if="data.meta.pagination">
-                  {{data.meta.pagination.total}}
+                <template v-slot:title  >
+                  <span v-if="data.meta.pagination && data.meta.pagination.total  !=undefined">{{data.meta.pagination.total}}</span>
+                  <span v-else>
+                    <v-progress-circular width="4" indeterminate></v-progress-circular>
+                  </span>
                 </template>
                 <template v-slot:subtitle>
                   Total
@@ -30,8 +33,11 @@
             </v-col>
             <v-col class="col-md-6">
               <generalCardMiniComponent color="red">
-                <template v-slot:title  v-if="rentals.meta.pagination">
-                  {{rentals.meta.pagination.total}}
+                <template v-slot:title  >
+                  <span v-if="rentals !=undefined">{{rentals}}</span>
+                  <span v-else>
+                    <v-progress-circular width="4" indeterminate></v-progress-circular>
+                  </span>
                 </template>
                 <template v-slot:subtitle>
                   Inquilinos
@@ -46,7 +52,7 @@
 
       <!-- generate a lit of properties using vuetify v-data-table -->
 
-      <v-data-table hide-default-footer disable-sort calculate-widths :headers="finalHeaders"  :items-per-page="-1" :items="data.data"
+      <v-data-table :loading="data.meta.pagination.total == undefined" loading-text="Cargando..." no-data-text="No hay datos disponibles" hide-default-footer disable-sort calculate-widths :headers="finalHeaders"  :items-per-page="-1" :items="data.data"
         class="font-weight-bold text-h5">
         <template v-slot:item.image="{ item }">
           <div class="d-flex justify-center pa-2">
@@ -148,7 +154,6 @@
       }
     },
     created() {
-        this.getRentals()
 
     },
     methods: {
@@ -156,13 +161,10 @@
         if (status == true) return 'green'
         return 'red'
       },
-      getRentals() {
-        this.$store.dispatch('rentals/findAll')
-      }
     },
     computed: {
       rentals() {
-        return this.$store.getters['rentals/getAll']
+        return this.data.data.filter((ap)=>ap.in_rent == true).length
       },  
       finalHeaders() {
         var headers = this.headers

@@ -83,9 +83,9 @@ export const actions = {
   }) {
     const {
       data: data
-    } = await this.$axios.delete('/checking-accounts/deleteMultiple', {
-      params: {
-          apartment: apartment,
+    } = await this.$axios.post('/checking-accounts/deleteMultiple', {
+      data: {
+          apartment_id: apartment,
           currency: currency
       },
       paramsSerializer: params => {

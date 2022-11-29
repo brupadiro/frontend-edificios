@@ -43,7 +43,7 @@
       <v-divider></v-divider>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="secondary black--text rounded-lg font-weight-regular" class="rounded-lg" @click="addZone()">
+        <v-btn color="secondary black--text rounded-lg font-weight-regular" class="rounded-lg" :loading="loading" @click="addZone()">
           AGREGAR ZONA&nbsp;&nbsp;<v-icon>mdi-content-save</v-icon>
         </v-btn>
       </v-card-actions>
@@ -63,12 +63,21 @@
         default: false
       },
     },
+    data() {
+      return{
+        loading:false
+      }
+    },
     methods: {
       async addZone() {
+        this.loading = true
         await this.$store.dispatch('zones/add')
-        await this.$store.dispatch('zones/findAll')
-        this.$store.dispatch('zones/clear')
-        this.$emit('input', false)
+          .then(async()=>{
+            await this.$store.dispatch('zones/findAll')
+            this.$store.dispatch('zones/clear')
+            this.$emit('input', false)
+          })
+          this.loading = false
       },
       addRule(rule) {
         this.$store.dispatch('zones/setRule',rule)
