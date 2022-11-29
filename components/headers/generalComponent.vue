@@ -5,7 +5,7 @@
       <slot name="title"></slot>
     </v-toolbar-title>
     <template v-slot:extension>
-      <h4 class="font-weight-semi-regular text--darken-2" :class="textColorAppBar">
+        <h4 class="font-weight-semi-regular text--darken-2" :class="textColorAppBar">
         <slot name="subtitle"></slot>
       </h4>
     </template>

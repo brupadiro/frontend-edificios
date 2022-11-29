@@ -188,11 +188,10 @@ export const actions = {
     const {
       data: data
     } = await this.$axios.get(`/apartaments/${params.id}/?populate=*`)
-    console.log()
     this.$axios.put('/apartaments/' + params.id, {
       data: {
         invoices: [
-          ...data.invoices,
+          ...data.data.invoices,
           params.invoice
         ]
       }

@@ -114,7 +114,7 @@
           location: 'Maldonado'
         },
 
-        step: 2,
+        step: 1,
         valid: true,
         name: '',
         loading: false,

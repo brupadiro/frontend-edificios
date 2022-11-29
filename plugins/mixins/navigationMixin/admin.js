@@ -2,106 +2,92 @@ export default {
     data() {
         return {
             adminItems: [{
-                icon: 'mdi-apps',
+                icon: 'apps',
                 title: 'Inicio',
                 to: '/'
               },
               {
-                icon: 'mdi-home',
+                icon: 'home',
                 title: 'Apartamentos',
                 to: '/properties'
               },
               {
-                icon: 'mdi-account',
+                icon: 'account',
                 title: 'Visitas',
                 to: '/visits'
               },
               {
-                icon: 'mdi-square-rounded',
+                icon: 'square-rounded',
                 title: 'Zonas comunes',
                 to: '/zones',
               },
               {
-                icon: 'mdi-account-multiple',
+                icon: 'staff',
                 title: 'Staff',
                 to: '/staff'
               },
               {
-                icon: 'mdi-file',
+                icon: 'file',
                 title: 'Biblioteca',
                 to: '/files'
               },
               {
-                icon: 'ion-ios-hand',
+                icon: 'news',
                 title: 'Novedades',
                 to: '/news'
               },
     
               {
-                icon: 'mdi-note-text',
+                icon: 'numbers',
                 title: 'Contabilidad',
                 to: '/accounting'
               },
               {
-                icon: 'mdi-cog',
+                icon: 'cog',
                 title: 'Configuracion',
                 to: '/settings'
               },
-              {
-                icon: 'mdi-logout',
-                title: 'Salir',
-                to: '/accounts/logout'
-              },  
-    
             ],
             bottomAdminItems: [{
-                icon: 'mdi-apps',
+                icon: 'apps',
                 title: 'Inicio',
                 to: '/'
               },
               {
-                icon: 'mdi-home',
+                icon: 'home',
                 title: 'Apartamentos',
                 to: '/properties'
               },
               {
-                icon: 'mdi-account',
+                icon: 'account',
                 title: 'Visitas',
                 to: '/visits'
               },
               {
-                icon: 'mdi-square-rounded',
+                icon: 'square-rounded',
                 title: 'Zonas comunes',
-                subItems: [{
-                  icon: 'mdi-access-point',
-                  title: 'Reservas',
-                  to: '/zones/'
-                }, {
-                  icon: 'mdi-calendar-multiple',
-                  title: 'Calendario',
-                  to: '/zones/calendar'
-                }]
+                to: '/zones',
               },
               {
-                icon: 'mdi-dots-horizontal',
+                icon: 'dots-horizontal',
                 title: 'More',
                 subItems: [{
-                    icon: 'mdi-note-text',
+                    icon: 'numbers',
                     title: 'Contabilidad',
                     to: '/accounting'
                   },
                   {
-                    icon: 'mdi-cog',
+                    icon: 'cog',
                     title: 'Configuracion',
                     to: '/settings'
                   },
                   {
-                    icon: 'mdi-file',
+                    icon: 'file',
                     title: 'Biblioteca',
                     to: '/files'
                   },
                   {
-                    icon: 'mdi-logout',
+                    icon: 'logout',
                     title: 'Salir',
                     to: '/accounts/logout'
                   },

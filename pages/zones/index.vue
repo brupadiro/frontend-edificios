@@ -1,7 +1,10 @@
 <template>
   <v-container>
     <headersGeneralComponent>
-      <template v-slot:title>
+      <template v-slot:icon>
+        <img src="/icons/square-rounded.png" alt="icono" width="30" />
+      </template>
+     <template v-slot:title>
         Reservas
       </template>
       <template v-slot:subtitle>

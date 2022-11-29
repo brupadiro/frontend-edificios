@@ -3,7 +3,7 @@ import {
   updateField
 } from 'vuex-map-fields';
 var qs = require('qs');
-
+import axios from 'axios'
 export const state = () => ({
   users: [],
   user: {
@@ -84,7 +84,6 @@ export const actions = {
         ...state.user,
         email: email,
         type: type,
-        password: state.user.username
       })
       return {
         data: data
@@ -126,7 +125,7 @@ export const actions = {
   async checkIfExists({}, username) {
     const {
       data: data
-    } = await this.$axios.get(`/users/`, {
+    } = await axios.get(`${this.$axios.defaults.baseURL}/users/`, {
       params: {
         filters: {
           username: username

@@ -48,9 +48,8 @@
 
 <script>
   export default {
-    name: 'DragAndDropPhotoCard',
     props: {
-      value: Array,
+      value: Object,
       readonly: {
         default: false,
         type: Boolean
@@ -115,7 +114,7 @@
       filesList() {
         if (this.value != null) {
           console.log(this.value)
-          return this.value.filter((file) => {
+          return this.value.data.filter((file) => {
             if (file instanceof File) {
               return file
             } else if (Object.keys(file).length) {

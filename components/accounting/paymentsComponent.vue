@@ -4,7 +4,7 @@
       Facturas
     </generalCardTitleComponent>
     <v-card-text>
-      <v-data-table :items-per-page="-1" hide-default-footer  disable-sort :items="data.data" :headers="headers">
+      <v-data-table :items-per-page="-1" hide-default-footer disable-sort :items="data.data" :headers="headers">
         <template v-slot:no-data>
           No hay facturas disponibles
         </template>
@@ -41,7 +41,7 @@
   export default {
     mixins: [dateFunctions],
     props: {
-      readonly:{
+      readonly: {
         type: Boolean,
         default: false
       },
@@ -71,11 +71,11 @@
       formatType(value) {
         if (value == 'expenses') {
           return 'Expensas'
-        } else if(value == 'rent') {
+        } else if (value == 'rent') {
           return 'Renta'
-        }else if(value == 'suppliers') {
+        } else if (value == 'suppliers') {
           return 'Proveedores'
-        }else if(value == 'others') {
+        } else if (value == 'others') {
           return 'Otros'
         }
       }
@@ -113,55 +113,20 @@
         this.$store.dispatch('accounting/findAll')
       },
       generateInvoice(item) {
-
-        let data = {
-          sender: {
-            "company": "Forest Tower",
-            "address": "23X8+6MJ, Av Chiverta, 20100 Punta del Este",
-            "zip": "20100",
-            "city": "Punta del este",
-            "country": "Uruguay"
-          },
-          images: {
-        // The logo on top of your invoice
-            "logo": "https://foresttower.netlify.app/logo.png",
-          },
-
-          client: {
-            "company": item.name,
-            "address": item.address,
-            "zip": "20100",
-            "city": "Punta del Este",
-            "country": "Uruguay"
-          },
-          information: {
-            number: item.id,
-            "date": moment(item.createdAt).format('DD/MM/YYYY'),
-          },
-          "settings": {
-            "currency": item
-              .currency // See documentation 'Locales and Currency' for more info. Leave empty for no currency.
-          },
+        let invoice = {
+          currency: item.currency,
           products: [{
             quantity: "1",
             description: item.type,
             "tax-rate": 22,
             price: item.amount,
-          }, ],
-          translate: {
-            "invoice": "RECIBO", // Default to 'INVOICE'
-            "number": "NUMERO", // Defaults to 'Number'
-            "date": "FECHA", // Default to 'Date'
-            // "due-date": "Verloopdatum", // Defaults to 'Due Date'
-            // "subtotal": "Subtotaal", // Defaults to 'Subtotal'
-            "products": "ITEMS", // Defaults to 'Products'
-            "quantity": "CANTIDAD", // Default to 'Quantity'
-            "price": "PRECIO", // Defaults to 'Price'
-            "product-total": "Total", // Defaults to 'Total'
-            "total": "Total" // Defaults to 'Total'
+          }],
+          client:{
+            name: item.name,
           },
+          date: moment(item.createdAt).format('DD/MM/YYYY')
         }
-        this.$store.dispatch('accounting/generateInvoice', data)
+        this.$store.dispatch('accounting/generateInvoice', invoice)
       }
     }
 

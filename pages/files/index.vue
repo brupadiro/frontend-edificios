@@ -1,7 +1,10 @@
 <template>
   <v-container>
     <HeadersGeneralComponent elevation="6">
-      <template v-slot:title>
+      <template v-slot:icon>
+        <img src="/icons/file.png" alt="icono" width="30" />
+      </template>
+    <template v-slot:title>
         Biblioteca de documentos
       </template>
       <template v-slot:subtitle>
@@ -97,7 +100,9 @@
         showFormFiles: false,
         files: [],
         newFilesSuccessModal: false,
-        newFilesUpload:[]
+        newFilesUpload:{
+          data:[]
+        }
       }
     },
     mounted() {

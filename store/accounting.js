@@ -57,7 +57,7 @@ export const actions = {
       }
     } else {
       params.filters = {
-          building: this.$auth.user.building.id
+        building: this.$auth.user.building.id
       }
     }
 
@@ -120,7 +120,7 @@ export const actions = {
   clear({
     commit
   }) {
-    commit('set',  {
+    commit('set', {
       type: 'expenses',
       amount: 0,
       status: 'pending',
@@ -133,18 +133,59 @@ export const actions = {
   },
   set({
     commit
-  },data) {
+  }, data) {
     commit('set', data)
   },
-  generateInvoice({state},data) {
-    let invoice = JSON.parse(JSON.stringify(data));
-    easyinvoice.createInvoice(invoice, function (result) {
+  generateInvoice({
+    state
+  }, data) {
+
+
+
+    let jInvoice = {
+      sender: {
+        "company": "Forest Tower",
+        "address": "23X8+6MJ, Av Chiverta, 20100 Punta del Este",
+        "zip": "20100",
+        "city": "Punta del este",
+        "country": "Uruguay"
+      },
+      images: {
+        // The logo on top of your invoice
+        "logo": "https://foresttower.netlify.app/logo.png",
+      },
+
+      client: data.client,
+      "information": {
+        "date": data.date,
+      },
+      "settings": {
+        "currency": data.currency // See documentation 'Locales and Currency' for more info. Leave empty for no currency.
+      },
+      "products": data.products,
+      translate: {
+        "invoice": "RECIBO", // Default to 'INVOICE'
+        "number": "NUMERO", // Defaults to 'Number'
+        "date": "FECHA", // Default to 'Date'
+        // "due-date": "Verloopdatum", // Defaults to 'Due Date'
+        // "subtotal": "Subtotaal", // Defaults to 'Subtotal'
+        "products": "ITEMS", // Defaults to 'Products'
+        "quantity": "CANTIDAD", // Default to 'Quantity'
+        "price": "PRECIO", // Defaults to 'Price'
+        "product-total": "Total", // Defaults to 'Total'
+        "total": "Total" // Defaults to 'Total'
+      },
+    }
+
+
+    let invoice = JSON.parse(JSON.stringify(jInvoice));
+    return easyinvoice.createInvoice(invoice, function (result) {
       easyinvoice.download('myInvoice.pdf', result.pdf);
       //	you can download like this as well:
       //	easyinvoice.download();
       //	easyinvoice.download('myInvoice.pdf');   
-  });
-    }
+    });
+  }
 }
 
 export const mutations = {

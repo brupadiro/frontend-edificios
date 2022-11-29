@@ -1,7 +1,10 @@
 <template>
   <v-container>
     <headersGeneralComponent>
-      <template v-slot:title>
+      <template v-slot:icon>
+        <img src="/icons/cog.png" alt="icono" width="30" />
+      </template>
+   <template v-slot:title>
         Configuracion
       </template>
       <template v-slot:subtitle>
@@ -134,9 +137,6 @@
             <v-card-text>
             </v-card-text>
           </generalCardComponent>
-        </v-col>
-        <v-col class="col-12">
-          <ticketsListComponent></ticketsListComponent>
         </v-col>
       </v-row>
     </v-form>

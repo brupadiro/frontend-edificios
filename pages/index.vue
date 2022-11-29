@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
     <headersGeneralComponent>
+      <template v-slot:icon>
+        <img src="/icons/apps.png" alt="icono" width="30" />
+      </template>
       <template v-slot:title>
         Inicio
       </template>

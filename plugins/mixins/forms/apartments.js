@@ -60,6 +60,7 @@ export default {
       //add owner as habitant
       var ownerUser = this.$store.getters['owners/user']
       ownerUser.building =this.$auth.user.building.id
+      ownerUser.password = ownerUser.username
       this.$store.dispatch('users/set', ownerUser)
       const {
         data: user

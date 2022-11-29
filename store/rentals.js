@@ -10,6 +10,10 @@ export const state = () => ({
     start_date: '',
     end_date: '',
     user: null,
+    front:null,
+    back:null,
+    doc_front:null,
+    doc_back:null
   },
   user: {
     name: '',
@@ -63,6 +67,10 @@ export const actions = {
     const {
       data: data
     } = await this.$axios.get(`/rentals/?populate=user`, {
+      transformRequest: [function (data, headers) {
+        console.log(data)
+        return data
+      }],
       params: {
         filters: query
       },
@@ -70,7 +78,7 @@ export const actions = {
         return qs.stringify(params, {
           arrayFormat: 'brackets'
         })
-      }
+      },
     })
 
 
@@ -97,10 +105,52 @@ export const actions = {
     rootGetters,
     commit
   }, user) {
-    const {
-      data: data
-    } = await this.$axios.post('/rentals', {
-      data: state.rental
+
+
+
+    const createUser = async function (vm) {
+      return new Promise(async (resolve, reject) => {
+        dispatch('users/set', {
+          ...state.user,
+          password: state.user.username,
+          building: vm.$auth.user.building.id
+        }, {
+          root: true
+        })
+        const data = await dispatch('users/create', {
+          type: 'tenant',
+        }, {
+          root: true
+        })
+        if (data.data) {
+          resolve(data.data)
+        } else {
+          reject('error putos')
+        }
+      })
+    }
+
+    return await createUser(this).then(async (user) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const {
+            data: data
+          } = await this.$axios.post(`/rentals/`, {
+            data: {
+              ...state.rental,
+              user: user.id,
+              building: this.$auth.user.building.id,
+            }
+          })
+          commit('set', data.data)
+          await dispatch('upload','front')
+          await dispatch('upload','back')
+          resolve(true)
+        } catch (error) {
+          reject(error)
+        }
+      })
+
     })
     return data
 
@@ -148,6 +198,20 @@ export const actions = {
     commit
   }, data) {
     commit('set', data)
+  },
+  async upload({
+    state
+  },field) {
+    var form = new FormData()
+    form.append('ref', 'api::rental.rental')
+    form.append('refId', state.rental.id)
+    form.append('field', `doc_${field}`)
+    form.append(`files`, state.rental[field], state.rental[field].name);
+    await this.$axios.post('/upload', form, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
   },
 
 }

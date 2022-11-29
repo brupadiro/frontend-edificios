@@ -70,13 +70,47 @@ export const actions = {
         apartment: apartment
       }
     })
-    commit('setSingle',data.data)
+    commit('setSingle', data.data)
     dispatch('clear')
   },
+  async delete({
+    commit,
+    dispatch,
+    state
+  }, {
+    currency,
+    apartment
+  }) {
+    const {
+      data: data
+    } = await this.$axios.delete('/checking-accounts/deleteMultiple', {
+      params: {
+          apartment: apartment,
+          currency: currency
+      },
+      paramsSerializer: params => {
+        return qs.stringify(params, {
+          arrayFormat: 'brackets'
+        })
+      } 
+    })
+    dispatch('findAll', {
+      filters: {
+        apartment: apartment,
+      }
+    })
+    dispatch('clear')
+  },
+
+
   clear({
     commit
   }) {
-    commit('set', {})
+    commit('set', {
+      amount: 0,
+      type: 'deposit',
+      concept:''
+    })
   },
 }
 

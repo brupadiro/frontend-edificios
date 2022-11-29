@@ -90,7 +90,7 @@
                 <v-col class="col-12 grey lighten-5" v-if="reservoirByTurn">
                   <v-row class="border-bottom py-3" no-gutters>
                     <v-col class="col-5 d-flex align-center">
-                      <span>Medio dia</span>
+                      <span>12:00 - 17:00</span>
                     </v-col>
                     <v-col class="col-4 d-flex align-center">
                       <span>LIBRE</span>
@@ -109,7 +109,7 @@
                   </v-row>
                   <v-row class="border-bottom py-3" no-gutters>
                     <v-col class="col-5 d-flex align-center">
-                      <span>Noche</span>
+                      <span>20:00 - 01:00</span>
                     </v-col>
                     <v-col class="col-4 d-flex align-center">
                       <span>LIBRE</span>

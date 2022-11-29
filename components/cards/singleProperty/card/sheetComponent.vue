@@ -125,52 +125,8 @@
         </v-col>
       </v-row>
     </v-card-text>
+      <rentalsListComponent :apartment="data"></rentalsListComponent>
     <v-card-text>
-      <v-card outlined class="rounded-lg">
-        <v-card-title>
-          Alquileres
-          <v-spacer></v-spacer>
-          <v-btn v-if="!readOnly" color="secondary white--text rounded-lg font-weight-black"
-            @click="openRentalForm=!openRentalForm">
-            AGREGAR NUEVO ALQUILER
-          </v-btn>
-        </v-card-title>
-        <v-divider></v-divider>
-        <v-card-text v-if="openRentalForm">
-          <RentalsFormComponent>
-            <template v-slot:actions>
-              <v-btn color="secondary white--text rounded-lg font-weight-black" @click="addNewRental()">
-                AGREGAR ALQUILER
-              </v-btn>
-            </template>
-          </RentalsFormComponent>
-        </v-card-text>
-        <v-card-text>
-          <v-data-table :items-per-page="-1" hide-default-footer disable-sort calculate-widths :headers="headersRentals"
-            :items="rentals.data" class="font-weight-bold text-h5">
-            <!-- no data slot -->
-            <template v-slot:no-data>
-              <v-alert :value="true" color="warning" small icon="mdi-alert-circle">
-                No se encontraron alquileres para esta propiedad
-              </v-alert>
-            </template>
-
-            <template v-slot:item.name="{ item }">
-              {{item.user.name}}
-            </template>
-            <template v-slot:item.doc="{ item }">
-              {{item.user.doc}}
-            </template>
-            <template v-slot:item.start_date="{ item }">
-              {{item.start_date}}
-            </template>
-            <template v-slot:item.end_date="{ item }">
-              {{item.end_date}}
-            </template>
-          </v-data-table>
-
-        </v-card-text>
-      </v-card>
     </v-card-text>
   </GeneralCardComponent>
 </template>
@@ -229,33 +185,6 @@
       }
     },
     methods: {
-      async addNewRental() {
-        try {
-          var rentalUser = this.$store.getters['rentals/user']
-          rentalUser.building = this.$auth.user.building.id
-          this.$store.dispatch('users/set', rentalUser)
-          const {
-            data: user
-          } = await this.$store.dispatch("users/create", {
-            type: 'tenant'
-          });
-
-          this.$store.dispatch('rentals/set', {
-            apartment: this.data.id,
-            user: user.id
-          })
-          await this.$store.dispatch("rentals/create");
-          this.$store.dispatch("rentals/clear");
-          //check if owner is in property
-          await this.$store.dispatch('users/clear')
-           this.$store.dispatch('rentals/clearUser')
-         this.getRentals()
-          this.openRentalForm = false
-
-        } catch (e) {
-          console.log(e)
-        }
-      },
         getRentals() {
           this.$store.dispatch('rentals/findAll', {
             filters: {
@@ -270,9 +199,6 @@
       owner() {
         return this.$store.getters['owners/get']
       },
-      rentals() {
-        return this.$store.getters['rentals/getAll']
-      }
 
     }
   }

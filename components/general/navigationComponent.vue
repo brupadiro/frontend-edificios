@@ -1,8 +1,10 @@
 <template>
   <div>
     <v-navigation-drawer :value="!mobileMenu" color="primary" app class="navigation-drawer">
-      <v-img src="/logo.png" width="100%" contain position="center center" class="mt-3"></v-img>
-      <v-divider class="py-4"></v-divider>
+      <template v-slot:prepend>
+        <v-img src="/logo.png" width="100%" contain position="center center" class="mt-3"></v-img>
+        <v-divider></v-divider>
+      </template>
       <v-list>
         <template v-for="(item, i) in items">
           <v-list-group v-if="item.subItems" :key="i" append-icon="" no-action>
@@ -10,7 +12,7 @@
               <v-list-item-content>
                 <v-btn text color="white" block height="50" class="btn-navigation"
                   active-class="btn-navigation-active primary white--text">
-                  <v-icon>{{ item.icon }}</v-icon>
+                  <img :src="`/icons/${subItem.icon}.png`">
                   <span>{{item.title}}</span>
                 </v-btn>
               </v-list-item-content>
@@ -19,7 +21,7 @@
               <v-list-item-content>
                 <v-btn text color="secondary" block height="50" class="btn-navigation"
                   active-class="btn-navigation-active  white--text" :to="subItem.to" exact>
-                  <v-icon>{{ subItem.icon }}</v-icon>
+                  <img :src="`/icons/${subItem.icon}.png`">
                   <span>{{subItem.title}}</span>
                 </v-btn>
               </v-list-item-content>
@@ -27,15 +29,29 @@
           </v-list-group>
           <v-list-item :key="i+'n'" v-else>
             <v-list-item-content>
-              <v-btn text color="white" block height="50" class="btn-navigation"
+              <v-btn text color="white" block height="50" class="btn-navigation font-weight-bold"
                 active-class="btn-navigation-active  white--text" :to="item.to">
-                <v-icon>{{ item.icon }}</v-icon>
+                <img :src="`/icons/${item.icon}.png`" width="30px">
                 <span>{{item.title}}</span>
               </v-btn>
             </v-list-item-content>
           </v-list-item>
         </template>
       </v-list>
+      <template v-slot:append>
+        <v-divider></v-divider>
+        <v-list>
+          <v-list-item>
+            <v-list-item-content>
+              <v-btn text color="white" block height="50" class="btn-navigation"
+                active-class="btn-navigation-active  white--text" :to="{name:'logout'}">
+                <img :src="`/icons/logout.png`" width="30px">
+                <span>Salir</span>
+              </v-btn>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </template>
     </v-navigation-drawer>
     <v-bottom-navigation app v-show="mobileMenu" background-color="primary" class="rounded-t-xl">
       <template v-for="(item, i) in bottomItems">
@@ -103,6 +119,36 @@
 
 </script>
 
-<style>
+<style lang="scss">
+  .navigation-drawer {
+    border-top-right-radius: 35px;
+    border-bottom-right-radius: 35px;
+  }
+
+  .btn-navigation {
+    border: 1px solid #80808024;
+    border-radius: 15px !important;
+    padding: 0 !important;
+
+    .v-btn__content {
+      width: 100%;
+      justify-content: start;
+      height: 100%;
+      align-items: center;
+      margin-left: 40px;
+    }
+
+    span {
+      text-transform: capitalize;
+      font-weight: 500;
+      margin-left: 10px;
+    }
+  }
+
+  .btn-navigation-active {
+    span {
+      color: white;
+    }
+  }
 
 </style>

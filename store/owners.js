@@ -130,6 +130,16 @@ export const actions = {
   }, data) {
     commit('set', data)
   },
+  clearUser({
+    commit
+  }, user) {
+    commit('setUser', {
+      name: '',
+      doc: '',
+      username: '',
+      type: 'owner',
+    })
+  },
 
   clear({
     commit

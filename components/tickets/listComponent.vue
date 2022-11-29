@@ -1,50 +1,9 @@
 <template>
   <v-row>
     <v-col class="col-12">
-      <generalCardComponent>
-        <generalCardTitleComponent>
-          Nuevo ticket
-        </generalCardTitleComponent>
-        <v-divider></v-divider>
+      <generalCardComponent outlined>
         <v-card-text>
-          <v-row>
-            <v-col class="col-12">
-              <formsFieldsTextareaComponent label="Descripcion del problema" v-model="ticket.description">
-              </formsFieldsTextareaComponent>
-            </v-col>
-
-            <v-col class="col-12" v-show="!apartment.id">
-              <formsFieldsSelectComponent v-model="ticket.apartment" item-text="number" item-value="id"
-                :items="apartmentsList.data" type="number" label="APARTAMENTO">
-              </formsFieldsSelectComponent>
-            </v-col>
-
-            <v-col class="col-12">
-              <FormsFieldsSelectComponent label="Area" item-text="name" value="name" :items="areas.data"
-                v-model="ticket.area"></FormsFieldsSelectComponent>
-            </v-col>
-            <v-col class="col-12">
-              <formsFieldsSelectComponent :items="prioritys" v-model="ticket.priority" label="Prioridad">
-              </formsFieldsSelectComponent>
-            </v-col>
-          </v-row>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" @click="addTicket()" class="rounded-lg">
-            Enviar ticket
-          </v-btn>
-        </v-card-actions>
-      </generalCardComponent>
-    </v-col>
-    <v-col class="col-12">
-      <generalCardComponent>
-        <generalCardTitleComponent>
-          Tickets
-        </generalCardTitleComponent>
-        <v-divider></v-divider>
-        <v-card-text>
-          <v-data-table :headers="headers" hide-default-footer :items="tickets.data">
+          <v-data-table :headers="headers" hide-default-footer :items="taskList.data">
             <template v-slot:item.priority="{ item }">
               <v-chip :color="getColor(item.priority)" text-color="white">
                 <b>{{ item.priority | priority }}</b>
@@ -89,9 +48,6 @@
           description: '',
           area: 'Seleccione una opcion',
           priority: 'High'
-        },
-        tickets: {
-          data: []
         },
         prioritys: [{
           text: 'Baja',
@@ -154,7 +110,6 @@
       }
     },
     created() {
-      this.getTickets()
       this.$store.dispatch('apartments/findAll')
     },
     mounted() {
@@ -162,28 +117,8 @@
         this.ticket.apartment = this.apartment.id
     },
     methods: {
-
-      getAreas() {
-        this.$axios.get('/areas')
-          .then(response => {
-            this.areas = response.data
-            this.areas.data.unshift({
-              attributes: {
-                name: 'Seleccione una opcion'
-              }
-            })
-          })
-      },
-      addTicket() {
-        this.$axios.post('/tickets', {
-            data: this.ticket
-          })
-          .then(response => {
-            this.getTickets()
-          })
-      },
-      updateStatus(ticket) {
-        this.$axios.put('tickets/' + ticket.id, {
+      updateStatus(task) {
+        this.$axios.put('tasks/' + task.id, {
           data: {
             status: 'Closed'
           }
@@ -203,28 +138,11 @@
             return 'red'
         }
       },
-      getTickets() {
-        var params = {
-          filters: {}
-        }
-        if (this.$auth.user.type != 'admin') {
-          params.filters.apartment = this.$auth.user.data.apartment.id
-        }
-        this.$axios.get('/tickets', {
-            params: params,
-            paramsSerializer: params => {
-              return qs.stringify(params, {
-                arrayFormat: 'brackets'
-              })
-            }
-          })
-          .then(response => {
-            this.tickets = response.data
-          })
-      },
-
     },
     computed: {
+      taskList() {
+        return this.$store.getters['staffs/tasks/getList']
+      },
       apartmentsList() {
         return this.$store.getters['apartments/getList']
       },

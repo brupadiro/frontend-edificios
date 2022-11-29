@@ -10,11 +10,8 @@
         <v-tab ripple :value="2">
           <span class="font-weight-black white--text">VISITAS</span>
         </v-tab>
-        <v-tab ripple :value="2">
+        <v-tab ripple :value="3">
           <span class="font-weight-black white--text">RESERVAS</span>
-        </v-tab>
-        <v-tab ripple :value="3" v-if="data.invoices && data.invoices.length>0">
-          <span class="font-weight-black white--text">FACTURAS</span>
         </v-tab>
         <v-tab ripple :value="4">
           <span class="font-weight-black white--text">CUENTA CORRIENTE</span>
@@ -31,11 +28,6 @@
         </v-tab-item>
         <v-tab-item class="pa-4">
           <zonesReservationComponent></zonesReservationComponent>
-        </v-tab-item>
-        <v-tab-item v-if="data.invoices && data.invoices.length>0">
-          <AccountingPaymentsComponent v-if="data.invoices" outlined class="mt-3"
-            :data="data.invoices">
-          </AccountingPaymentsComponent>
         </v-tab-item>
         <v-tab-item class="py-4">
           <propertiesCheckingAccountsComponent :readOnly="readOnly" :apartment="data"></propertiesCheckingAccountsComponent>

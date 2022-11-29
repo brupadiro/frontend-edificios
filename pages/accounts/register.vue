@@ -72,7 +72,7 @@
                           </formsFieldsTextComponent>
                         </v-col>
                         <v-col class="col-12">
-                          <formsFieldsTextComponent label="Documento de identidad" :rules="rules.min" label-color="white--text"
+                          <formsFieldsTextComponent label="Documento de identidad" label-color="white--text"
                             v-model="account.username" type="number" prepend-inner-icon="ion-ios-document">
                           </formsFieldsTextComponent>
                         </v-col>
@@ -139,7 +139,6 @@
 
 
         rules: {
-          min:[v => v.length >= 8 || 'Minimo 8 caracteres'],
           required: [v => !!v || 'Este campo es requerido']
         },
         showPassword: false,

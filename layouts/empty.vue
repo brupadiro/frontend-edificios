@@ -6,8 +6,6 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-title>
-        <span class="font-weight-light text-subtitle-1 white--text">No tienes cuenta?</span>
-        <nuxt-link  class="secondary--text font-weight-bold text-subtitle-1 white--text" tag="a" to="/accounts/register">Registrate</nuxt-link>
       </v-toolbar-title>
     </v-app-bar>
     <v-main>

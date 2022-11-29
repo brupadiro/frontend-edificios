@@ -1,19 +1,19 @@
 var qs = require('qs');
 export const state = {
-  areas: [],
+  areasList: {},
 }
 
 
 export const getters = {
   getList(state) {
-    return state.areas
+    return state.areasList
   }
 }
 
 export const actions = {
-  async find({
+  async findAll({
     commit
-  },params = {}) {
+  }, params = {}) {
 
     if (params.filters) {
       params.filters.building = this.$auth.user.building.id
@@ -32,7 +32,7 @@ export const actions = {
         })
       }
     })
-    commit('set', data)
+    commit('setList', data)
   },
   async add({
     commit
@@ -46,7 +46,7 @@ export const actions = {
         building: buldingId
       }
     })
-    commit('setSingle', data)
+    commit('set', data)
   },
   async delete({
     commit
@@ -60,14 +60,18 @@ export const actions = {
 }
 
 export const mutations = {
-  set(state, areas) {
-    state.areas = areas
+  setList(state, data) {
+    state.areasList = data
+    state.areasList.data.unshift({
+      name: 'Seleccione una opcion',
+      id:0
+    })
   },
   delete(state, id) {
-    state.areas.data = state.areas.data.filter((amenity) => amenity.id !== id)
+    state.areasList.data = state.areasList.data.filter((amenity) => amenity.id !== id)
   },
-  setSingle(state, amenity) {
-    state.areas.data.push(amenity.data)
+  set(state, data) {
+    state.areasList.data.push(data.data)
   }
 
 }

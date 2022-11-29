@@ -1,7 +1,10 @@
 <template>
   <v-container>
     <HeadersGeneralComponent>
-      <template v-slot:title>
+      <template v-slot:icon>
+        <img src="/icons/news.png" alt="icono" width="30" />
+      </template>
+     <template v-slot:title>
         Novedades
       </template>
       <template v-slot:subtitle>

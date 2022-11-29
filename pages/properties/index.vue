@@ -1,10 +1,18 @@
 <template>
   <v-container>
     <headersGeneralComponent>
-      <template v-slot:title>
+      <template v-slot:icon>
+        <img src="/icons/home.png" alt="icono" width="30" />
+      </template>
+     <template v-slot:title>
         Apartamentos
       </template>
-    </headersGeneralComponent>
+      <template v-slot:subtitle>
+        <v-btn large color="secondary black--text rounded-lg font-weight-regular" to="/properties/create">
+          <v-icon>mdi-plus</v-icon>&nbsp;AGREGAR APARTAMENTO
+        </v-btn>
+      </template>
+   </headersGeneralComponent>
     <v-row>
       <v-col class="col-12">
         <generalCardComponent elevation="6">

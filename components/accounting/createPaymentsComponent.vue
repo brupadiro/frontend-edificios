@@ -14,7 +14,8 @@
               <FormsFieldsSelectComponent v-model="type" label="Tipo" :rules="rules.required" :items="[
                         {text:'Cobro de expensas',value:'expenses',},
                         {text:'Cobro de renta',value:'rental'},
-                        {text:'Pago a proveedores',value:'suppliers'}
+                        {text:'Pago a proveedores',value:'suppliers'},
+                        {text:'Deudas pendientes',value:'debts'}
                         ]">
               </FormsFieldsSelectComponent>
 
