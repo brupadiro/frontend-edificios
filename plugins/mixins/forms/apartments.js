@@ -39,7 +39,7 @@ export default {
     async createRentals() {
       //add habitant
       var rentalUser = this.$store.getters['rentals/user']
-      rentalUser.building =this.$auth.user.building.id
+      rentalUser.password = rentalUser.username
       this.$store.dispatch('users/set', rentalUser)
       const {
         data: user

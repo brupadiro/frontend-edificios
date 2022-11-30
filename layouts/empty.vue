@@ -2,11 +2,10 @@
   <v-app dark>
     <v-app-bar app color="primary" elevation="1">
       <v-toolbar-title>
-        <img height="72" src="/logo.png">
+        <img height="60" src="/logo.png">
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-title>
-      </v-toolbar-title>
+      <router-link to="/accounts/register" class="white--text font-weight-bold">Registrate ahora</router-link>
     </v-app-bar>
     <v-main>
       <Nuxt />

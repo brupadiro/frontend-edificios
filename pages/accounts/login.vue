@@ -15,9 +15,6 @@
               <v-tab ripple :value="1">
                 <span class="font-weight-black white--text">INICIAR SESION</span>
               </v-tab>
-              <v-tab ripple :value="2">
-                <span class="font-weight-black white--text">REGISTRARSE</span>
-              </v-tab>
             </v-tabs>
           </v-card-subtitle>
           <v-tabs-items v-model="tab">

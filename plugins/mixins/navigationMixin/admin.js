@@ -12,8 +12,13 @@ export default {
                 to: '/properties'
               },
               {
+                icon: 'logout',
+                title: 'Entradas',
+                to: '/entries'
+              },
+              {
                 icon: 'account',
-                title: 'Visitas',
+                title: 'Autorizaciones',
                 to: '/visits'
               },
               {

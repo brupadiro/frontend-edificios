@@ -47,8 +47,27 @@
             <GeneralCardTitleComponent>Terminos y condiciones de la reserva</GeneralCardTitleComponent>
             <v-divider></v-divider>
             <v-card-text>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </v-card-text>
+Los parrilleros generales se reservarán en la recepción con una
+Anticipación no mayor a 72 horas antes del día de la reserva. Se
+Abonara en el momento la suma de $750 (Propietarios) $1500 (Inquilinos).
+Dicho monto np se devolverá en el caso de no uso. La mencionada cifra está
+destinada a cubrir gastos de limpieza general del lugar. La que se hará a primera
+hora del día siguiente al evento.
+2) Se deberá dejar un deposito en garantía de $1000 por cualquier
+Rotura o faltante que se genere por el uso. En los casos que se
+Requiera, se descontará del mismo el importe de los artículos
+Faltantes.
+3) A fin de lograr una distribución más equitativa del uso de parrilleros
+se dará prioridad a quienes no lo hallan utilizado en el plazo de la
+última semana.
+4) Se dará prioridad a los propietarios que cumplan años, debiendo
+acreditar el mismo con documento de identidad.
+5) Las reservas se podrán realizar en el horario de 15 a 23 hs.
+6) En alta temporada se podrá reservar un solo parrillero por unidad por
+Turno.
+7) Se deberá presentar con anticipación lista de invitados en recepción,
+pudiendo ingresar solo quienes figuren en la misma.
+8) El Horario de los turnos es de 11 a 17 hs. Y de 20 a 03 hs            </v-card-text>
             <v-card-actions>
               <v-btn color="secondary" @click="termsModal = false">Cerrar</v-btn>
             </v-card-actions>
@@ -252,13 +271,13 @@
           this.reservation.pending_payment = true
           var amount = 0
           if (this.reservation.owner) {
-            amount = 3000
-          } else {
             amount = 1500
+          } else {
+            amount = 750
           }
 
           this.$store.dispatch('accounting/set', {
-            type: 'others',
+            type: 'expenses',
             amount: amount,
             status: 'pending',
             currency: 'UYU',

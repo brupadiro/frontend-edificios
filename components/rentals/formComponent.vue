@@ -11,25 +11,26 @@
         <v-col class="col-md-8">
           <v-row>
             <v-col class="col-12 col-sm-6">
-              <formsFieldsTextComponent prepend-inner-icon="mdi-account" :readonly="readOnly"  :rules="rules.required" v-model="name"
-                label="Nombre del inquilino">
+              <formsFieldsTextComponent prepend-inner-icon="mdi-account" :readonly="readOnly" :rules="rules.required"
+                v-model="name" label="Nombre del inquilino">
               </formsFieldsTextComponent>
             </v-col>
             <v-col class="col-12 col-sm-6">
-              <formsFieldsTextComponent prepend-inner-icon="mdi-file" :readonly="readOnly"  :error-messages="errorUserExists"
-                :rules="rules.required" v-model="username" type="number" @input="checkIfUserExists($event)"
-                label="Documento de identidad">
+              <formsFieldsTextComponent prepend-inner-icon="mdi-file" :readonly="readOnly"
+                :error-messages="errorUserExists" :rules="rules.required" v-model="username" type="number"
+                @input="checkIfUserExists($event)" label="Documento de identidad">
               </formsFieldsTextComponent>
               <span v-if="errorUserExists.length>0" class="error--text">{{errorUserExists[0]}}</span>
             </v-col>
             <v-col class="col-6">
-              <formsFieldsTextComponent prepend-inner-icon="mdi-file" :readonly="readOnly"  v-model="phone" type="number"
+              <formsFieldsTextComponent prepend-inner-icon="mdi-file" :readonly="readOnly" v-model="phone" type="number"
                 label="Celular/Telefono">
               </formsFieldsTextComponent>
             </v-col>
             <v-col class="col-6">
               <formsFieldsSelectComponent prepend-inner-icon="mdi-file" v-model="warranty_type"
-                :items="['Aseguradora','Deposito','Inmueble']" type="number" :readonly="readOnly"  label="Tipo de garantia">
+                :items="['Aseguradora','Deposito','Inmueble']" type="number" :readonly="readOnly"
+                label="Tipo de garantia">
               </formsFieldsSelectComponent>
             </v-col>
             <v-col class="col-12">
@@ -41,13 +42,13 @@
                 <v-card-text>
                   <v-row>
                     <v-col class="col-md-6">
-                      <formsFieldsTextComponent prepend-inner-icon="mdi-calendar" :readonly="readOnly"  :rules="rules.required" type="date"
-                        v-model="start_date" label="Desde">
+                      <formsFieldsTextComponent prepend-inner-icon="mdi-calendar" :readonly="readOnly"
+                        :rules="rules.required" type="date" v-model="start_date" label="Desde">
                       </formsFieldsTextComponent>
                     </v-col>
                     <v-col class="col-md-6">
-                      <formsFieldsTextComponent prepend-inner-icon="mdi-calendar" :readonly="readOnly"  :rules="rules.required" type="date"
-                        v-model="end_date" label="Hasta">
+                      <formsFieldsTextComponent prepend-inner-icon="mdi-calendar" :readonly="readOnly"
+                        :rules="rules.required" type="date" v-model="end_date" label="Hasta">
                       </formsFieldsTextComponent>
                     </v-col>
                   </v-row>
@@ -61,15 +62,31 @@
         <v-col class="col-md-4">
           <v-row>
             <v-col class="col-12">
-              <generalUploadSingleFileComponent :readonly="readOnly"  v-model="doc_front">
+              <generalUploadSingleFileComponent v-if="!doc_front" :readonly="readOnly" v-model="front">
                 Documento - Frente
               </generalUploadSingleFileComponent>
+              <v-card outlined v-else>
+                <v-card-subtitle class="font-weight-bold black--text">
+                  Documento - Dorso
+                </v-card-subtitle>
+                <v-card-text >
+                  <v-img :src="doc_front.url" width="100%" contain></v-img>
+                </v-card-text>
+              </v-card>
 
             </v-col>
             <v-col class="col-12">
-              <generalUploadSingleFileComponent :readonly="readOnly" v-model="doc_front">
+              <generalUploadSingleFileComponent v-if="!doc_back" :readonly="readOnly" v-model="back">
                 Documento - Dorso
               </generalUploadSingleFileComponent>
+              <v-card outlined v-else>
+                <v-card-subtitle class="font-weight-bold black--text">
+                  Documento - Dorso
+                </v-card-subtitle>
+                <v-card-text >
+                  <v-img :src="doc_front.url" width="100%" contain></v-img>
+                </v-card-text>
+              </v-card>
             </v-col>
           </v-row>
         </v-col>
@@ -112,6 +129,8 @@
         'rental.warranty_type',
         'rental.start_date',
         'rental.end_date',
+        'rental.front',
+        'rental.back',
         'rental.doc_front',
         'rental.doc_back',
         'user.name',

@@ -75,13 +75,6 @@ export const actions = {
     dispatch
   }, params = {}) {
     dispatch('clearList')
-    if (params.filters) {
-      params.filters.building = this.$auth.user.building.id
-    } else {
-      params.filters = {
-        building: this.$auth.user.building.id
-      }
-    }
     const {
       data: data
     } = await this.$axios.get('/apartaments', {

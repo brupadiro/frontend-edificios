@@ -12,8 +12,6 @@ export const state = () => ({
     user: null,
     front:null,
     back:null,
-    doc_front:null,
-    doc_back:null
   },
   user: {
     name: '',
@@ -113,7 +111,6 @@ export const actions = {
         dispatch('users/set', {
           ...state.user,
           password: state.user.username,
-          building: vm.$auth.user.building.id
         }, {
           root: true
         })
@@ -139,7 +136,6 @@ export const actions = {
             data: {
               ...state.rental,
               user: user.id,
-              building: this.$auth.user.building.id,
             }
           })
           commit('set', data.data)
