@@ -50,7 +50,7 @@
     mixins: [apartmentsMixins],
     data() {
       return {
-        formSubmitted: true,
+        formSubmitted: false,
       }
     },
     created() {

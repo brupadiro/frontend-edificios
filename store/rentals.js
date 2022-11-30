@@ -122,7 +122,7 @@ export const actions = {
         if (data.data) {
           resolve(data.data)
         } else {
-          reject('error putos')
+          reject('error')
         }
       })
     }
