@@ -24,22 +24,8 @@
       }
     },
     created() {
-        this.getVisits()
+      this.$store.dispatch('apartments/findAll')
     },
-    mounted() {
-        this.$root.$on('updateVisits', () => {
-            this.getVisits()
-        })
-    },
-    methods: {
-      getVisits() {
-        this.$store.dispatch('visits/findAll', {
-          pagination: {
-            page: this.page
-          },
-        })
-      },
-   }
   }
 
 </script>

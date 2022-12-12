@@ -5,7 +5,6 @@ import {
 var qs = require('qs');
 
 
-
 import axios from 'axios';
 export const state = () => ({
   apartments: {
@@ -116,22 +115,26 @@ export const actions = {
     commit,
     dispatch
   }) {
-    var buldingId = this.$auth.user.building.id
-
-    const {
-      data: data
-    } = await this.$axios.post('/apartaments?populate=amenities,invoices', {
-      data: {
-        ...state.apartment,
-        building: buldingId
+    
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {
+          data: data
+        } = await this.$axios.post('/apartaments?populate=amenities,invoices', {
+          data: {
+            ...state.apartment,
+          }
+        })
+        console.log(data.data)
+        commit('set', {
+          ...data.data,
+          id: data.data.id
+        })    
+        resolve(data)
+      } catch (error) {
+        reject(error)
       }
     })
-    console.log(data)
-    commit('set', {
-      ...data,
-      id: data.data.id
-    })
-    return data
   },
   async update({
     commit,
@@ -139,13 +142,11 @@ export const actions = {
     dispatch
   }) {
     commit('deleteApartmentFiles')
-    var buldingId = this.$auth.user.building.id
     const {
       data: data
     } = await this.$axios.put(`/apartaments/${state.apartment.id}/?populate=amenities,invoices`, {
       data: {
         ...state.apartment,
-        building: buldingId
       }
     })
     commit('set', {

@@ -50,15 +50,6 @@ export const actions = {
   async findAll({
     commit
   }, params = {}) {
-    if (params.filters) {
-      params.filters.building = this.$auth.user.building.id
-    } else {
-      params.filters = {
-        building: this.$auth.user.building.id
-      }
-    }
-
-
     const {
       data: data
     } = await this.$axios.get('/zones/?populate=rules.rule', {
@@ -93,11 +84,9 @@ export const actions = {
     commit,
     state
   }) {
-    var buldingId = this.$auth.user.building.id
     return await this.$axios.post(`/zones/?populate=rules.rule`, {
       data: {
         ...state.zone,
-        building: buldingId
       }
     })
   },

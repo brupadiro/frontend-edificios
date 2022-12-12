@@ -8,8 +8,9 @@ export default {
       switch(this.$auth.user.type) {
         case 'admin':
           return this.adminItems
-        case 'user':
-          return this.userItems
+          case 'owner':
+          case 'tenant':
+            return this.userItems
         case 'staff':
           return this.staffItems
       }
@@ -20,8 +21,9 @@ export default {
       switch(this.$auth.user.type) {
         case 'admin':
           return this.bottomAdminItems
-        case 'user':
-          return this.bottomUserItems
+        case 'owner':
+        case 'tenant':
+          return this.userItems
         case 'staff':
           return this.staffItems
       }

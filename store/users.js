@@ -159,9 +159,19 @@ export const actions = {
         reject(error)
       })
     })
-  }
+  },
+  async block({
+    state
+  }, id) {
+    return await this.$axios.put(`/users/${id}`, {
+      blocked: true
+    })
+  },
 
 }
+
+
+
 export const mutations = {
   updateField,
   set(state, data) {

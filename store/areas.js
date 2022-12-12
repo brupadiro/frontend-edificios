@@ -1,6 +1,8 @@
 var qs = require('qs');
 export const state = {
-  areasList: {},
+  areasList: {
+    data:[]
+  },
 }
 
 
@@ -14,14 +16,6 @@ export const actions = {
   async findAll({
     commit
   }, params = {}) {
-
-    if (params.filters) {
-      params.filters.building = this.$auth.user.building.id
-    } else {
-      params.filters = {
-        building: this.$auth.user.building.id
-      }
-    }
 
     const {
       data: data
@@ -37,13 +31,11 @@ export const actions = {
   async add({
     commit
   }, amenity) {
-    var buldingId = this.$auth.user.building.id
     const {
       data: data
     } = await this.$axios.post(`/areas`, {
       data: {
         ...amenity,
-        building: buldingId
       }
     })
     commit('set', data)

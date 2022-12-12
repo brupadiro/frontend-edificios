@@ -31,7 +31,7 @@
 
                 <v-row>
                   <v-col class="col-12">
-                    <FormsFieldsSelectComponent v-model="entries" :items="staffList" return-object
+                    <FormsFieldsSelectComponent v-model="entries" :items="staffList" item-value="user.name" item-id="id" return-object
                       prepend-inner-icon="mdi-account" label="NOMBRE">
                     </FormsFieldsSelectComponent>
                   </v-col>

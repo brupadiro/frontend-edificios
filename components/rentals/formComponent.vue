@@ -5,7 +5,6 @@
         DATOS DEL INQUILINO
       </v-card-title>
     </slot>
-    <v-divider></v-divider>
     <v-card-text class="pa-md-6">
       <v-row>
         <v-col class="col-md-8">

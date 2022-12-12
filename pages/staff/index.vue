@@ -23,9 +23,6 @@
                 <span class="font-weight-black white--text">EMPLEADOS</span>
               </v-tab>
               <v-tab ripple :value="2">
-                <span class="font-weight-black white--text">ENTRADAS</span>
-              </v-tab>
-              <v-tab ripple :value="3">
                 <span class="font-weight-black white--text">TAREAS</span>
               </v-tab>
             </v-tabs>
@@ -35,25 +32,23 @@
               <v-tab-item>
                 <v-data-table hide-default-footer :headers="headers" :loading="staffList.meta.pagination == undefined" loading-text="Cargando..." no-data-text="No hay datos disponibles" :items="staffList.data">
                   <template v-slot:item.photo="{ item }">
-                    <v-hover v-slot="{ hover }">
                       <v-avatar size="70" color="primary" class="my-2" open-delay="200" v-ripple @click="showStaff(item)">
-                        <v-icon v-if="!item.photo" color="white">mdi-account</v-icon>
+                        <v-icon v-if="!item.photo" color="white">mdi-magnify</v-icon>
                         <v-img v-else :src="item.photo.url" contain :class="{'gradient-avatar':hover}">
-                          <v-icon v-show="hover" color="white">mdi-magnify</v-icon>
+                          <v-icon  color="white">mdi-magnify</v-icon>
                         </v-img>
                       </v-avatar>
-                    </v-hover>
-
+                  </template>
+                  <template v-slot:item.actions="{ item }">
+                    <v-btn color="red" @click="blockStaff(item.user.id)">
+                      <v-icon color="white">mdi-delete</v-icon>
+                    </v-btn>
                   </template>
 
                 </v-data-table>
               </v-tab-item>
               <v-tab-item>
-                <staffEntriesComponent :staffItems="staffList.data"></staffEntriesComponent>
-              </v-tab-item>
-              <v-tab-item>
                 <staffTasksListComponent></staffTasksListComponent>
-
               </v-tab-item>
               <v-tab-item>
               </v-tab-item>
@@ -125,7 +120,12 @@
           text: 'Area',
           align: 'left',
           sortable: false,
-          value: 'area'
+          value: 'area.name'
+        }, {
+          text: 'Acciones',
+          align: 'left',
+          sortable: false,
+          value: 'actions'
         }],
         focus: null,
         now: null,
@@ -148,8 +148,15 @@
         this.type = "day";
       },
       showStaff(item) {
-        this.singleStaff = item;
+        this.$store.dispatch('staffs/set',item)
         this.openViewStaff = !this.openViewStaff; 
+      },
+      blockStaff(id){
+        this.$store.dispatch('users/block', id)
+          .then(()=>{
+            this.$store.dispatch('staffs/findAll')
+            this.$store.dispatch('staffs/tasks/findAll')
+          })
       }
     },
     computed: {

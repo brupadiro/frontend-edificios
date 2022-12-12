@@ -13,10 +13,10 @@
     <v-row>
       <v-col class="col-12">
         <generalCardComponent class="rounded-lg">
-          <v-card-title>
+          <GeneralCardTitleComponent class="primary white--text">
             Entradas
             <v-spacer></v-spacer>
-          </v-card-title>
+          </GeneralCardTitleComponent>
           <v-divider></v-divider>
           <v-card-text>
             <v-data-table dense :items-per-page="-1" hide-default-footer disable-sort calculate-widths

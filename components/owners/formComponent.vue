@@ -1,5 +1,5 @@
 <template>
-  <GeneralCardComponent class="rounded-lg" elevation="12">
+  <GeneralCardComponent class="rounded-lg">
     <v-card-title class="text-subtitle-1 font-weight-regular">
       DATOS DEL PROPIETARIO
     </v-card-title>

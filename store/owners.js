@@ -36,18 +36,6 @@ export const actions = {
     state,
     commit
   }, params = {}) {
-    if (params.filters) {
-      params.filters.apartment = {
-        building: this.$auth.user.building.id
-      }
-    } else {
-      params.filters = {
-        apartment: {
-          building: this.$auth.user.building.id
-        }
-      }
-    }
-
     const {
       data: data
     } = await this.$axios.get('/owners', {
@@ -93,6 +81,53 @@ export const actions = {
     getters,
     rootGetters
   }) {
+
+
+
+
+    const createUser = async function (vm) {
+      return new Promise(async (resolve, reject) => {
+        dispatch('users/set', {
+          ...state.user,
+          password: state.user.username,
+        }, {
+          root: true
+        })
+        const data = await dispatch('users/create', {
+          type: 'owner',
+        }, {
+          root: true
+        })
+        if (data.data) {
+          resolve(data.data)
+        } else {
+          reject('error')
+        }
+      })
+    }
+
+
+    return await createUser(this).then(async (user) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const {
+            data: data
+          } = await this.$axios.post(`/owners/`, {
+            data: {
+              ...state.owner,
+              user: user.id,
+            }
+          })
+          commit('set', data.data)
+          resolve(true)
+        } catch (error) {
+          reject(error)
+        }
+      })
+    })
+
+
+
     const {
       data: data
     } = await this.$axios.post('/owners', {

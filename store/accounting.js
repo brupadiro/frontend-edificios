@@ -51,17 +51,6 @@ export const actions = {
   async findAll({
     commit
   }, params = {}) {
-    if (params.filters) {
-      params.filters = {
-        building: this.$auth.user.building.id
-      }
-    } else {
-      params.filters = {
-        building: this.$auth.user.building.id
-      }
-    }
-
-
     const {
       data: data
     } = await this.$axios.get('/payments', {
@@ -84,7 +73,6 @@ export const actions = {
     } = await this.$axios.post(`/payments`, {
       data: {
         ...state.payment,
-        building: this.$auth.user.building.id
       }
     })
     commit('set', {

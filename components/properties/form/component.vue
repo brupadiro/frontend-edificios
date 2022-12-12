@@ -15,17 +15,17 @@
           <span v-if="errorApartmentExists.length>0" class="error--text">{{errorApartmentExists[0]}}</span>
         </v-col>
         <v-col class="col-4">
-          <formsFieldsTextComponent prepend-inner-icon="ion-ios-bed" :rules="rules.required" v-model="rooms"
+          <formsFieldsTextComponent prepend-inner-icon="ion-ios-bed" v-model="rooms"
             type="number" label="Habitaciones">
           </formsFieldsTextComponent>
         </v-col>
         <v-col class="col-4">
-          <formsFieldsTextComponent prepend-inner-icon="mdi-toilet" :rules="rules.required" type="number"
+          <formsFieldsTextComponent prepend-inner-icon="mdi-toilet" type="number"
             v-model="bathrooms" label="Banos">
           </formsFieldsTextComponent>
         </v-col>
         <v-col class="col-4">
-          <formsFieldsTextComponent prepend-inner-icon="ion-md-expand"  :rules="rules.required" type="number"
+          <formsFieldsTextComponent prepend-inner-icon="ion-md-expand"  type="number"
             v-model="square_meters" label="M²">
           </formsFieldsTextComponent>
         </v-col>
@@ -38,12 +38,12 @@
             <v-card-text>
               <v-row>
                 <v-col class="col-md-3">
-                  <formsFieldsSelectComponent :items="['USD','UYU']" :readonly="readonly" :rules="rules.required" value="USD"
+                  <formsFieldsSelectComponent :items="['USD','UYU']" :readonly="readonly"  value="USD"
                     v-model="expenses_currency" label="Moneda">
                   </formsFieldsSelectComponent>
                 </v-col>
                 <v-col class="col-md-9">
-                  <formsFieldsTextComponent prepend-inner-icon="mdi-currency-usd" :readonly="readonly" :rules="rules.required" type="number"
+                  <formsFieldsTextComponent prepend-inner-icon="mdi-currency-usd" :readonly="readonly"  type="number"
                     v-model="expenses_cost" label="Costo">
                   </formsFieldsTextComponent>
                 </v-col>

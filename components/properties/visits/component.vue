@@ -13,17 +13,6 @@
         </v-btn>
       </v-card-subtitle>
       <v-divider></v-divider>
-      <v-card-title class="primary">
-        <v-tabs :vertical="$vuetify.breakpoint.smAndDown" v-model="tab" hide-slider slider-color="primary"
-          background-color="primary" active-class="active-tab" grow>
-          <v-tab ripple :value="0">
-            <span class="font-weight-black white--text">AUTORIZACIONES DEL DIA</span>
-          </v-tab>
-          <v-tab ripple :value="1">
-            <span class="font-weight-black white--text">AUTORIZACIONES PASADAS</span>
-          </v-tab>
-        </v-tabs>
-      </v-card-title>
 
       <v-expand-transition>
         <v-card-text v-show="modalVisits">
@@ -33,20 +22,20 @@
       <v-divider></v-divider>
       <v-tabs-items v-model="tab">
         <v-tab-item>
-          <PropertiesVisitsListComponent :items="items"></PropertiesVisitsListComponent>
-        </v-tab-item>
-        <v-tab-item>
-          <GeneralCardComponent>
-            <v-card-title>
+          <v-card-title class="primary">
               <v-row>
                 <v-col class="col-md-10 col-12">
-                  <FormsFieldsTextComponent v-model="search.in_date" type="date" label="Fecha"></FormsFieldsTextComponent>
+                  <FormsFieldsTextComponent v-model="search.in_date" label-color="white--text" type="date" label="Fecha"></FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-md-2 col-12 d-flex align-end">
                   <v-btn height="48" class="rounded-lg" block color="secondary" @click="searchVisits()">BUSCAR</v-btn>
                 </v-col>
               </v-row>
             </v-card-title>
+         <PropertiesVisitsListComponent :items="items"></PropertiesVisitsListComponent>
+        </v-tab-item>
+        <v-tab-item>
+          <GeneralCardComponent>
             <v-divider></v-divider>
             <v-card-text>
               <PropertiesVisitsListComponent :items="items"></PropertiesVisitsListComponent>
@@ -98,21 +87,29 @@
       }
     },
     mounted() {
-      this.$root.$on('updateVisits', () => {
-        this.modalVisits = false
-      });
+      this.searchVisits()
     },
     methods: {
-      setCheckout(id) {
-        this.$store.dispatch('visits/checkout')
-        this.$root.$emit('updateVisits')
-      },
       searchVisits() {
+        let filters = {
+          apartment:this.apartment.id,
+          in_date:{
+            $gt:moment(this.search).subtract(1, 'days').format('YYYY-MM-DD'),
+            $lt:moment(this.search).add(1, 'days').format('YYYY-MM-DD'),
+          }
+        }
         this.$store.dispatch('visits/findAll', {
           pagination: {
             page: 1
           },
-          filters: this.search
+          filters: filters
+        })
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            page: 1,
+            filters: qs.stringify(filters)
+          }
         })
       }
     },
@@ -124,24 +121,6 @@
         return this.$vuetify.breakpoint.xsOnly
       },
     },
-    watch:{
-      tab(val) {
-        if(val == 0) {
-          this.$store.dispatch('visits/findAll', {
-            pagination: {
-              page: 1
-            },
-          })
-        } else {
-          this.$store.dispatch('visits/findAll', {
-            pagination: {
-              page: 1
-            },
-            filters: this.search
-          })
-        }
-      }
-    }
   }
 
 </script>

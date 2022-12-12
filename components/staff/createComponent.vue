@@ -62,8 +62,9 @@
                   </FormsFieldsTextComponent>
                 </v-col>
                 <v-col class="col-6">
-                  <FormsFieldsSelectComponent label="Area" :rules="rules.required" item-text="name" value="name"
-                    :items="['Mantenimiento']" v-model="area"></FormsFieldsSelectComponent>
+                  <FormsFieldsSelectComponent label="Area" item-text="name"  item-value="id" :items="areasList.data"
+                    v-model="area">
+                  </FormsFieldsSelectComponent>
                 </v-col>
               </v-row>
 
@@ -76,7 +77,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="secondary black--text rounded-lg font-weight-regular" class="rounded-lg" @click="addStaff()">
+        <v-btn color="secondary black--text rounded-lg font-weight-regular" :loading="loading" class="rounded-lg" @click="addStaff()">
           AGREGAR STAFF&nbsp;&nbsp;
           <v-icon>mdi-content-save</v-icon>
         </v-btn>
@@ -99,6 +100,7 @@
       return {
         hourEntryMenu: false,
         hourExitMenu: false,
+        loading:false,
         rules: {
           required: [value => !!value || 'Campo requerido']
         }
@@ -107,15 +109,22 @@
     methods: {
       async addStaff() {
         if (!this.$refs.form.validate()) return
+        this.loading = true
         this.$store.dispatch("staffs/create")
           .then(async () => {
             this.$store.dispatch("staffs/clear")
             this.$store.dispatch("staffs/clearUser")
+            this.loading = false
             await this.$store.dispatch("staffs/findAll");
+            this.$emit("input", false)
           })
       },
     },
     computed: {
+      areasList() {
+        return this.$store.getters['areas/getList']
+      },
+
       ...mapFields('staffs', [
         'staff.entry_hour',
         'staff.exit_hour',

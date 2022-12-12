@@ -44,7 +44,7 @@
           <v-list-item>
             <v-list-item-content>
               <v-btn text color="white" block height="50" class="btn-navigation"
-                active-class="btn-navigation-active  white--text" :to="{name:'logout'}">
+                active-class="btn-navigation-active  white--text" to="/accounts/logout">
                 <img :src="`/icons/logout.png`" width="30px">
                 <span>Salir</span>
               </v-btn>

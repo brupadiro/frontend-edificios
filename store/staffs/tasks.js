@@ -15,7 +15,8 @@ export const state = () => ({
     staff: null,
     priority: 'Medium',
     apartment: null,
-    area: null
+    area: null,
+    file: null,
   },
 })
 export const getters = {
@@ -35,14 +36,15 @@ export const actions = {
     commit('set', data)
   },
   async findAll({
-    commit
+    commit,
+    dispatch
   }, query) {
-    console.log(query)
+    dispatch('clearList')
     const {
       data: data
     } = await this.$axios.get(`/tasks/`, {
       params: {
-        populate: 'staff,apartament,area',
+        populate: 'staff.user,apartament,area,file',
         filters: query
       },
       paramsSerializer: params => {
@@ -109,6 +111,36 @@ export const actions = {
       data: data
     }
   },
+  async updateTask({
+    state
+  }, {
+    id,
+    status,
+    file
+  }) {
+
+
+    var form = new FormData()
+    if (file instanceof File) {
+      form.append('files.file', file)
+    }
+    form.append('data', JSON.stringify({status:status}))
+
+    return new Promise(async (resolve, reject) => {
+      return await this.$axios.put(`/tasks/${id}`, form,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then((res) => {
+        resolve(res)
+      }).catch((err) => {
+        reject(err)
+      })
+    })
+
+  },
+
+
   clear({
     commit
   }) {
@@ -121,7 +153,14 @@ export const actions = {
       area: 0
     })
   },
-
+  clearList({
+    commit
+  }) {
+    commit('setList', {
+      data: [],
+      meta: {}
+    })
+  }
 }
 export const mutations = {
   updateField,

@@ -15,6 +15,13 @@
         <v-icon>mdi-home</v-icon>
       </template>
     </v-btn>
+    <v-snackbar v-model="errorInForm" color="red">
+      Hubo un error al enviar, por favor revise los datos e intente nuevamente
+      <v-btn text @click="errorInForm = false">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-snackbar>
+
   </generalBottomBarComponent>
 
 </template>
@@ -26,7 +33,7 @@
   export default {
     props: {
       files: {
-        type: Object,
+        type: Array,
         default: () => {
           return {
             data: []
@@ -49,12 +56,9 @@
           return
         } else if (this.value == 3) {
           await this.generateFunction("Files");
-          return
-        } else if (this.value == 4) {
-          await this.generateFunction("Rentals");
+          this.$router.go(-1)
           return
         } 
-          this.$router.go(-1)
       },
     },
     computed: {

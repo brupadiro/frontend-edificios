@@ -14,7 +14,6 @@ export default {
         console.log(`form${nameFunction}`)
         if (this.$parent.$refs[`form${nameFunction}`].validate()) {
           return new Promise((resolve, reject) => {
-            console.log()
             this[`create${nameFunction}`](param).then((response) => {
               resolve(response);
               this.$emit('input', this.value += 1)
@@ -35,44 +34,28 @@ export default {
       } else {
         await this.$store.dispatch("apartments/create");
       }
+      this.createFiles()
     },
     async createRentals() {
-      //add habitant
-      var rentalUser = this.$store.getters['rentals/user']
-      rentalUser.password = rentalUser.username
-      this.$store.dispatch('users/set', rentalUser)
-      const {
-        data: user
-      } = await this.$store.dispatch("users/create", {
-        type: 'tenant'
-      });
-      //add rental
       this.$store.dispatch('rentals/set', {
         apartment: this.apartment.id,
-        user: user.id
       })
       await this.$store.dispatch("rentals/create");
       this.$store.dispatch("rentals/clear");
-      //check if owner is in property
       await this.$store.dispatch('users/clear')
     },
     async createOwners() {
       //add owner as habitant
-      var ownerUser = this.$store.getters['owners/user']
-      ownerUser.building =this.$auth.user.building.id
-      ownerUser.password = ownerUser.username
-      this.$store.dispatch('users/set', ownerUser)
-      const {
-        data: user
-      } = await this.$store.dispatch("users/create", {
-        type: 'owner'
-      })
       this.$store.dispatch('owners/set', {
         apartment: this.apartment.id,
-        user: user.id
       })
       await this.$store.dispatch("owners/create");
       await this.$store.dispatch('users/clear')
+
+
+      if(this.apartment.in_rent) {
+        await this.createRentals()
+      }
     },
     async createFiles() {
       if (this.files.length == 0) return

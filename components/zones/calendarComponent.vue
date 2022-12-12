@@ -30,7 +30,7 @@
           <v-card-text>
             <v-row>
               <v-col class="d-flex justify-center" v-for="zone in zoneList.data" :key="zone.id">
-                <v-icon :color="generateColor(zone.name)">mdi-circle</v-icon>
+                <v-icon color="primary">mdi-circle</v-icon>
                 &nbsp;&nbsp;
                 <span class="font-weight-black black--text">
                   {{ zone.name }}
@@ -47,8 +47,8 @@
       </v-card-subtitle>
       <v-card-text>
         <v-sheet height="400">
-          <v-calendar locale="es" ref="calendar" :events="reservationList" :value="now" color="primary" :type="type"
-            @click:date="viewDay">
+          <v-calendar locale="es" ref="calendar" first-time="07:00" :interval-count="19" :events="reservationList"
+            :value="now" color="primary" :type="type" @click:date="viewDay">
             <template v-slot:event="{event}">
               <div class="pl-3 pr-3">
                 <p class="mb-0"><b>Zona:</b> {{event.zone}}</p>
@@ -97,7 +97,7 @@
     data: () => ({
       now: null,
       focus: "",
-      date:null,
+      date: null,
       selectedDate: {
         data: {},
         editable: false
@@ -120,13 +120,17 @@
     methods: {
       getReservations() {
         this.$store.dispatch("zones/reservations/findAll", {
-          filters:this.filters,
+          filters: this.filters,
           populate: "*"
         });
         this.$store.dispatch("zones/laundry/findAll", {
-          filters:this.filters,
+          filters: this.filters,
           populate: "*"
         });
+        this.$router.push({
+          path: this.$route.path,
+          query: this.filters
+        })
 
       },
       viewDay({
@@ -171,29 +175,24 @@
       },
     },
     computed: {
-      reservationList() {
-        var reservationList = _.cloneDeep(this.$store.getters['zones/reservations/getList'])
-        var laundryReservationList = this.$store.getters['zones/laundry/getList']
-        reservationList.data = [...reservationList.data, ...laundryReservationList.data]
+       reservationList() {
+        var reservationList = _.cloneDeep(this.$store.getters['zones/reservations/getList']); 
+        var laundryReservationList = _.cloneDeep(this.$store.getters['zones/laundry/getList']);  
+        reservationList.data = [...reservationList.data, ...laundryReservationList.data];
+        // Use array.filter() to remove any reservations with no data
         if (!reservationList.data) return []
+        // Use array.map() to transform the reservations into the desired format
         return reservationList.data.map(r => {
           let formatHour = (hour) => {
-            let formatedHour = moment(hour, 'HH:mm').format("HH:mm");
-            return formatedHour;
+            // Use moment.utc() to create a moment object with the time in UTC
+            return moment.utc(hour, 'HH:mm').format("HH:mm:ss");
           }
-          var reservation = {
+          return {
             apto: `${r.apartment.number}`,
             start: `${r.date} ${formatHour(r.from)}`,
             end: `${r.date} ${formatHour(r.to)}`,
-          }
-          if(r.zone) {
-            reservation.zone = `${r.zone.name}`
-            reservation.color= this.generateColor(r.zone.name)
-
-          } else {
-            reservation.zone = `Lavanderia`            
-          }
-          return reservation
+            zone: r.zone ? `${r.zone.name}` : `Lavanderia`,
+          };
         });
       },
       arrayHourToHour() {
@@ -211,10 +210,10 @@
       },
       filters() {
         var filters = {}
-        if(this.apartment.id) {
+        if (this.apartment.id) {
           filters.apartment = this.apartment.id
         }
-        if(this.date) {
+        if (this.date) {
           filters.date = this.date
         }
         return filters

@@ -5,7 +5,7 @@
         <img height="60" src="/logo.png">
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <router-link to="/accounts/register" class="white--text font-weight-bold">Registrate ahora</router-link>
+      <router-link to="/accounts/register/owners" class="white--text font-weight-bold">Registrate ahora</router-link>
     </v-app-bar>
     <v-main>
       <Nuxt />

@@ -15,17 +15,11 @@ export const actions = {
     commit
   }) {
 
-    var params = {
-      filters: {
-        building: this.$auth.user.building.id
-      }
-    }
 
 
     const {
       data: data
     } = await this.$axios.get(`/amenities`, {
-      params: params,
       paramsSerializer: params => {
         return qs.stringify(params, {
           arrayFormat: 'brackets'
@@ -37,13 +31,11 @@ export const actions = {
   async add({
     commit
   }, amenity) {
-    var buldingId = this.$auth.user.building.id
     const {
       data: data
     } = await this.$axios.post(`/amenities`, {
       data: {
         ...amenity,
-        building: buldingId
       }
     })
     commit('setSingle', data)

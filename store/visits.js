@@ -76,15 +76,14 @@ export const actions = {
       data: {
         ...state.visit,
         in_date: in_date,
-        apartment: 1
       }
     })
   },
   async checkout({
     state
-  }) {
+  },id) {
     let currentHour = moment().format('HH:mm:00.000')
-    this.$axios.put(`/visits/${id}`, {
+    return this.$axios.put(`/visits/${id}`, {
       data: {
         out_hour: currentHour
       }

@@ -3,7 +3,7 @@ import {
   updateField
 } from 'vuex-map-fields';
 var qs = require('qs');
-
+const _ = require('lodash');
 export const state = () => ({
   staffList: {
     data: [],
@@ -19,7 +19,8 @@ export const state = () => ({
   user: {
     name: '',
     phone: '',
-    username: ''
+    username: '',
+    doc_type: 'CI'
   }
 })
 export const getters = {
@@ -37,19 +38,27 @@ export const getters = {
 }
 export const actions = {
   set({
-    commit
+    commit,
+
   }, data) {
     commit('set', data)
   },
   async findAll({
-    commit
+    commit,
+    dispatch
   }, query) {
+    dispatch('clearList')
     const {
       data: data
     } = await this.$axios.get(`/staffs/`, {
       params: {
-        populate: 'user,photo',
-        filters: query
+        populate: 'user,photo,area',
+        filters: {
+          ...query,
+          user: {
+            blocked: false
+          }
+        }
       },
       paramsSerializer: params => {
         return qs.stringify(params, {
@@ -107,17 +116,30 @@ export const actions = {
 
     return await createUser(this).then(async (user) => {
       return new Promise(async (resolve, reject) => {
+
+
+        var form = new FormData()
+        if (state.staff.file instanceof File) {
+          form.append('files.photo', state.staff.file)
+        }
+
+        var data = _.cloneDeep(state.staff)
+        delete data.file
+
+        form.append('data', JSON.stringify(data))
+
+
         try {
           const {
             data: data
-          } = await this.$axios.post(`/staffs/`, {
-            data: {
-              ...state.staff,
-              user: user.id,
-              building: this.$auth.user.building.id,
+          } = await this.$axios.post(`/staffs/`, form, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
             }
           })
-          await dispatch('upload',data.data.id)
+          if (state.staff.file) {
+            await dispatch('upload', data.data.id)
+          }
           resolve(true)
         } catch (error) {
           reject(error)
@@ -129,23 +151,43 @@ export const actions = {
   async update({
     state
   }) {
-    try {
-      const {
-        data: data
-      } = await this.$axios.put(`/staffs/${state.staff.id}`, state.staff)
-      return {
-        data: data
+
+
+    return new Promise(async (resolve, reject) => {
+      var form = new FormData()
+      if (state.staff.photo instanceof File) {
+        form.append('files.photo', state.staff.photo)
       }
 
-    } catch (error) {
-      return {
-        data: false
-      }
-    }
+      var data = _.cloneDeep(state.staff)
+      delete data.photo
+
+      form.append('data', JSON.stringify(data))
+
+      await this.$axios.put(`/staffs/${state.staff.id}/?populate=user,photo`, form, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then((data) => {
+          resolve(data.data)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+
   },
+
+  async delete({
+    state
+  }, id) {
+    return await this.$axios.put(`/staffs/${id}`)
+  },
+
+
   async upload({
     state
-  },staffId) {
+  }, staffId) {
     var form = new FormData()
     form.append('ref', 'api::staff.staff')
     form.append('refId', staffId)
@@ -169,6 +211,17 @@ export const actions = {
       file: null
     })
   },
+
+  clearList({
+    commit
+  }) {
+    commit('setList', {
+      data: [],
+      meta: {}
+    })
+  },
+
+
   clearUser({
     commit
   }) {

@@ -137,7 +137,6 @@
       }
     },
     created() {
-      this.building = this.$auth.user.building
       this.getAmenities()
       this.getAreas()
       this.getUsers()
@@ -154,12 +153,11 @@
         this.$store.dispatch('amenities/find')
       },
       getAreas() {
-        this.$store.dispatch('areas/find')
+        this.$store.dispatch('areas/findAll')
       },
       getUsers() {
         this.$store.dispatch('users/findAll', {
           type: 'admin',
-          building: this.$auth.user.building.id
         })
       },
       addUser() {

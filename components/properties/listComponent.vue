@@ -11,7 +11,7 @@
           <v-progress-circular size="200" width="17" color="primary" :value="60" rotate="270">
             <v-progress-circular size="160" width="17" color="red" :value="35" rotate="135"
               class="progress-circular text-h5 font-weight-black">
-              <span class="black--text">{{rentals}}</span>
+              <span class="black--text">{{total}}</span>
             </v-progress-circular>
           </v-progress-circular>
         </v-col>
@@ -20,13 +20,13 @@
             <v-col class="col-md-6">
               <generalCardMiniComponent>
                 <template v-slot:title  >
-                  <span v-if="data.meta.pagination && data.meta.pagination.total  !=undefined">{{data.meta.pagination.total}}</span>
+                  <span v-if="owners  !=undefined">{{owners}}</span>
                   <span v-else>
                     <v-progress-circular width="4" indeterminate></v-progress-circular>
                   </span>
                 </template>
                 <template v-slot:subtitle>
-                  Total
+                  Propietarios
                 </template>
 
               </generalCardMiniComponent>
@@ -70,7 +70,6 @@
         </template>
 
         <template v-slot:item.in_rent="{ item }">
-          <span class="text-subtitle-1 font-weight-regular">{{item.in_rent}}</span>
           <v-icon size="24" class="mb-1" :color="setColorStatus(item.in_rent)">mdi-circle</v-icon>
         </template>
         <template v-slot:item.actions="{item}">
@@ -166,6 +165,14 @@
       rentals() {
         return this.data.data.filter((ap)=>ap.in_rent == true).length
       },  
+      owners() {
+        return this.data.data.filter((ap)=>ap.in_rent == false).length
+      },  
+      total() {
+        return this.data.data.length
+      },  
+
+
       finalHeaders() {
         var headers = this.headers
         if (this.expanded) {

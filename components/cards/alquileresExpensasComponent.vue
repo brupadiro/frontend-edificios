@@ -103,9 +103,6 @@
         this.$axios.get('apartaments/', {
           params: {
             populate: '*',
-            filters:{
-              building: this.$auth.user.building.id,
-            }
           },
           paramsSerializer: params => {
             return qs.stringify(params, {

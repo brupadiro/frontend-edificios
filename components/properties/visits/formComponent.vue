@@ -99,7 +99,7 @@
     methods: {
       addVisit() {
         this.$store.dispatch('visits/create')
-        this.$root.$emit('updateVisits')
+        this.$emit('openForm',false)
       }
     },
     computed: {
