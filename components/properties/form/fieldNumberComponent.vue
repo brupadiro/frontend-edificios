@@ -24,7 +24,6 @@
       }
 
     },
-    watch: {
       watch: {
         number(newValue) {
           this.$emit('input', newValue);
@@ -34,7 +33,6 @@
         },
 
       }
-    }
   }
 
 </script>

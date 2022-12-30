@@ -25,7 +25,7 @@
                 <v-card-text>
                   <v-card flat>
                     <v-card-text>
-                      <propertiesFormFieldNumberComponent v-model="number" type="number" label="APARTAMENTO">
+                      <propertiesFormFieldNumberComponent v-model="numberApartment" type="number" label="APARTAMENTO">
                       </propertiesFormFieldNumberComponent>
                     </v-card-text>
                   </v-card>
@@ -60,12 +60,17 @@
 
 <script>
   import apartmentsMixins from '~/plugins/mixins/forms/apartments.js'
+  import {
+    mapFields
+  } from 'vuex-map-fields';
+
   export default {
     layout: 'empty',
+    auth: false,
     mixins: [apartmentsMixins],
     data() {
       return {
-        number: null,
+        numberApartment: null,
         formSubmitted: false,
         step: 1
       }
@@ -75,6 +80,8 @@
     },
     methods: {
       addOwner() {
+        this.number = this.numberApartment
+        return
         this.$store.dispatch("apartments/create")
           .then(async (data) => {
             this.$store.dispatch('owners/set', {
@@ -100,6 +107,10 @@
       }
     },
     computed: {
+      ...mapFields('apartments', [
+        'apartment.number'
+      ]),
+
       account() {
         return this.$store.getters['users/get']
       },

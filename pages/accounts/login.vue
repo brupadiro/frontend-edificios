@@ -68,7 +68,6 @@
 <script>
   export default {
     auth: false,
-
     layout: 'empty',
     data: () => ({
       loading: false,
