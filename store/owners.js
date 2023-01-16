@@ -80,10 +80,25 @@ export const actions = {
     dispatch,
     getters,
     rootGetters
-  }) {
+  },apartment) {
 
 
-
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {
+          data: data
+        } = await this.$axios.post(`/owners/`, {
+          data: {
+            user: state.user,
+            aparment: apartment,
+          }
+        })
+        commit('set', data.data)
+        resolve(true)
+      } catch (error) {
+        reject(error)
+      }
+    })
 
     const createUser = async function (vm) {
       return new Promise(async (resolve, reject) => {
@@ -125,7 +140,7 @@ export const actions = {
         }
       })
     })
-
+    
 
 
     const {
@@ -137,6 +152,30 @@ export const actions = {
     })
     return data
   },
+  async register({
+    state,
+    commit,
+  },apartment) {
+
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {
+          data: data
+        } = await this.$axios.post(`/owners/`, {
+          data: {
+            user: state.user,
+            aparment: apartment,
+          }
+        })
+        commit('set', data.data)
+        resolve(true)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  },
+
   async update({
     state,
     commit

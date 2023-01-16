@@ -29,7 +29,7 @@
                   <v-row>
                     <v-col class="col-12">
                       <FormsFieldsTextComponent v-model="user.username" prepend-inner-icon="mdi-doc"
-                        :rules="[rules.min]" label-color="white--text" label="Documento" type="number" required>
+                        :rules="[rules.min]" label-color="white--text" label="Usuario o Documento" required>
                       </FormsFieldsTextComponent>
                     </v-col>
                     <v-col class="col-12">

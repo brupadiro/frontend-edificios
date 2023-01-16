@@ -79,8 +79,8 @@
       this.$store.dispatch('apartments/findAll', )
     },
     methods: {
-      addOwner() {
-        this.number = this.numberApartment
+      async addOwner() {
+        await this.$store.dispatch("owners/register",{number:this.numberApartment})
         return
         this.$store.dispatch("apartments/create")
           .then(async (data) => {
