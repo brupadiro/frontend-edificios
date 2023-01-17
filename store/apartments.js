@@ -110,6 +110,28 @@ export const actions = {
     })
     commit('setFiles', data.data[0].files)
   },
+  async count({},params){
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {
+          data: data
+        } = await this.$axios.get('/apartaments/count', {
+          params:params,
+        paramsSerializer: params => {
+          return qs.stringify(params, {
+            arrayFormat: 'brackets'
+          })
+        }
+      },
+
+      )
+        resolve(data.data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+
+  },
   async create({
     state,
     commit,

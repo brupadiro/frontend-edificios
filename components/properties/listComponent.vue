@@ -149,11 +149,16 @@
           text: 'Acciones',
           value: 'actions',
           align: 'center'
-        }]
+        }],
+        owners:0,
       }
     },
     created() {
-
+      this.$store.dispatch('apartments/count',{
+          in_rent:false
+      }).then((data)=>{
+        this.owners = data
+      })
     },
     methods: {
       setColorStatus(status) {
@@ -163,13 +168,10 @@
     },
     computed: {
       rentals() {
-        return this.data.data.filter((ap)=>ap.in_rent == true).length
-      },  
-      owners() {
-        return this.data.data.filter((ap)=>ap.in_rent == false).length
+        return (this.total - this.owners) ?? 0
       },  
       total() {
-        return this.data.data.length
+        return this.data?.meta?.pagination.total ?? 0
       },  
 
 

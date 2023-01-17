@@ -63,12 +63,6 @@
   var qs = require('qs');
   export default {
     mixins: [dateFunctions],
-    props: {
-      items: {
-        type: Object,
-        required: true
-      }
-    },
     methods: {
       setCheckout(id) {
         this.$store.dispatch('visits/checkout',id)
@@ -77,6 +71,11 @@
             this.$store.dispatch('visits/findAll', filters)
           })
       },
+    },
+    computed:{
+      items() {
+        return this.$store.getters['visits/getList']
+      }
     }
   }
 

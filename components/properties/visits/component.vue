@@ -94,8 +94,7 @@
         let filters = {
           apartment:this.apartment.id,
           in_date:{
-            $gt:moment(this.search).subtract(1, 'days').format('YYYY-MM-DD'),
-            $lt:moment(this.search).add(1, 'days').format('YYYY-MM-DD'),
+            $gte:moment(this.search).subtract('days').format('YYYY-MM-DD'),
           }
         }
         this.$store.dispatch('visits/findAll', {

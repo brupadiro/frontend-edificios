@@ -99,7 +99,9 @@
     methods: {
       addVisit() {
         this.$store.dispatch('visits/create')
-        this.$emit('openForm',false)
+          .then(()=>{
+            this.$store.dispatch('visits/findAll')
+          })
       }
     },
     computed: {
