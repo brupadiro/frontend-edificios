@@ -20,7 +20,7 @@
             <v-col class="col-md-6">
               <generalCardMiniComponent>
                 <template v-slot:title  >
-                  <span v-if="owners  !=undefined">{{owners}}</span>
+                  <span v-if="owners  !=undefined">{{rentals}}</span>
                   <span v-else>
                     <v-progress-circular width="4" indeterminate></v-progress-circular>
                   </span>
@@ -34,7 +34,7 @@
             <v-col class="col-md-6">
               <generalCardMiniComponent color="red">
                 <template v-slot:title  >
-                  <span v-if="rentals !=undefined">{{rentals}}</span>
+                  <span v-if="rentals !=undefined">{{owners}}</span>
                   <span v-else>
                     <v-progress-circular width="4" indeterminate></v-progress-circular>
                   </span>

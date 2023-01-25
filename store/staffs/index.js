@@ -97,7 +97,6 @@ export const actions = {
         dispatch('users/set', {
           ...state.user,
           password: state.user.username,
-          building: vm.$auth.user.building.id
         }, {
           root: true
         })

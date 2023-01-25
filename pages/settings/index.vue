@@ -162,7 +162,6 @@
       },
       addUser() {
         if (!this.$refs.form.validate()) return
-        this.user.building = this.$auth.user.building.id
         this.$store.dispatch('users/set', this.user)
         this.$store.dispatch('users/create', {
           type: 'admin'
