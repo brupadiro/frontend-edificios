@@ -7,8 +7,8 @@ export default {
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: 'Forest Tower - Administracion',
-    title: 'Forest Tower - Administracion',
+    titleTemplate: 'Gestus - Administracion',
+    title: 'Gestus - Administracion',
     meta: [{
         charset: 'utf-8'
       },
@@ -64,7 +64,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL:(process.env.NODE_ENV =='production') ?'https://forest-eslhi.ondigitalocean.app/api' : 'http://localhost:1337/api',
+    baseURL:'https://edificios.brupadev.tech/api',
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -113,9 +113,9 @@ export default {
       dark: false,
       themes: {
         light: {
-          primary: "#333350",
-          accent: colors.grey.darken3,
-          secondary: "#03a9f4",
+          primary: "#181818",
+          accent: "#6c757d",
+          secondary: "#28a745",
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
