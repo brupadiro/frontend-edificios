@@ -21,7 +21,7 @@
             <v-tab-item class="primary">
               <v-divider></v-divider>
               <GeneralCardTitleComponent class="d-flex justify-center white--text text-h5">
-                Entra ahora en Forest
+                Entra ahora
               </GeneralCardTitleComponent>
               <v-divider></v-divider>
               <v-card-text>
@@ -51,7 +51,7 @@
             <v-tab-item class="primary">
               <v-divider></v-divider>
               <GeneralCardTitleComponent class="d-flex justify-center white--text text-h5">
-                Registrate ahora en Forest
+                Registrate ahora
               </GeneralCardTitleComponent>
               <v-divider></v-divider>
               <v-card-text>
