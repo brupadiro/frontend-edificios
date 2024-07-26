@@ -7,7 +7,7 @@
         <GeneralCardComponent>
           <v-divider></v-divider>
           <GeneralCardTitleComponent class="d-flex justify-center text-h5">
-            Registrate como inquilino en Forest
+            Registrate como inquilino
           </GeneralCardTitleComponent>
 
           <v-divider></v-divider>
